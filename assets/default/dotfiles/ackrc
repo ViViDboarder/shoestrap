@@ -1,0 +1,7 @@
+# Add support for sass
+--type-set
+sass=.sass,.scss
+
+# Add support for Salesforce
+--type-set
+apex=.cls,.trigger

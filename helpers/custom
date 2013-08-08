@@ -3,3 +3,41 @@
 ##############################################################################
 # Add your custom helpers here. Remember, this is just Bash!
 ##############################################################################
+
+function init_paths_and_vars {
+    # Directory for projects
+    WORKSPACE=$HOME/workspace
+    # This is in bashrc
+    USER_BIN=$HOME/bin
+    # Temp dir for downloads
+    TMP_DIR=$PROJECT_DIR/tmp
+    # System uname
+    UNAME_STR=`uname`
+
+    # Create workspace dir
+    mkdir -p $WORKSPACE
+    mkdir -p $USER_BIN
+    mkdir -p $TMP_DIR
+}
+
+function source_dotfile {
+
+    local RC_PATH=$1
+    local RC_NAME=`basename $1`
+    local SOURCE_CMD="source"
+
+    # If a source command was passed in, we can use that
+    [ "$2" != "" ] && SOURCE_CMD=$2
+
+    # Check if .bash* file exists
+    if [[ ! ( -f "$HOME/.$RC_NAME" ) ]]; then
+        # Create a blank one
+        touch "$HOME/.$RC_NAME"
+    fi
+
+    try_link "$RC_PATH" "$HOME/.${RC_NAME}_sync"
+
+    add_line "#import $RC_NAME from synced" "$HOME/.$RC_NAME"
+    add_line "$SOURCE_CMD ~/.${RC_NAME}_sync" "$HOME/.$RC_NAME"
+}
+

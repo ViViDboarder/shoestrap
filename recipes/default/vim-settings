@@ -1,0 +1,101 @@
+#! /bin/bash
+
+DET_OS="unknown"
+UNAME_STR=`uname`
+
+# Some settings are mac specific
+if [[ "$UNAME_STR" == "Darwin" ]]; then
+    DET_OS="mac"
+elif [[ "$UNAME_STR" == "Linux" ]]; then
+    DET_OS="linux"
+fi
+
+# Clone vundle if not done already
+if [ ! -d ~/.vim/bundle/vundle ]; then
+    log "Installing vundle"
+    mkdir -p ~/.vim/bundle
+    git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+fi
+
+# Make backup and tmp dirs
+log "Building temp and backup dirs"
+mkdir -p ~/.vim/backup
+mkdir -p ~/.vim/tmp
+mkdir -p ~/.vim/doc
+
+log "Link vim files"
+try_link vimrc "$HOME/.vimrc_sync"
+try_link vim "$HOME/.vim_sync"
+
+if [[ ( ! -f ~/.vimrc ) ]]; then
+    log "No ~/.vimrc found, creating one"
+    touch ~/.vimrc
+fi
+
+# Source synced setting in vimrc
+add_line '"import vimrc from synced' $HOME/.vimrc
+add_line 'source ~/.vimrc_sync' $HOME/.vimrc
+
+add_line '"add vim directory from synced' ~/.vimrc
+add_line 'set runtimepath+=$HOME/.vim_sync' ~/.vimrc
+
+log "Install all bundles"
+vim +BundleInstall! +qall
+
+###### Possibly depreciate this section when using plug or neobundle
+
+# Compile CommandT if possible
+# See if ruby is installed
+if command -v ruby >/dev/null 2>&1; then
+    # Make sure GCC is installed
+    if command -v gcc >/dev/null 2>&1; then
+        # Use system ruby
+        command -v rvm >/dev/null 2>&1 && { rvm use system; }
+        log "Compile Command T's C extension"
+        cd ~/.vim/bundle/Command-T/ruby/command-t
+        ruby extconf.rb
+        make
+    fi
+fi
+
+# Display warning methods related to Command T
+vim --version | grep -q '\+ruby' || { log "Warning: Default vim does not include ruby as needed for Command T"; }
+command -v ruby >/dev/null 2>&1 || { log "Warning: ruby required for Command T"; }
+command -v gcc >/dev/null 2>&1 || { log "Warning: gcc required for Command T"; }
+
+# Execute vim's update of the helptags
+VIM_RESULT=$(vim +"helptags ~/.vim/doc" +"q")
+
+if [[ "$VIM_RESULT" == *SEGV* ]]; then
+    log "Seg Faulted. Retry with different ruby"
+    cd ~/.vim/bundle/Command-T/ruby/command-t && /opt/local/bin/ruby* extconf.rb && make && cd -
+
+    # Retry
+    vim +"helptags ~/.vim/doc" +"q"
+fi
+
+# End command t
+
+log "Compile vimproc"
+cd ~/.vim/bundle/vimproc.vim && make
+cd -
+
+###### End compile plugins
+
+log "Install Powerline Fonts"
+# Install Powerline Fonts
+pf_dir="$workspace/powerline-fonts"
+git clone https://github.com/Lokaltog/powerline-fonts $pf_dir
+
+# Setup vim-powerline with patched fonts
+if [[ "$DET_OS" == "mac" ]]; then
+    #Install DejaVu
+    cp $pf_dir/DejaVuSansMono/*.ttf ~/Library/Fonts/
+elif [[ "$DET_OS" == "linux" ]]; then
+    #Install DejaVu
+    cp -r $pf_dir/DejaVuSansMono ~/.fonts/
+    cp -r $pf_dir/UbuntuMono ~/.fonts/
+    cp -r $pf_dir/SourceCodePro ~/.fonts/
+    # Refresh cache
+    fc-cache -vf
+fi

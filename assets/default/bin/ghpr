@@ -1,0 +1,28 @@
+# Function used to checkout a pull request into it's own branch
+
+REMOTE=""
+PRNUM=""
+
+if [[ "$1" == "" ]]; then
+    echo "Usage"
+    echo "ghpr <remote> <pr number>"
+    echo "Example"
+    echo "ghpr origin 100"
+    echo
+    echo "This function will fetch and clone the pull request as"
+    echo "a branch."
+
+    return
+elif [[ "$2" == "" ]]; then
+    # No remote was supplied
+    PRNUM="$1"
+else
+    REMOTE="$1"
+    PRNUM="$2"
+fi
+
+echo "git fetch $REMOTE refs/pull/$PRNUM/head:PR_$PRNUM"
+git fetch $REMOTE refs/pull/$PRNUM/head:PR_$PRNUM
+
+echo "Just fetched Pull Request #$PRNUM. To switch to this branch execute:"
+echo "git checkout PR_$PRNUM"

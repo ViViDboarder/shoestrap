@@ -11,56 +11,30 @@
 cd $(dirname $0)
 PROJECT_DIR=$(pwd)
 
-detect_package_manager
-
-init_paths_and_vars
-
-# Do prompting early to make longer install easier
-install_packages=false
-if ! is_installed "packages" || prompt_yn "Reinstall packages?" ; then
-    install_packages=true
-fi
-
 install_vim_src=false
 if [ "$PACKAGE_MANAGER" == 'apt-get' ]; then
-    # Optional
     is_installed "vim-from-source"
     if prompt_yn "Compile vim?" ; then
         install_vim_src=true
     fi
 fi
-
 install_vim_settings=false
 if ! is_installed "vim-settings" || prompt_yn "Reinstall vim-settings?" ; then
     install_vim_settings=true
 fi
-
-# Optional
 install_sfdc=false
 is_installed "salesforce"
 if prompt_yn "Install Salesforce tools?" ; then
     install_sfdc=true
 fi
 
-# Optional
-install_golang=false
-is_installed "golang"
-if prompt_yn "Install Go?" ; then
-    install_golang=true
-fi
+# Create workspace dir
+mkdir -p ~/workspace
 
 ### Run recipes
 recipe 'dotfiles'
 recipe 'bin'
 recipe 'git'
-
-git submodule init
-git submodule update
-
-if $install_packages ; then
-    recipe 'packages'
-    set_installed "packages"
-fi
 
 if $install_vim_src ; then
     recipe 'compile-install-vim'
@@ -75,11 +49,6 @@ fi
 if $install_sfdc ; then
     recipe 'salesforce'
     set_installed 'salesforce'
-fi
-
-if $install_golang ; then
-    recipe 'golang'
-    set_installed 'golang'
 fi
 
 ### Show the Finished banner

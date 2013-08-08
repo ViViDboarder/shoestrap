@@ -1,0 +1,44 @@
+DET_OS="unknown"
+UNAME_STR=`uname`
+
+# Some settings are mac specific
+if [[ "$UNAME_STR" == "Darwin" ]]; then
+    DET_OS="mac"
+elif [[ "$UNAME_STR" == "Linux" ]]; then
+    DET_OS="linux"
+fi
+
+# Source bash alaias
+if [ -f ~/.bash_alias ]; then
+    . ~/.bash_alias
+fi
+
+# Common paths for me
+export PATH=$PATH:$ANT_HOME/bin
+# Opt directory
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+# Android SDK
+if [[ "$DET_OS" == "linux" ]]; then
+    ANDROID_SDK=$HOME/workspace/adt-bundle-linux/sdk
+elif [[ "$DET_OS" == "mac" ]]; then
+    ANDROID_SDK=$HOME/workspace/android-sdk-macosx
+    export PATH=$HOME/Library/Python/2.7/bin:$PATH
+fi
+export ANDROID_HOME=$ANDROID_SDK
+export PATH=$PATH:$ANDROID_SDK/platform-tools:$ANDROID_SDK/tools
+# Add RVM to PATH for scripting
+export PATH=$PATH:$HOME/.rvm/bin
+# Add ~/bin
+export PATH=$HOME/bin:$PATH
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+# Increase memory sizes for java using Ant
+ANT_OPTS="-Xmx2048m -Xms512m"
+
+# Set file as having been loaded to avoid looping
+IS_BASHRC_LOADED=true
+# If an interactive shell and .bash_profile hasn't been loaded, load it
+if [ -n "$PS1" ] && [ -z "$IS_BASH_PROFILE_LOADED" ] ; then
+    source $HOME/.bash_profile
+fi

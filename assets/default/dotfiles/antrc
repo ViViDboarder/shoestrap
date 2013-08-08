@@ -1,0 +1,2 @@
+# Increase memory sizes for java using Ant
+export ANT_OPTS="-Xmx2048m -Xms512m"

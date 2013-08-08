@@ -1,0 +1,12 @@
+#! /bin/bash
+
+# Link files that can't be sourced
+try_link "ackrc" "$HOME/.ackrc"
+try_link "antrc" "$HOME/.antrc"
+try_link "ctags" "$HOME/.ctags"
+try_link "tmux.conf" "$HOME/.tmux.conf"
+
+# Source files that can
+source_dotfile "bashrc"
+source_dotfile "bash_profile"
+source_dotfile "bash_alias"

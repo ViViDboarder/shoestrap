@@ -1,0 +1,96 @@
+#!/usr/bin/env ruby
+
+require 'base64'
+require 'yaml'
+
+module AbuseTheForce
+    class Atf_Config
+        class << self
+            attr_accessor :targets, :active_target, :src, :root_dir, :notify
+            SETTINGS_FILE=".abusetheforce.yaml"
+
+            def locate_root(path = '.')
+
+                temp_path = path
+
+                # Look for a settings file in this path and up to root
+                until File.file? File.join(temp_path, SETTINGS_FILE)
+                    # If we hit root, stop
+                    if temp_path == '/'
+                        break
+                    end
+
+                    # Didn't find one so go up one level
+                    temp_path = File.absolute_path File.dirname(temp_path)
+                end
+
+                # If we actually found it
+                if File.file? File.join(temp_path, SETTINGS_FILE)
+                    # Return
+                    return temp_path
+                else
+                    # Return the original path
+                    return path
+                end
+
+            end
+
+            # Loads configurations from yaml
+            def load()
+
+                # Get the project root directory
+                @root_dir = locate_root
+
+                if File.file? File.join(@root_dir, SETTINGS_FILE)
+                    settings = YAML.load_file File.join(@root_dir, SETTINGS_FILE)
+                    @targets = settings[:targets]
+                    @src = settings[:src]
+                    @notify = settings[:notify]
+                else
+                    puts "No settings file found, creating one now"
+                    # Settings file doesn't exist
+                    # Create it
+                    @targets = {}
+                    @active_target = nil
+                    @src = './src'
+                    @notify = true
+
+                    dump_settings
+                end
+
+                # Set the default target
+                @targets.values.each do |target|
+                    # Check if this one is active
+                    if target.active == true
+                        # Set it if there is no default target set yet
+                        if @active_target == nil
+                            @active_target = target
+                        else
+                            puts "Two active targets set. Using #{@active_target.print}"
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    # Class for holding a target
+    class Atf_Target
+        attr_accessor :name, :username, :password, :security_token, :host, :active
+
+        def initialize(name, username, password, security_token, host="login.salesforce.com")
+            @name = name
+            @username = username
+            set_password(password)
+            @security_token = security_token
+            @host = host
+            @active = false;
+        end
+    end
+end
+
+# Load config
+AbuseTheForce::Atf_Config.load
+# Print the target name
+puts AbuseTheForce::Atf_Config.active_target.name
+

@@ -1,0 +1,70 @@
+# Set file as having been loaded to avoid looping
+IS_BASH_PROFILE_LOADED=true
+# If bashrc hasn't been loaded, load it
+if [ -z "$IS_BASHRC_LOADED" ] ; then
+    source $HOME/.bashrc
+fi
+
+# Some stuff is OS Dependent
+DET_OS="unknown"
+UNAME_STR=`uname`
+
+if [[ "$UNAME_STR" == "Darwin" ]]; then
+    DET_OS="mac"
+elif [[ "$UNAME_STR" == "Linux" ]]; then
+    DET_OS="linux"
+fi
+
+# Since this is a mac, source the bashrc
+if [[ "$DET_OS" == "mac" ]]; then
+    # Bash Completion
+    if [ -f /opt/local/etc/profile.d/bash_completion.sh ]; then
+        . /opt/local/etc/profile.d/bash_completion.sh
+    fi
+    if [ -f /opt/local/share/bash-completion/completions/git-flow ]; then
+        . /opt/local/share/bash-completion/completions/git-flow
+    fi
+fi
+
+# Git Branch PS
+function parse_git_branch {
+    ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+    echo " ("${ref#refs/heads/}")"
+}
+
+function parse_atf_target {
+    #ignore for now
+    return
+    org=$(atf-target 2> /dev/null) || return
+    echo " [$org]"
+}
+
+function parse_force_target {
+    `git config force.use 2> /dev/null` || return
+    org=$(force-target 2> /dev/null) || return
+    echo " [$org]"
+}
+
+# Alias for colors
+RED="\[\033[0;31m\]"
+YELLOW="\[\033[0;33m\]"
+GREEN="\[\033[0;32m\]"
+ENDCOLOR="\[\e[0m\]"
+
+# New prompt format
+PS1="\h \W$YELLOW\$(parse_git_branch)$ENDCOLOR$GREEN\$(parse_atf_target)$ENDCOLOR$GREEN\$(parse_force_target)$ENDCOLOR\$ "
+
+# Prompt Title
+export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/~}\007"'
+
+# Set cursor colors
+export CLICOLOR=1
+export LSCOLORS=ExFxCxDxBxegedabagacad
+
+# Set file as having been loaded to avoid looping
+#IS_BASH_PROFILE_LOADED=true
+
+#if [ $IS_BASH_PROFILE_LOADED ] && [ $IS_BASHRC_LOADED ]; then
+#    IS_BASH_PROFILE_LOADED=false
+#    IS_BASHRC_LOADED=false
+#fi

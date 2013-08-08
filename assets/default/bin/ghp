@@ -1,0 +1,21 @@
+# Function used to take a github http pull URL and automatically convert it to an ssh url
+    
+if [[ "$1" == "" ]]; then
+    echo "Usage"
+    echo "ghp <url> <branch>"
+    echo "Example"
+    echo "ghp https://github.com/user/repo branch"
+    echo
+    echo "This function will convert the URL into an ssh url and"
+    echo "then it will execute git pull --edit --no-ff to merge."
+
+    return
+fi
+
+# Expects $* to be in the form of htts://github.com/user/repo branch
+URL=${1/http:\/\//git@} # Replace https:// with git@ at the beginning
+URL=${URL/\//:}         # Replace / with : before the user name
+
+# Echo the command so we can see what we actually executed
+echo "git pull --edit --no-ff $URL $2"
+git pull --edit --no-ff $URL $2

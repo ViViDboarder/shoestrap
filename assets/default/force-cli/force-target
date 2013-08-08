@@ -1,0 +1,3 @@
+#! /bin/bash
+
+force active | awk -F '.' '{ print $NF }'

@@ -135,6 +135,32 @@ package_update () {
     apt-get update -y
   elif [ "$PACKAGE_MANAGER" == 'yum' ]; then
     yum check-update -y
+  elif [ "$PACKAGE_MANAGER" == 'port' ]; then
+    port selfupdate
+  elif [ "$PACKAGE_MANAGER" == 'brew' ]; then
+    brew update
+  else
+    error "Unknown package manager: $PACKAGE_MANAGER"
+  fi
+
+  if [ $? -ne 0 ]; then
+    error "An error occured while updating packages. Fail!"
+  else
+    spacer 2
+  fi
+}
+
+
+sudo_package_update () {
+  log "Updating package manager..." 0 1
+  detect_package_manager
+
+  if [ "$PACKAGE_MANAGER" == 'apt-get' ]; then
+    sudo apt-get update -y
+  elif [ "$PACKAGE_MANAGER" == 'yum' ]; then
+    sudo yum check-update -y
+  elif [ "$PACKAGE_MANAGER" == 'port' ]; then
+    sudo port selfupdate
   elif [ "$PACKAGE_MANAGER" == 'brew' ]; then
     brew update
   else
@@ -166,6 +192,39 @@ package () {
     DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes $1
   elif [ "$PACKAGE_MANAGER" == 'yum' ]; then
     yum install -y $1
+  elif [ "$PACKAGE_MANAGER" == 'port' ]; then
+    port install $1
+  elif [ "$PACKAGE_MANAGER" == 'brew' ]; then
+    brew install $1
+  else
+    error "Unknown package manager: $PACKAGE_MANAGER"
+  fi
+
+  if [ $? -ne 0 ]; then
+    error "An error occured while installing package '$1'. Fail!"
+  else
+    spacer 2
+  fi
+}
+
+
+sudo_package () {
+  log "Installing package '$1'..."
+  detect_package_manager
+
+  test_package_installed $1 > /dev/null 2>&1
+
+  if [ $? -eq 0 ]; then
+    log "Package '$1' is already installed. Skipping."
+    return 0
+  fi
+
+  if [ "$PACKAGE_MANAGER" == 'apt-get' ]; then
+    DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --force-yes $1
+  elif [ "$PACKAGE_MANAGER" == 'yum' ]; then
+    sudo yum install -y $1
+  elif [ "$PACKAGE_MANAGER" == 'port' ]; then
+    sudo port install $1
   elif [ "$PACKAGE_MANAGER" == 'brew' ]; then
     brew install $1
   else
@@ -213,6 +272,8 @@ detect_package_manager () {
     PACKAGE_MANAGER='apt-get'
   elif command_exist yum; then
     PACKAGE_MANAGER='yum'
+  elif command_exist port; then
+    PACKAGE_MANAGER='port'
   elif command_exist brew; then
     PACKAGE_MANAGER='brew'
   else
@@ -236,16 +297,73 @@ command_exist () {
 copy () {
   local cookbook_assets_source="$COOKBOOK_ASSETS_PATH/$1"
   local default_assets_source="$DEFAULT_ASSETS_PATH/$1"
-  local target=$2
+  local target="$2"
 
-  if [ -f $cookbook_assets_source ]; then
+  if [ -f "$cookbook_assets_source" ]; then
     log "Copying $cookbook_assets_source to $target..."
-    cp $cookbook_assets_source $target
-  elif [ -f $default_assets_source ]; then
+    cp "$cookbook_assets_source" "$target"
+  elif [ -f "$default_assets_source" ]; then
     log "Copying $default_assets_source to $target..."
-    cp $default_assets_source $target
+    cp "$default_assets_source" "$target"
   else
     error "Could not find '$1' to copy. Fail!"
+  fi
+}
+
+#
+# Link a file from the assets folder to the specified location.
+#
+link () {
+  local src="$1"
+  local cookbook_assets_source="$COOKBOOK_ASSETS_PATH/$1"
+  local default_assets_source="$DEFAULT_ASSETS_PATH/$1"
+  local target="$2"
+
+  if [ -f "$src" ]; then
+    src="$src"
+  elif [ -f "$cookbook_assets_source" ]; then
+    src="$cookbook_assets_source"
+  elif [ -f $default_assets_source ]; then
+    src="$default_assets_source"
+  elif [ -d "$cookbook_assets_source" ]; then
+    src="$cookbook_assets_source"
+  elif [ -d $default_assets_source ]; then
+    src="$default_assets_source"
+  else
+    error "Could not find '$1' to link Fail!"
+  fi
+
+  ln -s "$src" "$target"
+}
+
+#
+# Attempt to link a file if it doesn't already exist
+#
+try_link () {
+  local src="$1"
+  local cookbook_assets_source="$COOKBOOK_ASSETS_PATH/$1"
+  local default_assets_source="$DEFAULT_ASSETS_PATH/$1"
+  local target="$2"
+
+  if [ -f "$src" ]; then
+    src="$src"
+  elif [ -f "$cookbook_assets_source" ]; then
+    src="$cookbook_assets_source"
+  elif [ -f $default_assets_source ]; then
+    src="$default_assets_source"
+  elif [ -d "$cookbook_assets_source" ]; then
+    src="$cookbook_assets_source"
+  elif [ -d $default_assets_source ]; then
+    src="$default_assets_source"
+  else
+    error "Could not find '$1' to link Fail!"
+  fi
+
+  if [ -L "$2" ] && [ "$(readlink $2)" == "$src" ] ; then
+    log "Link already exists: $2"
+  else
+    log "Creating link: $2 -> $src"
+    link "$1" "$2"
   fi
 }
 
@@ -299,13 +417,13 @@ run_as () {
 # Add line to a file if line is not already present
 #
 add_line () {
-  local line=$1
-  local file=$2
-  grep "$line" $file > /dev/null 2>&1
+  local line="$1"
+  local file="$2"
+  grep "$line" "$file" > /dev/null 2>&1
 
   if [ $? -ne 0 ]; then
     log "Adding '$line' to '$file'..."
-    echo "$line" >> $file
+    echo "$line" >> "$file"
   else
     log "'$line' already in '$file'. Skipping."
   fi
@@ -330,7 +448,7 @@ fail_if_not_root () {
 #
 # Checks if a certain element has already been installed.
 #
-function is_installed () {
+is_installed () {
   local args=$*
   local name=${args//[ \/:@]/-}
 
@@ -346,10 +464,24 @@ function is_installed () {
 #
 # Sets an element as installed.
 #
-function set_installed () {
+set_installed () {
   local args=$*
   local name=${args//[ \/:@]/-}
 
   mkdir -p ~/.shoestrap/installed
   touch ~/.shoestrap/installed/$name
+}
+
+#
+# Promts a user for a Yn confirmation
+#
+
+prompt_yn () {
+    read -p "$1 [y/n] " -n 1 -r
+    echo    # move to a new line
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        return 0
+    fi
+
+    return 1
 }

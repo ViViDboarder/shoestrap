@@ -1,0 +1,31 @@
+#! /bin/bash
+
+gitismerge () {
+    local sha=$1
+    msha=$(git rev-list --merges ${sha}...${sha}~1)
+    # If commit returned is the one passed it, it is a merge
+    [ -z "$msha" ] && return 1
+    return 0
+}
+
+if [ -z "$1" ]; then
+
+    echo "Usage:"
+    echo "git-changed commit [commit 2]"
+    echo ""
+    echo "If one commit is provided:"
+    echo "  Return a list of all files changed in that commit"
+    echo ""
+    echo "If two commits are provided:"
+    echo "  Return a list of all files changed between commits"
+
+    exit 0
+fi
+
+# If a merge, return only changes in that merge
+if [ -z "$2" ] && gitismerge $1; then
+    git diff-tree --no-commit-id --name-only $1
+else
+    git diff --no-commit-id --name-only $1 $2
+fi
+

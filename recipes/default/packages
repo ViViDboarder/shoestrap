@@ -1,0 +1,29 @@
+#! /bin/bash
+
+sudo_package_update
+sudo_package 'screen htop curl wget mercurial ctags tig pv'
+
+# Manager specific packages
+case "$PACKAGE_MANAGER" in
+    "port")
+        sudo_package 'vim +ruby +python27'
+        sudo_package 'macvim +ruby +python27'
+        sudo_package 'git-core +bash_completion'
+        sudo_package 'the_silver_searcher'
+        ;;
+    "brew")
+        package 'vim'
+        sudo_package 'the_silver_searcher'
+        ;;
+    "apt-get")
+        if [ -n "$(apt-cache policy silversearcher-ag)" ] ; then
+            sudo_package 'silversearcher-ag'
+        fi
+        sudo_package 'build-essential bash-completion rubygems tmux vim gvim'
+        ;;
+esac
+
+# Install ruby gems
+# TODO: Install RVM and other ruby requirements and get ruby 1.9.2
+sudo gem install rake
+

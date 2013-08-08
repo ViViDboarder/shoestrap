@@ -1,0 +1,11 @@
+#! /bin/bash
+
+# Set some Git Config options
+# Set vim as default git editor
+git config --global core.editor "vim"
+# Turn on colors
+git config --global color.ui auto
+# Set diff tool to vimdiff
+git config --global diff.tool vimdiff
+# Suppress launching prompt
+git config --global difftool.prompt false

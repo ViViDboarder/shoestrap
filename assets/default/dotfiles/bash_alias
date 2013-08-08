@@ -1,0 +1,12 @@
+# git
+alias gc='git commit $*'
+alias gco='git checkout $*'
+alias gl='git log $*'
+alias gr='git rebase $*'
+alias gs='git status $*'
+alias gd='git diff $*'
+alias tiga='tig --all'
+
+# cd
+alias cd..='cd ..'
+
