@@ -52,7 +52,7 @@ GREEN="\[\033[0;32m\]"
 ENDCOLOR="\[\e[0m\]"
 
 # New prompt format
-PS1="\h \W$YELLOW\$(parse_git_branch)$ENDCOLOR$GREEN\$(parse_atf_target)$ENDCOLOR$GREEN\$(parse_force_target)$ENDCOLOR\$ "
+PS1="\h \W$YELLOW\$(parse_git_branch)$ENDCOLOR$GREEN\$(parse_atf_target)\$(parse_force_target)$ENDCOLOR\$ "
 
 # Prompt Title
 export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/~}\007"'
