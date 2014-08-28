@@ -19,7 +19,7 @@ case "$PACKAGE_MANAGER" in
         if [ -n "$(apt-cache policy silversearcher-ag)" ] ; then
             sudo_package 'silversearcher-ag'
         fi
-        sudo_package 'build-essential bash-completion rubygems tmux vim gvim'
+        sudo_package 'build-essential bash-completion tmux vim'
         ;;
 esac
 

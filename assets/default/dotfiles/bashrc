@@ -20,6 +20,8 @@ export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Android SDK
 if [[ "$DET_OS" == "linux" ]]; then
     ANDROID_SDK=$HOME/workspace/adt-bundle-linux/sdk
+    export GOROOT=/usr/local/go
+    export PATH=$PATH:$GOROOT/bin
 elif [[ "$DET_OS" == "mac" ]]; then
     ANDROID_SDK=$HOME/workspace/android-sdk-macosx
     export PATH=$HOME/Library/Python/2.7/bin:$PATH
