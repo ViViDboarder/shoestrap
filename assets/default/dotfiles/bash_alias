@@ -10,3 +10,4 @@ alias tiga='tig --all'
 # cd
 alias cd..='cd ..'
 
+source $HOME/.bash_funcs
