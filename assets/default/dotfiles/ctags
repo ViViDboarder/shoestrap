@@ -2,4 +2,3 @@
 --langmap=c#:+.cls
 --langmap=html:+.page
 --langmap=html:+.component
-

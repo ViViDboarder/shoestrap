@@ -33,8 +33,6 @@ function parse_git_branch {
 }
 
 function parse_atf_target {
-    #ignore for now
-    return
     org=$(atf-target 2> /dev/null) || return
     echo " [$org]"
 }
