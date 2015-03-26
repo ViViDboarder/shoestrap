@@ -26,21 +26,25 @@ if [[ "$DET_OS" == "mac" ]]; then
     fi
 fi
 
-# Git Branch PS
-function parse_git_branch {
+# Set prompt to include some useful information
+function ps_git_branch {
     ref=$(git symbolic-ref HEAD 2> /dev/null) || return
     echo " ("${ref#refs/heads/}")"
 }
 
-function parse_atf_target {
+function ps_atf_target {
     org=$(atf-target 2> /dev/null) || return
     echo " [$org]"
 }
 
-function parse_force_target {
+function ps_force_target {
     `git config force.use 2> /dev/null` || return
     org=$(force-target 2> /dev/null) || return
     echo " [$org]"
+}
+
+function ps_host_name {
+    [ -z $TMUX ] || return && echo '\h '
 }
 
 # Alias for colors
@@ -50,7 +54,7 @@ GREEN="\[\033[0;32m\]"
 ENDCOLOR="\[\e[0m\]"
 
 # New prompt format
-PS1="\h \W$YELLOW\$(parse_git_branch)$ENDCOLOR$GREEN\$(parse_atf_target)\$(parse_force_target)$ENDCOLOR\$ "
+PS1="$(ps_host_name)\W$YELLOW\$(ps_git_branch)$ENDCOLOR$GREEN\$(ps_atf_target)\$(ps_force_target)$ENDCOLOR\$ "
 
 # Prompt Title
 export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/~}\007"'
