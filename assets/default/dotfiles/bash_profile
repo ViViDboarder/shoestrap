@@ -47,6 +47,12 @@ function ps_host_name {
     [ -z $TMUX ] || return && echo '\h '
 }
 
+function ps_virtual_env {
+    [ -z "$VIRTUAL_ENV" ] && return
+    venv=$(basename "$VIRTUAL_ENV") || return
+    echo " [$venv]"
+}
+
 # Alias for colors
 RED="\[\033[0;31m\]"
 YELLOW="\[\033[0;33m\]"
@@ -54,7 +60,7 @@ GREEN="\[\033[0;32m\]"
 ENDCOLOR="\[\e[0m\]"
 
 # New prompt format
-PS1="$(ps_host_name)\W$YELLOW\$(ps_git_branch)$ENDCOLOR$GREEN\$(ps_atf_target)\$(ps_force_target)$ENDCOLOR\$ "
+PS1="$(ps_host_name)\W$YELLOW\$(ps_git_branch)$ENDCOLOR$GREEN\$(ps_atf_target)\$(ps_force_target)\$(ps_virtual_env)$ENDCOLOR\$ "
 
 # Prompt Title
 export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/~}\007"'
