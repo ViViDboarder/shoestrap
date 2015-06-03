@@ -321,6 +321,8 @@ link () {
 
   if [ -f "$src" ]; then
     src="$src"
+  elif [ -d "$src" ]; then
+    src="$src"
   elif [ -f "$cookbook_assets_source" ]; then
     src="$cookbook_assets_source"
   elif [ -f $default_assets_source ]; then
@@ -346,6 +348,8 @@ try_link () {
   local target="$2"
 
   if [ -f "$src" ]; then
+    src="$src"
+  elif [ -d "$src" ]; then
     src="$src"
   elif [ -f "$cookbook_assets_source" ]; then
     src="$cookbook_assets_source"
