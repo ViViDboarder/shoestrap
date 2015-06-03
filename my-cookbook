@@ -49,6 +49,13 @@ if prompt_yn "Install Go?" ; then
     install_golang=true
 fi
 
+# Optional
+install_fish=false
+is_installed "fish"
+if prompt_yn "Install fish?" ; then
+    install_fish=true
+fi
+
 ### Run recipes
 recipe 'dotfiles'
 recipe 'bin'
@@ -80,6 +87,11 @@ fi
 if $install_golang ; then
     recipe 'golang'
     set_installed 'golang'
+fi
+
+if $install_fish ; then
+    recipe 'fish'
+    set_installed 'fish'
 fi
 
 ### Show the Finished banner
