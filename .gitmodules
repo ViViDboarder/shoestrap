@@ -1,3 +1,0 @@
-[submodule "assets/default/vim-settings"]
-	path = assets/default/vim-settings
-	url = https://github.com/ViViDboarder/vim-settings.git
