@@ -1,0 +1,27 @@
+#! /bin/bash
+
+# in common
+# sudo_package 'libtool automake cmake'
+
+case "$PACKAGE_MANAGER" in
+    "port")
+        sudo_package 'libtool autoconf automake cmake pkgconfig gettext ninja'
+        ;;
+    "brew")
+        sudo_package 'libtool automake cmake pkg-config gettext ninja'
+        ;;
+    "apt-get")
+        sudo_package 'libtool libtool-bin autoconf automake cmake g++ pkg-config unzip ninja-build'
+        ;;
+esac
+
+neovim_dir=$WORKSPACE/neovim
+
+if [ ! -d $neovim_dir ]; then
+    log "Cloning neovim"
+    git clone https://github.com/neovim/neovim $neovim_dir
+else
+    (cd $neovim_dir && git pull)
+fi
+
+(cd $neovim_dir && make && sudo make install)

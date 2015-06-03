@@ -30,6 +30,12 @@ if [ "$PACKAGE_MANAGER" == 'apt-get' ]; then
     fi
 fi
 
+install_neovim=false
+is_installed "neovim"
+if prompt_yn "Install Neovim?" ; then
+    install_neovim=true
+fi
+
 install_vim_settings=false
 if ! is_installed "vim-settings" || prompt_yn "Reinstall vim-settings?" ; then
     install_vim_settings=true
@@ -72,6 +78,11 @@ fi
 if $install_vim_src ; then
     recipe 'compile-install-vim'
     set_installed "vim-from-source"
+fi
+
+if $install_neovim ; then
+    recipe 'neovim'
+    set_installed "neovim"
 fi
 
 if $install_vim_settings ; then
