@@ -26,7 +26,7 @@ end
 set -gx ANDROID_HOME $android_sdk
 set -gx PATH $PATH $android_sdk/platform-tools $android_sdk/tools
 
-export PATH $HOME/bin $PATH
+set -gx  PATH $HOME/bin $PATH
 
 #[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
