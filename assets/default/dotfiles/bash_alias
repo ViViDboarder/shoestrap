@@ -1,3 +1,8 @@
+# vim
+alias nv='nvim $*'
+alias tv='tmux-vim $*'
+alias :q='exit'
+
 # git
 alias ga='git add $*'
 alias gc='git commit $*'
