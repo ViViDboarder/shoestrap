@@ -6,6 +6,7 @@
 #   echo " [$org]"
 # end
 #
+set -xg VIRTUAL_ENV_DISABLE_PROMPT 1
 
 function _force_target
   if [ (git config force.use) ]
