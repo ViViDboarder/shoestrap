@@ -25,6 +25,9 @@ if [[ "$DET_OS" == "linux" ]]; then
 elif [[ "$DET_OS" == "mac" ]]; then
     ANDROID_SDK=$HOME/workspace/android-sdk-macosx
     export PATH=$HOME/Library/Python/2.7/bin:$PATH
+
+    # Fix Python path on OSX to avoid considering System extras over newer versions
+    export PYTHONPATH=/Library/Python/2.7/site-packages:$PYTHONPATH
 fi
 export ANDROID_HOME=$ANDROID_SDK
 export PATH=$PATH:$ANDROID_SDK/platform-tools:$ANDROID_SDK/tools

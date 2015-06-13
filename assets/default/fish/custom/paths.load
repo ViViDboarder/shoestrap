@@ -12,15 +12,20 @@ end
 # opt directory
 set -gx PATH /opt/local/bin /opt/local/sbin $PATH
 
-# Android SDK
-if [ $det_os == "linux" ]
+if [ $det_os = "linux" ]
     set android_sdk $HOME/workspace/adt-bundle-linux/sdk
 
     set -gx GOROOT /usr/local/go
     set -gx PATH $PATH $GOROOT/bin
-else if [ $det_os == "mac" ]
+else if [ $det_os = "mac" ]
     set android_sdk $HOME/workspace/android-sdk-macosx
     # set PATH $HOME/Library/Python/2.7/bin $PATH
+
+    set -gx GOROOT $HOME/workspace/go
+    set -gx PATH $PATH $GOROOT/bin
+
+    # Fix Python path on OSX to avoid considering System extras over newer versions
+    set -gx PYTHONPATH /Library/Python/2.7/site-packages $PYTHONPATH
 end
 
 set -gx ANDROID_HOME $android_sdk
