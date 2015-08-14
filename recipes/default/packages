@@ -1,7 +1,7 @@
 #! /bin/bash
 
 sudo_package_update
-sudo_package 'screen htop curl wget mercurial ctags tig pv'
+sudo_package 'screen tmux htop curl wget mercurial ctags tig pv jq'
 
 # Manager specific packages
 case "$PACKAGE_MANAGER" in
@@ -13,13 +13,13 @@ case "$PACKAGE_MANAGER" in
         ;;
     "brew")
         package 'vim'
-        sudo_package 'the_silver_searcher'
+        package 'the_silver_searcher'
         ;;
     "apt-get")
         if [ -n "$(apt-cache policy silversearcher-ag)" ] ; then
             sudo_package 'silversearcher-ag'
         fi
-        sudo_package 'build-essential bash-completion tmux vim'
+        sudo_package 'build-essential bash-completion vim'
         ;;
 esac
 
@@ -27,3 +27,5 @@ esac
 # TODO: Install RVM and other ruby requirements and get ruby 1.9.2
 sudo gem install rake
 
+# install python packages
+sudo pip install ipython flake8

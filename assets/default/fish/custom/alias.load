@@ -18,7 +18,6 @@ balias cd..='cd ..'
 
 # vim
 balias mviml='env VIM_COLOR=github mvim'
-balias gvim='mvim'
 
 # yelp
 balias moshdev='mosh dev7-devc'
