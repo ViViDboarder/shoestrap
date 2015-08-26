@@ -43,7 +43,7 @@ end
 function _hostname
   # Returns the hostname if not using tmux since tmux will display
   if [ -z $TMUX ]
-    echo (hostname)" "
+    echo (hostname -s)" "
   end
 end
 
