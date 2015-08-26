@@ -21,12 +21,22 @@ else if [ $det_os = "mac" ]
     set android_sdk $HOME/workspace/android-sdk-macosx
     # set PATH $HOME/Library/Python/2.7/bin $PATH
 
-    set -gx GOROOT $HOME/workspace/go
+    set -gx GOROOT /usr/local/go
     set -gx PATH $PATH $GOROOT/bin
 
+    set go_workspace $HOME/workspace/go
+    set -gx PATH $PATH $go_workspace/bin
+    set -gx GOPATH $go_workspace $GOROOT
+
     # Fix Python path on OSX to avoid considering System extras over newer versions
-    set -gx PYTHONPATH /Library/Python/2.7/site-packages $PYTHONPATH
+    # set -gx PYTHONPATH /Library/Python/2.7/site-packages $PYTHONPATH
 end
+
+# Google cloud sdk
+# set sdk_dir "$HOME/workspace/google-cloud-sdk"
+# set bin_path "$sdk_dir/bin"
+# set -gx PATH $bin_path $PATH
+# set -gx PYTHONPATH "$sdk_dir/platform/google_appengine" $PYTHONPATH
 
 set -gx ANDROID_HOME $android_sdk
 set -gx PATH $PATH $android_sdk/platform-tools $android_sdk/tools
