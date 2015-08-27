@@ -19,27 +19,6 @@ balias cd..='cd ..'
 # vim
 balias mviml='env VIM_COLOR=github mvim'
 
-# yelp
-balias moshdev='mosh dev7-devc'
-balias sshadev='ssh -A dev7-devc'
-# Copy remote tmux clipboard
-balias rpbcopy='ssh dev7-devc "TMPDIR=/nail/tmp tmux show-buffer" | pbcopy'
-
-balias force-login-dev='force login ;and rsync -av /Users/ifij/.force/accounts/ dev7-devc:~/.force/accounts'
-
-# projects
-balias cd-sf='cd ~/workspace/salesforce-apex'
-
-# git
-balias mybranches='git branch --list ifij/*'
-balias mb='git branch --list ifij/*'
-
-# vagrant
-balias vssh='vagrant ssh'
-balias vmosh='mosh vagrant@localhost -p 2222'
-balias vrl='vagrant reload'
-balias vbm='mosh -p 3122 --ssh="ssh -p 3022" ifij@localhost'
-
 # terminal-notifier
 balias notify-done='terminal-notifier -message "Done"'
 balias notify-success='terminal-notifier -message "Success"'
