@@ -71,7 +71,7 @@ function fish_prompt
   set -l green (set_color -o green)
   set -l normal (set_color normal)
 
-  set -l arrow (_status_color) "➜ $normal"
+  # set -l arrow (_status_color) "➜ $normal"
   set -l cwd (basename (prompt_pwd))
 
   echo -n -s $arrow (_hostname) $cwd (_git_info) (_prompt_char) ' '
