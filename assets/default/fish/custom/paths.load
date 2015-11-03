@@ -29,7 +29,7 @@ else if [ $det_os = "mac" ]
     set -gx GOPATH $go_workspace $GOROOT
 
     # Fix Python path on OSX to avoid considering System extras over newer versions
-    # set -gx PYTHONPATH /Library/Python/2.7/site-packages $PYTHONPATH
+    set -gx PYTHONPATH /Library/Python/2.7/site-packages $PYTHONPATH
 end
 
 # Google cloud sdk
