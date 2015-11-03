@@ -1,0 +1,31 @@
+#!/bin/bash
+
+local vim_dir="$WORKSPACE/vim"
+
+# Build latest vim
+if [ ! -d $vim_dir ]; then
+    hg clone https://vim.googlecode.com/ $vim_dir
+fi
+
+# Go to workspace
+cd $vim_dir
+
+# Use latest tagged source code
+hg update -r 'max(tagged())'
+# Configure vim with ruby, python and GTK
+./configure --with-features=huge \
+    --enable-pythoninterp \
+    --enable-rubyinterp \
+    --enable-gui=gtk2 \
+    --prefix=$LOCAL_PREFIX
+
+# Compile
+make
+# Install newly compiled vim
+make install
+# Link vi to vim out of convenience
+vim_path=$(which vim)
+sudo ln -s $vim_path ${vim_path:0:(-1)}
+
+# Go back to previous directory
+cd $ROOT_DIR

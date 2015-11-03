@@ -6,22 +6,29 @@
 
 function init_paths_and_vars {
     # Directory for projects
-    WORKSPACE=$HOME/workspace
+    WORKSPACE="$HOME/workspace"
     # This is in bashrc
-    USER_BIN=$HOME/bin
+    USER_BIN="$HOME/bin"
+    # Local prefix
+    LOCAL_PREFIX="$HOME/usr/local"
     # Temp dir for downloads
-    TMP_DIR=$PROJECT_DIR/tmp
+    TMP_DIR="$PROJECT_DIR/tmp"
     # System uname
     UNAME_STR=`uname`
+    # XGD_DATA
+    XDG_DATA_HOME="$HOME/.local/share"
+    # XGD_CONFIG
+    XDG_CONFIG_HOME="$HOME/.config"
 
     # Create workspace dir
     mkdir -p $WORKSPACE
     mkdir -p $USER_BIN
     mkdir -p $TMP_DIR
+    mkdir -p $XDG_DATA_HOME
+    mkdir -p $XDG_CONFIG_HOME
 }
 
 function source_dotfile {
-
     local RC_PATH=$1
     local RC_NAME=`basename $1`
     local SOURCE_CMD="source"

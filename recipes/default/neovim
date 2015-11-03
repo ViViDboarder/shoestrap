@@ -22,7 +22,7 @@ if command_exist pip3 ; then
     sudo pip3 install neovim
 fi
 
-neovim_dir=$WORKSPACE/neovim
+local neovim_dir=$WORKSPACE/neovim
 
 if [ ! -d $neovim_dir ]; then
     log "Cloning neovim"

@@ -101,7 +101,8 @@ if $install_golang ; then
 fi
 
 if $install_fish ; then
-    recipe 'fish'
+    recipe 'fish-install'
+    recipe 'fish-config'
     set_installed 'fish'
 fi
 

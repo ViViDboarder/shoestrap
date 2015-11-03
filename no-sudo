@@ -11,12 +11,12 @@
 cd $(dirname $0)
 PROJECT_DIR=$(pwd)
 
+init_paths_and_vars
+
 install_vim_src=false
-if [ "$PACKAGE_MANAGER" == 'apt-get' ]; then
-    is_installed "vim-from-source"
-    if prompt_yn "Compile vim?" ; then
-        install_vim_src=true
-    fi
+is_installed "vim-from-source"
+if prompt_yn "Compile vim?" ; then
+    install_vim_src=true
 fi
 install_vim_settings=false
 if ! is_installed "vim-settings" || prompt_yn "Reinstall vim-settings?" ; then
@@ -27,9 +27,11 @@ is_installed "salesforce"
 if prompt_yn "Install Salesforce tools?" ; then
     install_sfdc=true
 fi
-
-# Create workspace dir
-mkdir -p ~/workspace
+install_fish=false
+is_installed "fish"
+if prompt_yn "Install fish?" ; then
+    install_fish=true
+fi
 
 ### Run recipes
 recipe 'dotfiles'
@@ -49,6 +51,16 @@ fi
 if $install_sfdc ; then
     recipe 'salesforce'
     set_installed 'salesforce'
+fi
+
+if $install_fish ; then
+    if ! command_exist fish ; then
+        recipe 'fish-install'
+    fi
+    if command_exist fish ; then
+        recipe 'fish-config'
+        set_installed 'fish'
+    fi
 fi
 
 ### Show the Finished banner
