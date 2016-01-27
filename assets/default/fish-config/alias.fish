@@ -24,23 +24,14 @@ alias notify-done='terminal-notifier -message "Done"'
 alias notify-success='terminal-notifier -message "Success"'
 alias notify-fail='terminal-notifier -message "Failure"'
 
-# function sh-notify
-#   ($argv) ;and notify-success ;or notify-fail
-# end
-
-# gl-notifire
-alias gl-notify-done='gl-notifier "Done"'
-alias gl-notify-success='gl-notifier "Success"'
-alias gl-notify-fail='gl-notifier "Failure"'
-
-# function gl-notify
-#   ($argv) ;and gl-notify-success ;or gl-notify-fail
-# end
+function sh-notify
+  [ $status = 0 ] ;and notify-success ;or notify-fail
+end
 
 # gopush
 alias pb-done='pb "Done"'
 alias pb-success='pb "Success"'
 alias pb-failure='pb "Failure"'
-# function pb-notify
-#   ($argv) ;and pb-success ;or pb-failure
-# end
+function pb-notify
+  [ $status = 0 ] ;and pb-success ;or pb-failure
+end
