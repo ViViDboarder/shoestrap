@@ -1,0 +1,4 @@
+#! /bin/bash
+# Simple recipe for debugging
+
+echo "Running default"
