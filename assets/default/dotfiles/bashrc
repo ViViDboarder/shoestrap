@@ -16,26 +16,41 @@ fi
 # Common paths for me
 export PATH=$PATH:$ANT_HOME/bin
 # Opt directory
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-# Android SDK
+if [ -d /opt/local ]; then
+    export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+fi
+
+export GOROOT=/usr/local/go
+if [ -d "$GOROOT" ]; then
+    export PATH=$PATH:$GOROOT/bin
+fi
+
 if [[ "$DET_OS" == "linux" ]]; then
     ANDROID_SDK=$HOME/workspace/adt-bundle-linux/sdk
-    export GOROOT=/usr/local/go
-    export PATH=$PATH:$GOROOT/bin
 elif [[ "$DET_OS" == "mac" ]]; then
     ANDROID_SDK=$HOME/workspace/android-sdk-macosx
-    export PATH=$HOME/Library/Python/2.7/bin:$PATH
+
+    go_workspace=$HOME/workspace/go_workspace
+    if [ -d "$go_workspace" ]; then
+        export GOPATH=$go_workspace
+        export PATH=$PATH:$GOPATH/bin
+    fi
 
     # Fix Python path on OSX to avoid considering System extras over newer versions
-    export PYTHONPATH=/Library/Python/2.7/site-packages:$PYTHONPATH
+    # export PATH=$HOME/Library/Python/2.7/bin:$PATH
+    # export PYTHONPATH=/Library/Python/2.7/site-packages:$PYTHONPATH
+    export PYTHONPATH=/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages:/Library/Python/2.7/site-packages:$PYTHONPATH
 fi
+
+# Android paths
 export ANDROID_HOME=$ANDROID_SDK
 export PATH=$PATH:$ANDROID_SDK/platform-tools:$ANDROID_SDK/tools
-# Add RVM to PATH for scripting
-export PATH=$PATH:$HOME/.rvm/bin
-# Add ~/bin
+
+# Home path
 export PATH=$HOME/bin:$PATH
 
+# Add RVM to PATH for scripting
+export PATH=$PATH:$HOME/.rvm/bin
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 # Increase memory sizes for java using Ant
