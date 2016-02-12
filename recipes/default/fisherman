@@ -1,0 +1,16 @@
+#! /bin/bash
+
+if [ ! -d "$fisher_home" ]; then
+    curl -L install.fisherman.sh | fish
+    rm -fr "$fisher_config"
+fi
+
+try_link "${DEFAULT_ASSETS_PATH}/fisherman" "$HOME/.config/fisherman"
+
+add_line "source_config paths" ~/.config/fish/config.fish
+add_line "source_config alias" ~/.config/fish/config.fish
+
+# Link functions
+for func in ${DEFAULT_ASSETS_PATH}/fish/functions/*.fish; do
+    try_link "$func" $HOME/.config/fish/functions/$(basename $func)
+done

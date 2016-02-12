@@ -1,0 +1,161 @@
+autoenvstack
+https://github.com/hutenosa/autoenvstack
+Tree-based autoenv
+env autoenv source autoenvfish cd set
+hutenosa
+
+autoinit
+https://github.com/fishery/autoinit
+Add init_* event support
+init emit events omf source
+bucaran
+
+available
+https://github.com/fishery/available
+Check if a function or command is available
+check test status clean type callable legacy compatibility
+bucaran
+
+bass
+https://github.com/edc/bass
+Compatibility layer for bash utilities
+tool bash fish script wrapper env
+edc
+
+bobthefish
+https://github.com/oh-my-fish/theme-bobthefish
+Powerline, Git-aware prompt optimized for awesome
+omf theme prompt powerline yellow green red glyphs git bob
+bobthecow
+
+cmorrell
+https://github.com/oh-my-fish/theme-cmorrell.com
+Flat, Git-aware, left and right prompt
+omf theme prompt flat git right git
+inxilpro
+
+errno
+https://github.com/oh-my-fish/plugin-errno
+POSIX error code/string translator
+omf posix errno strerror einval error code enavail
+derekstavis
+
+fishtape
+https://github.com/fishery/fishtape
+TAP producer and test harness
+test tool harness tap unit-testing
+bucaran
+
+flash
+https://github.com/fishery/flash
+Flash-inspired, thunder red and yellow theme
+theme prompt flash dc superhero red yellow thunder
+bucaran
+
+get
+https://github.com/fishery/get
+Press any key to continue
+stty read line ui cli key character
+bucaran
+
+git-branch-name
+https://github.com/fishery/git-branch-name
+Get the current branch in a Git repository
+git status info function compatibility
+bucaran
+
+git-status
+https://github.com/fishery/git-status
+Git status query functions
+git status info function compatibility
+bucaran
+
+hulk
+https://github.com/fishery/hulk
+Hulk-inspired, powerful green theme
+theme prompt hulk marvel superhero green purple fist
+bucaran
+
+lambda
+https://github.com/hasanozgan/theme-lambda
+Multiline, git-ware lambda prompt
+theme prompt multiline git lambda
+hasanozgan
+
+legacy
+https://github.com/fishery/legacy
+Compatibility with Oh My Fish!
+omf compatibility legacy
+bucaran
+
+lolfish
+https://github.com/er0/lolfish
+Tmux-aware, rainbow gradient prompt
+theme prompt tmux git rainbow multicolor color
+er0
+
+nelsonjchen
+https://github.com/nelsonjchen/omf-theme-nelsonjchen
+Git-aware, colorful re5et-inspired theme
+theme prompt git tmux 12-hour omz re5et nelsonjchen
+nelsonjchen
+
+pure
+https://github.com/rafaelrinaldi/pure
+Pretty, minimal and fast prompt
+theme prompt minimal simple sindresorhus pure
+rafaelrinaldi
+
+submit
+https://github.com/fishery/submit
+Submit a plugin to the index
+fisherman contrib index plugin register db
+bucaran
+
+shellder
+https://github.com/simnalamburt/shellder
+Powerline prompt optimized for speed
+theme prompt powerline speed
+simnalamburt
+
+scorphish
+https://github.com/oh-my-fish/theme-scorphish
+Hot, angle bracket-based multiline prompt
+omf theme prompt multiline git angle
+scorphus
+
+shark
+https://github.com/fishery/shark
+Fantastic Sparkline Generator
+chart tool report sparkline graph
+bucaran
+
+scaffold
+https://github.com/fishery/scaffold
+Scaffold out a fish plugin
+create plugin generator boilerplate fish fisherman
+bucaran
+
+tab
+https://github.com/oh-my-fish/plugin-tab
+Open new tabs from the command line
+omf tab window terminal iterm console tool command
+bobthecow
+
+technicolor
+https://github.com/oh-my-fish/plugin-technicolor
+Text colorization declarative DSL
+omf color ansi set_color styles text
+derekstavis
+
+title
+https://github.com/oh-my-fish/plugin-title
+Change the tab/window title string
+omf window console title display customize titlebar
+derekstavis
+
+vi-mode
+https://github.com/oh-my-fish/plugin-vi-mode
+Basic vi key bindings emulation
+omf vi vim mode key bindings emulate python
+syl20bnr

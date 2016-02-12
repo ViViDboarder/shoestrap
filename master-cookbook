@@ -57,9 +57,19 @@ fi
 
 # Optional
 install_fish=false
+install_ohmyfish=false
+install_fisherman=false
 is_installed "fish"
+is_installed "oh-my-fish"
+is_installed "fisherman"
 if prompt_yn "Install fish?" ; then
     install_fish=true
+
+    if prompt_yn "Install oh-my-fish?" ; then
+        install_ohmyfish=true
+    elif prompt_yn "Install Fisherman?" ; then
+        install_fisherman=true
+    fi
 fi
 
 ### Run recipes
@@ -102,8 +112,15 @@ fi
 
 if $install_fish ; then
     recipe 'fish-install'
-    recipe 'fish-config'
     set_installed 'fish'
+fi
+
+if $install_ohmyfish ; then
+    recipe 'oh-my-fish'
+fi
+
+if $install_fisherman ; then
+    recipe 'fisherman'
 fi
 
 ### Show the Finished banner
