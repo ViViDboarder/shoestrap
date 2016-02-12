@@ -1,13 +1,11 @@
-# TODO: [force_target] [virtualenv]
 # TODO: Eventually... make pluggable so plugins can add to prompt
 
-# function _atf_target
-#   set -l org (atf-target 2> /dev/null) || return
-#   echo " [$org]"
-# end
-#
+# This is exported because the venv is now included here
 set -xg VIRTUAL_ENV_DISABLE_PROMPT 1
 
+# Returns identifier for target from github.com/heroku/force
+# requires teh following additional script
+# https://github.com/ViViDboarder/shoestrap/blob/clean-shoes/assets/default/force-cli/force-target
 function _force_target
   if [ (git config force.use) ]
     set -l org (force-target)
@@ -22,7 +20,7 @@ function _virtual_env
   end
 end
 
-function fish_right_prompt -d 'Write out the right prompt of thefij theme'
+function fish_right_prompt
   set -l cyan (set_color -o cyan)
   set -l yellow (set_color -o yellow)
   set -l red (set_color -o red)
