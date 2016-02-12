@@ -117,10 +117,12 @@ fi
 
 if $install_ohmyfish ; then
     recipe 'oh-my-fish'
+    set_installed 'oh-my-fish'
 fi
 
 if $install_fisherman ; then
     recipe 'fisherman'
+    set_installed 'fisherman'
 fi
 
 ### Show the Finished banner
