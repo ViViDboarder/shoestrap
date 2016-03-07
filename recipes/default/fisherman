@@ -11,6 +11,7 @@ add_line "source_config paths" $XDG_CONFIG_HOME/fish/config.fish
 add_line "source_config alias" $XDG_CONFIG_HOME/fish/config.fish
 
 # Link functions
+mkdir -p $XDG_CONFIG_HOME/fish/functions
 for func in ${DEFAULT_ASSETS_PATH}/fish/functions/*.fish; do
     try_link "$func" $XDG_CONFIG_HOME/fish/functions/$(basename $func)
 done
