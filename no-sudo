@@ -27,6 +27,16 @@ is_installed "salesforce"
 if prompt_yn "Install Salesforce tools?" ; then
     install_sfdc=true
 fi
+install_mosh=false
+is_installed "mosh"
+if prompt_yn "Install Mosh from source?" ; then
+    install_mosh=true
+fi
+install_tmux=false
+is_installed "tmux"
+if prompt_yn "Install tmux from source?" ; then
+    install_tmux=true
+fi
 install_fish=false
 install_ohmyfish=false
 install_fisherman=false
@@ -61,6 +71,16 @@ fi
 if $install_sfdc ; then
     recipe 'salesforce'
     set_installed 'salesforce'
+fi
+
+if $install_mosh ; then
+    recipe 'mosh'
+    set_installed 'mosh-install'
+fi
+
+if $install_tmux ; then
+    recipe 'tmux-install'
+    set_installed 'tmux'
 fi
 
 if $install_fish ; then

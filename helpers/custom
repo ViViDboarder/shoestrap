@@ -10,7 +10,7 @@ function init_paths_and_vars {
     # This is in bashrc
     USER_BIN="$HOME/bin"
     # Local prefix
-    LOCAL_PREFIX="$HOME/usr/local"
+    LOCAL_PREFIX="$HOME/.local"
     # Temp dir for downloads
     TMP_DIR="$PROJECT_DIR/tmp"
     # System uname
@@ -23,6 +23,7 @@ function init_paths_and_vars {
     # Create workspace dir
     mkdir -p $WORKSPACE
     mkdir -p $USER_BIN
+    mkdir -p $LOCAL_PREFIX
     mkdir -p $TMP_DIR
     mkdir -p $XDG_DATA_HOME
     mkdir -p $XDG_CONFIG_HOME

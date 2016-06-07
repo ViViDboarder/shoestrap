@@ -1,0 +1,61 @@
+#! /bin/bash
+set -e
+
+read -p "Compile protobuf? [Yn] " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    # Get library
+    v=protobuf-2.5.0
+    wget https://protobuf.googlecode.com/files/${v}.tar.gz
+    # Extract library
+    tar -xvzf ${v}.tar.gz
+    cd $v
+    # Configure and install
+    ./configure --prefix=$LOCAL_PREFIX && make && make check && make install
+
+    if [ $? -ne 0 ]; then
+        echo "Error compiling $v"
+        exit 1
+    fi
+
+    # Exit the library directory
+    cd ..
+fi
+
+read -p "Compile ncurses? [Yn] " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    # Get library
+    v=ncurses-5.9
+    wget http://ftp.gnu.org/pub/gnu/ncurses/${v}.tar.gz
+    # Extract library
+    tar -xvzf ${v}.tar.gz
+    cd $v
+    # Configure and install
+    ./configure --with-shared --prefix=$LOCAL_PREFIX && make && make install
+
+    if [ $? -ne 0 ]; then
+        echo "Error compiling $v"
+        exit 1
+    fi
+
+    # Exit the library directory
+    cd ..
+fi
+
+# Clone mosh
+git clone --depth 1 https://github.com/keithw/mosh
+cd mosh
+
+# Set the path for pkgconfig
+export PKG_CONFIG_PATH=$LOCAL_PREFIX/lib/pkgconfig
+export PATH=$LOCAL_PREFIX/bin:$PATH
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$LOCAL_PREFIX/lib
+# Do the configure and install
+./autogen.sh
+./configure --prefix=$LOCAL_PREFIX && make install
+
+echo
+echo "Make sure the following lines are in your bashrc"
+echo "export PATH=$LOCAL_PREFIX/bin:"'$PATH'
+echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:'"$LOCAL_PREFIX/lib'
