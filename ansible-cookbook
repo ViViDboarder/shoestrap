@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Initialization - DO NOT REMOVE
-. helpers/initialize
-
 ##############################################################
 ### Customizations start here ################################
 ##############################################################
@@ -12,6 +9,9 @@
 # Get current directory for future use in links
 cd $(dirname $0)
 PROJECT_DIR=$(pwd)
+
+# Initialization - DO NOT REMOVE
+. helpers/initialize
 
 detect_package_manager
 
