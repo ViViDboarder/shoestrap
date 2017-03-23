@@ -1,5 +1,0 @@
-cache/
-fisherman/init/*.local.fish
-fisherman/completions/*
-fisherman/functions/*
-fisherman/man/*

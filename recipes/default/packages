@@ -1,7 +1,7 @@
 #! /bin/bash
 
 sudo_package_update
-sudo_package 'screen tmux htop curl wget mercurial ctags tig pv jq'
+sudo_package 'tmux htop curl wget mercurial ctags tig pv jq fish mosh'
 
 # Manager specific packages
 case "$PACKAGE_MANAGER" in

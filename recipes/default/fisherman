@@ -1,17 +1,11 @@
 #! /bin/bash
 
-if [ ! -d "$fisher_home" ]; then
-    curl -L install.fisherman.sh | fish
-fi
+# Install fisherman
+curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs git.io/fisher
 
+# Link fisher configs
 rm -fr "$XDG_CONFIG_HOME/fisherman"
 try_link "${DEFAULT_ASSETS_PATH}/fisherman" "$XDG_CONFIG_HOME/fisherman"
 
-add_line "source_config paths" $XDG_CONFIG_HOME/fish/config.fish
-add_line "source_config alias" $XDG_CONFIG_HOME/fish/config.fish
-
-# Link functions
-mkdir -p $XDG_CONFIG_HOME/fish/functions
-for func in ${DEFAULT_ASSETS_PATH}/fish/functions/*.fish; do
-    try_link "$func" $XDG_CONFIG_HOME/fish/functions/$(basename $func)
-done
+# Install from fishfile
+fish -c 'fisher; exit'

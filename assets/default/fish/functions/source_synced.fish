@@ -1,7 +1,7 @@
-function source_config
+function source_synced
     # Sources a config file and corresponding local config file if it exists
-    set shared_config "$fisher_config/init/$argv[1].fish"
-    set local_config "$fisher_config/init/$argv[1].local.fish"
+    set -l shared_config "$fish_synced_dir/$argv[1].fish"
+    set -l local_config "$fish_synced_dir/$argv[1].local.fish"
     if test -f "$shared_config"
         source "$shared_config"
     end

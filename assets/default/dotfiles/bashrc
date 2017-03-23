@@ -20,21 +20,14 @@ if [ -d /opt/local ]; then
     export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 fi
 
-export GOROOT=/usr/local/go
-if [ -d "$GOROOT" ]; then
-    export PATH=$PATH:$GOROOT/bin
-fi
-
 if [[ "$DET_OS" == "linux" ]]; then
     ANDROID_SDK=$HOME/workspace/adt-bundle-linux/sdk
 elif [[ "$DET_OS" == "mac" ]]; then
     ANDROID_SDK=$HOME/workspace/android-sdk-macosx
 
-    go_workspace=$HOME/workspace/go_workspace
-    if [ -d "$go_workspace" ]; then
-        export GOPATH=$go_workspace
-        export PATH=$PATH:$GOPATH/bin
-    fi
+    # Set GOPATH
+    GOROOT=/opt/local/lib/go
+    GOPATH=$HOME/workspace/go_path
 
     # Fix Python path on OSX to avoid considering System extras over newer versions
     # export PATH=$HOME/Library/Python/2.7/bin:$PATH
@@ -43,8 +36,20 @@ elif [[ "$DET_OS" == "mac" ]]; then
 fi
 
 # Android paths
-export ANDROID_HOME=$ANDROID_SDK
-export PATH=$PATH:$ANDROID_SDK/platform-tools:$ANDROID_SDK/tools
+if [ -d "$ANDROID_SDK" ]; then
+    export ANDROID_HOME=$ANDROID_SDK
+    export PATH=$PATH:$ANDROID_SDK/platform-tools:$ANDROID_SDK/tools
+fi
+
+# Go paths
+if [ -d "$GOPATH" ]; then
+    export GOPATH
+    export PATH=$PATH:$GOPATH/bin
+fi
+if [ -d "$GOROOT" ]; then
+    export GOROOT
+    export PATH=$PATH:$GOROOT/bin
+fi
 
 # Home path
 export PATH=$HOME/bin:$PATH

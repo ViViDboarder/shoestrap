@@ -1,0 +1,5 @@
+#! /bin/bash
+
+try_link $DEFAULT_ASSETS_PATH $XDG_CONFIG_HOME/fish/synced
+add_line "set -gx fish_synced_dir $XDG_CONFIG_HOME/fish/synced " $XDG_CONFIG_HOME/fish/config.fish
+add_line "source $XDG_CONFIG_HOME/fish/synced/init.fish " $XDG_CONFIG_HOME/fish/config.fish

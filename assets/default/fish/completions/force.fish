@@ -1,3 +1,5 @@
+# Completions for the Force.com cli
+
 function __fish_force_needs_command
   set cmd (commandline -opc)
   if [ (count $cmd) -eq 1 -a $cmd[1] = 'force' ]

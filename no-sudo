@@ -13,59 +13,41 @@ PROJECT_DIR=$(pwd)
 
 init_paths_and_vars
 
-install_vim_src=false
-is_installed "vim-from-source"
-if prompt_yn "Compile vim?" ; then
-    install_vim_src=true
+build_vim=false
+is_installed "build-vim"
+if prompt_yn "Build Vim from source?" ; then
+    build_vim=true
 fi
-install_vim_settings=false
-if ! is_installed "vim-settings" || prompt_yn "Reinstall vim-settings?" ; then
-    install_vim_settings=true
-fi
+
 install_sfdc=false
-is_installed "salesforce"
-if prompt_yn "Install Salesforce tools?" ; then
+if is_installed "salesforce" || prompt_yn "Install Salesforce tools?" ; then
     install_sfdc=true
 fi
-install_mosh=false
-is_installed "mosh"
-if prompt_yn "Install Mosh from source?" ; then
-    install_mosh=true
-fi
-install_tmux=false
-is_installed "tmux"
-if prompt_yn "Install tmux from source?" ; then
-    install_tmux=true
-fi
-install_fish=false
-install_ohmyfish=false
-install_fisherman=false
-is_installed "fish"
-is_installed "oh-my-fish"
-is_installed "fisherman"
-if prompt_yn "Install fish?" ; then
-    install_fish=true
 
-    if prompt_yn "Install oh-my-fish?" ; then
-        install_ohmyfish=true
-    elif prompt_yn "Install Fisherman?" ; then
-        install_fisherman=true
-    fi
+build_mosh=false
+if ! command_exist 'mosh' && prompt_yn "Install Mosh from source?" ; then
+    build_mosh=true
+fi
+
+build_tmux=false
+if ! command_exist 'tmux' && prompt_yn "Install tmux from source?" ; then
+    build_tmux=true
+fi
+
+build_fish=false
+if ! command_exist 'fish' && prompt_yn "Install fish?" ; then
+    build_fish=true
 fi
 
 ### Run recipes
 recipe 'dotfiles'
 recipe 'bin'
 recipe 'git'
+recipe 'vim-settings'
 
-if $install_vim_src ; then
-    recipe 'compile-install-vim'
-    set_installed "vim-from-source"
-fi
-
-if $install_vim_settings ; then
-    recipe 'vim-settings'
-    set_installed 'vim-settings'
+if $build_vim ; then
+    recipe 'build-vim'
+    set_installed "build-vim"
 fi
 
 if $install_sfdc ; then
@@ -73,33 +55,23 @@ if $install_sfdc ; then
     set_installed 'salesforce'
 fi
 
-if $install_mosh ; then
-    recipe 'mosh'
-    set_installed 'mosh-install'
+if $build_mosh ; then
+    recipe 'build-mosh'
+    set_installed 'build-mosh'
 fi
 
-if $install_tmux ; then
-    recipe 'tmux-install'
-    set_installed 'tmux'
+if $build_tmux ; then
+    recipe 'build-tmux'
+    set_installed 'build-tmux'
 fi
 
-if $install_fish ; then
-    if ! command_exist fish ; then
-        recipe 'fish-install'
-    fi
-    if command_exist fish ; then
-        set_installed 'fish'
-    fi
+if $build_fish ; then
+    recipe 'build-fish'
+    set_installed "build-fish"
 fi
 
-if $install_ohmyfish ; then
-    recipe 'oh-my-fish'
-    set_installed 'oh-my-fish'
-fi
-
-if $install_fisherman ; then
-    recipe 'fisherman'
-    set_installed 'fisherman'
+if command_exist 'fish' || is_installed 'build-fish' ; then
+    recipe 'fish'
 fi
 
 ### Show the Finished banner

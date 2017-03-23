@@ -1,5 +1,0 @@
-#! /bin/bash
-
-if ! command_exist fish ; then
-    sudo_package 'fish'
-fi
