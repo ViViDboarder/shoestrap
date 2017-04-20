@@ -7,7 +7,7 @@ sudo_package 'tmux htop curl wget mercurial ctags tig pv jq fish mosh'
 case "$PACKAGE_MANAGER" in
     "port")
         sudo_package 'vim +ruby +python27'
-        sudo_package 'macvim +ruby +python27'
+        # sudo_package 'macvim +ruby +python27'
         sudo_package 'git-core +bash_completion'
         sudo_package 'the_silver_searcher'
         ;;
