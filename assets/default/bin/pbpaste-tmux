@@ -1,0 +1,6 @@
+#! /bin/bash
+
+# Mimics pbpaste using the tmux buffer instead. To use, put this in your path as pbpaste
+# This is useful for putting from cliboard buffer in Vim on a remote box
+
+tmux show-buffer

@@ -1,0 +1,16 @@
+#! /bin/bash
+
+# Mimics pbcopy using the tmux buffer instead. To use, put this in your path as pbcopy
+# This is useful for yanking to the cliboard buffer in Vim on a remote box
+
+if [ $# -eq 0 ]; then
+    read -r clip
+    while IFS= read -r line; do
+        clip+=$'\n'"$line"
+    done
+else
+    clip="$*"
+fi
+if tmux has &> /dev/null; then
+    tmux set-buffer "$clip"
+fi

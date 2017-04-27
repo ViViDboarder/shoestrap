@@ -1,0 +1,7 @@
+#! /bin/sh
+
+host="hb.iamthefij.com"
+
+a=$(cat)
+curl -X POST -s -d "$a" https://${host}/documents | awk -v host=$host -F '"' '{print "https://"host"/"$4}'
+

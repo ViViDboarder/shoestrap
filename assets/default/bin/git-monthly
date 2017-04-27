@@ -1,0 +1,36 @@
+#! /bin/bash
+
+##########################
+# Author: ViViDboarder
+# Returns a git log of any commits in the current or given month
+##########################
+
+# TODO: Build help text
+
+month=$1
+year=$2
+
+if [[ "$month" == "" ]]; then
+    # Get the current month
+    month=$(date "+%m")
+fi
+
+if [[ "$year" == "" ]]; then
+    # Get the current year
+    year=$(date "+%Y")
+fi
+
+# Get the next month
+if [[ "$month" == "12" ]]; then
+    # If December, loop to Jan of next year
+    nmonth="1"
+    nyear=$((year + 1))
+else
+    # Otherwise, next month of this year
+    nmonth=$((month + 1))
+    nyear=$year
+fi
+
+# Get the git log between the target month and the next month
+git log --before={${nyear}-${nmonth}-1} --after={${year}-${month}-1}
+
