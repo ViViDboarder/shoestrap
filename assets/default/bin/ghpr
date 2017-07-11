@@ -1,3 +1,6 @@
+#! /bin/bash
+
+# Created by ViViDboarder. Please share with attribution
 # Function used to checkout a pull request into it's own branch
 
 REMOTE=""

@@ -1,5 +1,6 @@
 #! /bin/bash
 
+# Created by ViViDboarder. Please share with attribution
 # Mimics pbcopy using the tmux buffer instead. To use, put this in your path as pbcopy
 # This is useful for yanking to the cliboard buffer in Vim on a remote box
 

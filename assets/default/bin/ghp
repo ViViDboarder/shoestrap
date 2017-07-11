@@ -1,3 +1,6 @@
+#! /bin/bash
+
+# Created by ViViDboarder. Please share with attribution
 # Function used to take a github http pull URL and automatically convert it to an ssh url
     
 if [[ "$1" == "" ]]; then

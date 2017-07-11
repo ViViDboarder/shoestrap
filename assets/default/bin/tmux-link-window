@@ -1,3 +1,5 @@
 #! /bin/bash
 
+# Created by ViViDboarder. Please share with attribution
+
 tmux new-session "tmux link-window -s $*"
