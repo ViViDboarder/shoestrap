@@ -1,16 +1,14 @@
 #! /bin/bash
 
-# TODO: Prompt for atf or force
-
 install_atf=false
-if prompt_yn "Install Abuse the Force?" ; then
-    install_atf=true
-fi
+# if prompt_yn "Install Abuse the Force?" ; then
+#     install_atf=true
+# fi
 
-install_fcli=false
-if prompt_yn "Install Force Cli?" ; then
-    install_fcli=true
-fi
+install_fcli=true
+# if prompt_yn "Install Force Cli?" ; then
+#     install_fcli=true
+# fi
 
 if $install_atf ; then
     recipe 'abuse-the-force'
