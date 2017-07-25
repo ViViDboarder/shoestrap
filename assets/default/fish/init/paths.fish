@@ -20,8 +20,7 @@ else if [ $det_os = "mac" ]
     set android_sdk $HOME/workspace/android-sdk-macosx
 
     # Set go paths
-    set goroot /opt/local/lib/go
-    set gopath $HOME/workspace/go_path
+    set -gx GOPATH $HOME/workspace/go_path
 
     # set PATH $HOME/Library/Python/2.7/bin $PATH
     # Fix Python path on OSX to avoid considering System extras over newer versions
@@ -29,12 +28,7 @@ else if [ $det_os = "mac" ]
 end
 
 # Google GO
-if [ -d "$goroot" ]
-    set -gx GOROOT $goroot
-    set -gx PATH $PATH $GOROOT/bin
-end
-if [ -d "$gopath" ]
-    set -gx GOPATH $gopath
+if [ -d "$GOPATH" ]
     set -gx PATH $PATH $GOPATH/bin
 end
 
@@ -46,15 +40,3 @@ end
 
 # Home path
 set -gx  PATH $HOME/bin $PATH
-
-#[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-
-# Increase memory sizes for java using Ant
-set -gx ANT_OPTS "-Xmx2048m -Xms512m"
-
-# FZF
-set -gx FZF_DEFAULT_COMMAND 'ag -g ""'
-set -gx FZF_CTRL_T_COMMAND "$FZF_DEFAULT_COMMAND \$dir"
-
-# Vim Colors so that they can be set by env
-set -q VIM_COLOR; or set -gx VIM_COLOR wombat256mod
