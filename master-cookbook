@@ -42,15 +42,13 @@ fi
 
 # Optional
 install_sfdc=false
-is_installed "salesforce"
-if prompt_yn "Install Salesforce tools?" ; then
+if ! is_installed "salesforce" && prompt_yn "Install Salesforce tools?" ; then
     install_sfdc=true
 fi
 
 # Optional
 install_golang=false
-is_installed "golang"
-if prompt_yn "Install Go?" ; then
+if ! command_exist 'go' && prompt_yn "Install Go?" ; then
     install_golang=true
 fi
 
