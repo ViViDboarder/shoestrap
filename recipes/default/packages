@@ -1,25 +1,21 @@
 #! /bin/bash
 
 sudo_package_update
-sudo_package 'tmux htop curl wget mercurial ctags tig pv jq fish mosh'
+sudo_package 'tmux htop curl wget mercurial ctags tig pv jq fish mosh bash-completion'
 
 # Manager specific packages
 case "$PACKAGE_MANAGER" in
     "port")
-        sudo_package 'vim +ruby +python27'
+        sudo_package 'the_silver_searcher doxygen md5sha1sum gradle go bash apache-ant'
         # sudo_package 'macvim +ruby +python27'
+        sudo_package 'vim +ruby +python27'
         sudo_package 'git-core +bash_completion'
-        sudo_package 'the_silver_searcher'
-        ;;
-    "brew")
-        package 'vim'
-        package 'the_silver_searcher'
         ;;
     "apt-get")
         if [ -n "$(apt-cache policy silversearcher-ag)" ] ; then
             sudo_package 'silversearcher-ag'
         fi
-        sudo_package 'build-essential bash-completion vim'
+        sudo_package 'build-essential vim'
         ;;
 esac
 
@@ -28,4 +24,4 @@ esac
 sudo gem install rake
 
 # install python packages
-sudo pip install ipython flake8
+sudo pip install -U pip ipython flake8 virtualenv
