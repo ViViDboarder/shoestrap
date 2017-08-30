@@ -15,7 +15,7 @@ if [[ "$1" == "" ]]; then
     echo "This function will fetch and clone the pull request as"
     echo "a branch."
 
-    return
+    exit 1
 elif [[ "$2" == "" ]]; then
     # No remote was supplied
     PRNUM="$1"

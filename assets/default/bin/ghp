@@ -12,7 +12,7 @@ if [[ "$1" == "" ]]; then
     echo "This function will convert the URL into an ssh url and"
     echo "then it will execute git pull --edit --no-ff to merge."
 
-    return
+    exit 1
 fi
 
 # Expects $* to be in the form of htts://github.com/user/repo branch
