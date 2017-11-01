@@ -1,0 +1,21 @@
+#! /bin/bash
+
+set -e
+
+# sudo_package_update
+# sudo_package autoconf
+
+# wget -O uctags.zip https://github.com/universal-ctags/ctags/archive/master.zip
+# unzip -q uctags.zip
+cd ctags-master
+
+sudo port -f deactivate libiconv
+
+./autogen.sh
+./configure --program-prefix=u --prefix=$LOCAL_PREFIX
+make
+make install
+
+sudo port activate libiconv
+
+rm -fr uctags.zip ./ctags-master
