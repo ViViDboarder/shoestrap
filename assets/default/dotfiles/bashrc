@@ -52,7 +52,7 @@ if [ -d "$GOROOT" ]; then
 fi
 
 # Home path
-export PATH=$HOME/bin:$PATH
+export PATH=$HOME/bin:$HOME/.local/bin:$PATH
 
 # Add RVM to PATH for scripting
 export PATH=$PATH:$HOME/.rvm/bin
