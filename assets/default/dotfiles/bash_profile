@@ -70,7 +70,7 @@ export CLICOLOR=1
 export LSCOLORS=ExFxCxDxBxegedabagacad
 
 # Vim colors
-[ -z "$VIM_COLOR" ] && export VIM_COLOR='wombat256mod'
+[ -n "$VIM_COLOR" ] || export VIM_COLOR=$(eval $HOME/bin/get_vim_colorscheme.sh) || export VIM_COLOR='wombat256mod'
 
 # Set file as having been loaded to avoid looping
 #IS_BASH_PROFILE_LOADED=true
