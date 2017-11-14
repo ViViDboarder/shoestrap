@@ -35,21 +35,10 @@ if ! command_exist 'nvim' && prompt_yn "Build Neovim?" ; then
     build_neovim=true
 fi
 
-build_fish=false
-if ! command_exist 'fish' && prompt_yn "Build Fish?" ; then
-    build_fish=true
-fi
-
 # Optional
 install_sfdc=false
 if ! is_installed "salesforce" && prompt_yn "Install Salesforce tools?" ; then
     install_sfdc=true
-fi
-
-# Optional
-install_golang=false
-if ! command_exist 'go' && prompt_yn "Install Go?" ; then
-    install_golang=true
 fi
 
 ### Run recipes
@@ -77,19 +66,9 @@ if $build_neovim ; then
     set_installed "neovim"
 fi
 
-if $build_fish ; then
-    recipe 'build-fish'
-    set_installed "build-fish"
-fi
-
 if $install_sfdc ; then
     recipe 'salesforce'
     set_installed 'salesforce'
-fi
-
-if $install_golang ; then
-    recipe 'golang'
-    set_installed 'golang'
 fi
 
 ### Show the Finished banner

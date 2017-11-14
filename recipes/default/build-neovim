@@ -11,7 +11,7 @@ case "$PACKAGE_MANAGER" in
         sudo_package 'libtool automake cmake pkg-config gettext ninja'
         ;;
     "apt-get")
-        sudo_package 'libtool libtool-bin autoconf automake cmake g++ pkg-config unzip ninja-build'
+        sudo_package 'libtool libtool-bin autoconf automake cmake g++ gettext pkg-config unzip ninja-build'
         # Ensure python support is in nvim
         sudo_package 'python-dev python-pip python3-dev python3-pip'
         ;;
@@ -28,7 +28,7 @@ if [ ! -d $neovim_dir ]; then
     log "Cloning neovim"
     git clone https://github.com/neovim/neovim $neovim_dir
 else
-    (cd $neovim_dir && git pull)
+    (cd $neovim_dir && git fetch)
 fi
 
-(cd $neovim_dir && make && sudo make install)
+(cd $neovim_dir && git checkout stable && make && sudo make install)
