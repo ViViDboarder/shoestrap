@@ -1,0 +1,6 @@
+#! /bin/bash
+
+# mosh-vim-forward forwards only the VIM_COLOR variable
+# to a remote shell and attempts to provide a consistent
+# shell experience
+mosh $* -- sh -c "VIM_COLOR=$VIM_COLOR $(basename $SHELL)"

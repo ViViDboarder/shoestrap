@@ -1,0 +1,6 @@
+#! /bin/bash
+
+# ssh-vim-forward forwards only the VIM_COLOR variable
+# to a remote shell and attempts to provide a consistent
+# shell experience
+ssh -t $* VIM_COLOR=$VIM_COLOR $(basename $SHELL)
