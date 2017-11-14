@@ -11,6 +11,8 @@ function init_paths_and_vars {
     USER_BIN="$HOME/bin"
     # Local prefix
     LOCAL_PREFIX="$HOME/.local"
+    # Local bin
+    LOCAL_BIN="$HOME/.local/bin"
     # Temp dir for downloads
     TMP_DIR="$PROJECT_DIR/tmp"
     # System uname
@@ -24,6 +26,7 @@ function init_paths_and_vars {
     mkdir -p $WORKSPACE
     mkdir -p $USER_BIN
     mkdir -p $LOCAL_PREFIX
+    mkdir -p $LOCAL_BIN
     mkdir -p $TMP_DIR
     mkdir -p $XDG_DATA_HOME
     mkdir -p $XDG_CONFIG_HOME
