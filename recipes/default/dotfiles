@@ -4,6 +4,7 @@
 try_link "ackrc" "$HOME/.ackrc"
 try_link "antrc" "$HOME/.antrc"
 try_link "ctags" "$HOME/.ctags"
+try_link "tigrc" "$HOME/.tigrc"
 try_link "tmux.conf" "$HOME/.tmux.conf"
 
 # Source files that can

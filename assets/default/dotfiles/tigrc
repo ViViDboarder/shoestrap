@@ -1,0 +1,1 @@
+bind generic R !git revert %(commit)
