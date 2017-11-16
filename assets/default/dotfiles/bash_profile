@@ -72,10 +72,5 @@ export LSCOLORS=ExFxCxDxBxegedabagacad
 # Vim colors
 [ -n "$VIM_COLOR" ] || export VIM_COLOR=$(eval $HOME/bin/get_vim_colorscheme.sh) || export VIM_COLOR='wombat256mod'
 
-# Set file as having been loaded to avoid looping
-#IS_BASH_PROFILE_LOADED=true
-
-#if [ $IS_BASH_PROFILE_LOADED ] && [ $IS_BASHRC_LOADED ]; then
-#    IS_BASH_PROFILE_LOADED=false
-#    IS_BASHRC_LOADED=false
-#fi
+export FZF_DEFAULT_COMMAND='ag -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND \$dir"
