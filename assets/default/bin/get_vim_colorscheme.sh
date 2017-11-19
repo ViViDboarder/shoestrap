@@ -47,7 +47,7 @@ function get_vim_colorscheme {
             echo "vividchalk"
             ;;
         *)
-            echo "default"
+            echo "wombat256mod"
             ;;
     esac
 }
