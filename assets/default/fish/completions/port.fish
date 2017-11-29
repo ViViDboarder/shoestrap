@@ -20,12 +20,20 @@ function __fish_port_list
     port list | cut -d' ' -f1
 end
 
+function __fish_port_inactive
+    port echo inactive | sed 's/ \{1,\}/ /g'
+end
+
+function __fish_port_active
+    port echo active | sed 's/ \{1,\}/ /g'
+end
+
 function __fish_port_installed
-    port installed | cut -d' ' -f1
+    port echo installed | sed 's/ \{1,\}/ /g'
 end
 
 function __fish_port_outdated_formulas
-    port outdated | cut -d' ' -f1
+    port echo outdated | cut -d' ' -f1
 end
 
 set -l pseudo_portnames = 'all current active inactive actintact installed uninstalled outdated obsolete requested unrequested leaves'
@@ -34,20 +42,34 @@ set -l pseudo_portnames = 'all current active inactive actintact installed unins
 # commands #
 ############
 
+complete -f -c port -n '__fish_port_needs_command' -s v -d 'Verbose mode'
+complete -f -c port -n '__fish_port_needs_command' -s d -d 'Debug mode'
+complete -f -c port -n '__fish_port_needs_command' -s q -d 'Quiet mode, implies -N'
+complete -f -c port -n '__fish_port_needs_command' -s N -d 'Non-interactive mode'
+complete -f -c port -n '__fish_port_needs_command' -s n -d 'Do not follow dependencies for upgrade/install'
+complete -f -c port -n '__fish_port_needs_command' -s R -d 'Also upgrade dependents'
+complete -f -c port -n '__fish_port_needs_command' -s u -d 'Uninstall inactive ports when upgrading and uninstalling'
+complete -f -c port -n '__fish_port_needs_command' -s y -d 'Performa  dry run'
+complete -f -c port -n '__fish_port_needs_command' -s s -d 'Source-only mode'
+complete -f -c port -n '__fish_port_needs_command' -s b -d 'Binary-only mode'
+complete -f -c port -n '__fish_port_needs_command' -s c -d 'Autoclean mode'
+complete -f -c port -n '__fish_port_needs_command' -s k -d 'Keep mode, do not autoclean after install'
+complete -f -c port -n '__fish_port_needs_command' -s p -d 'Proceed after errors'
+complete -f -c port -n '__fish_port_needs_command' -s o -d 'Honort state files if Portfile was modified'
+complete -f -c port -n '__fish_port_needs_command' -s t -d 'Enable trace mode for debugging'
+complete -f -c port -n '__fish_port_needs_command' -s f -d 'Force mode, ignore state file'
+complete -r -c port -n '__fish_port_needs_command' -s D -d 'Specify portdir'
+complete -r -c port -n '__fish_port_needs_command' -s F -d 'Read and proccess the file of commands'
+
+
 # activate
 complete -f -c port -n '__fish_port_needs_command' -a activate -d 'Activates installed portname'
-complete -f -c port -n '__fish_port_using_command activate' -a '(__fish_port_installed)'
+complete -f -c port -n '__fish_port_using_command activate' -l no-exec -d 'Do not execute any stored pre- or post-uninstall procedures'
+complete -x -c port -n '__fish_port_using_command activate' -a '(__fish_port_inactive)'
 
 # # cat
 # complete -f -c port -n '__fish_port_needs_command' -a cat -d 'Display formula'
 # complete -f -c port -n '__fish_port_using_command cat' -a '(__fish_port_list)'
-#
-# # cleanup
-# complete -f -c port -n '__fish_port_needs_command' -a cleanup -d 'Remove old installed versions'
-# complete -f -c port -n '__fish_port_using_command cleanup' -l force -d 'Remove out-of-date keg-only ports as well'
-# complete -f -c port -n '__fish_port_using_command cleanup' -s n -d 'Dry run'
-# complete -f -c port -n '__fish_port_using_command cleanup' -s s -d 'Scrubs the cache'
-# complete -f -c port -n '__fish_port_using_command cleanup' -a '(__fish_port_installed)'
 #
 # # create
 # complete -f -c port -n '__fish_port_needs_command' -a create -d 'Create new formula from URL'
@@ -93,8 +115,9 @@ complete -f -c port -n '__fish_port_using_command activate' -a '(__fish_port_ins
 
 # install
 complete -f -c port -n '__fish_port_needs_command' -a 'install' -d 'Install and activate portname'
-# complete -f -c port -n '__fish_port_using_command install' -l interactive -d 'Download and patch formula, then open a shell'
-complete -c port -n '__fish_port_using_command install' -a '(__fish_port_list)' -d 'portname'
+complete -f -c port -n '__fish_port_using_command install' -l no-rev-upgrade -d 'Do not run rev-upgrade after installation'
+complete -f -c port -n '__fish_port_using_command install' -l unrequested -d 'Do not mark the installed ports as requested'
+complete -x -c port -n '__fish_port_using_command install' -a '(__fish_port_list)' -d 'portname'
 
 # # link
 # complete -f -c port -n '__fish_port_needs_command' -a 'link ln' -d 'Symlink installed formula'
@@ -105,7 +128,8 @@ complete -c port -n '__fish_port_using_command install' -a '(__fish_port_list)' 
 complete -f -c port -n '__fish_port_needs_command' -a 'list ls' -d 'List all installed formula'
 complete -f -c port -n '__fish_port_using_command list' -l unported -d 'List all files in the Homeport prefix not installed by port'
 complete -f -c port -n '__fish_port_using_command list' -l versions -d 'Show the version number'
-complete -c port -n '__fish_port_using_command list' -a '(__fish_port_list)'
+complete -x -c port -n '__fish_port_using_command list' -a "$pseudo_portnames" -d 'pseudo portname'
+complete -x -c port -n '__fish_port_using_command list' -a '(__fish_port_list)' -d 'portname'
 
 # #ls
 # complete -f -c port -n '__fish_port_using_command ls' -l unported -d 'List all files in the Homeport prefix not installed by port'
@@ -146,20 +170,15 @@ complete -c port -n '__fish_port_using_command list' -a '(__fish_port_list)'
 # complete -c port -n '__fish_port_using_command test' -a '(__fish_port_list)' -d 'formula'
 #
 # # uninstall
-# complete -f -c port -n '__fish_port_needs_command' -a 'uninstall remove rm' -d 'Uninstall formula'
-# complete -f -c port -n '__fish_port_using_command uninstall' -a '(__fish_port_installed)'
-# complete -f -c port -n '__fish_port_using_command remove' -a '(__fish_port_installed)'
-# complete -f -c port -n '__fish_port_using_command rm' -a '(__fish_port_installed)'
-# complete -f -c port -n '__fish_port_using_command uninstall' -l force -d 'Delete all installed versions'
-# complete -f -c port -n '__fish_port_using_command remove' -l force -d 'Delete all installed versions'
-# complete -f -c port -n '__fish_port_using_command rm' -l force -d 'Delete all installed versions'
+complete -f -c port -n '__fish_port_needs_command' -a 'uninstall' -d 'Uninstall port'
+complete -x -c port -n '__fish_port_using_command uninstall' -a '(__fish_port_installed)'
+complete -f -c port -n '__fish_port_using_command uninstall' -l follow-dependents -d 'Also uninstall all ports recurively depending on this'
+complete -f -c port -n '__fish_port_using_command uninstall' -l follow-dependencies -d 'Also recursively uninstall all ports that this depends on'
+complete -f -c port -n '__fish_port_using_command uninstall' -l no-exec -d 'Do not execute any stored pre- or post-uninstall procedures'
 #
 # # unlink
 # complete -f -c port -n '__fish_port_needs_command' -a unlink -d 'Unlink formula'
 # complete -c port -n '__fish_port_using_command unlink' -a '(__fish_port_installed)'
-#
-# # untap
-# complete -f -c port -n '__fish_port_needs_command' -a untap -d 'Remove a tapped repository'
 #
 # # update
 # complete -f -c port -n '__fish_port_needs_command' -a update -d 'Fetch newest version of Homeport and formulas'
@@ -168,7 +187,7 @@ complete -c port -n '__fish_port_using_command list' -a '(__fish_port_list)'
 # # upgrade
 complete -f -c port -n '__fish_port_needs_command' -a upgrade -d 'Upgrade outdated ports'
 complete -f -c port -n '__fish_port_using_command upgrade' -a "$pseudo_portnames" -d 'pseudo portname'
-complete -f -c port -n '__fish_port_using_command upgrade' -a "(__fish_port_outdated_formulas)" -d 'outdated portname'
+complete -x -c port -n '__fish_port_using_command upgrade' -a "(__fish_port_outdated_formulas)" -d 'outdated portname'
 #
 # # uses
 # complete -f -c port -n '__fish_port_needs_command' -a uses -d 'Show formulas that depend on specified formula'
