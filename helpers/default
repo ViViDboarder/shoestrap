@@ -192,7 +192,8 @@ package () {
   elif [ "$PACKAGE_MANAGER" == 'yum' ]; then
     yum install -y $1
   elif [ "$PACKAGE_MANAGER" == 'port' ]; then
-    port install $1
+    # Unintuitive, but this skips all promps which should assume Y
+    port -N install $1
   elif [ "$PACKAGE_MANAGER" == 'brew' ]; then
     brew install $1
   else
@@ -223,7 +224,8 @@ sudo_package () {
   elif [ "$PACKAGE_MANAGER" == 'yum' ]; then
     sudo yum install -y $1
   elif [ "$PACKAGE_MANAGER" == 'port' ]; then
-    sudo port install $1
+    # Unintuitive, but this skips all promps which should assume Y
+    sudo port -N install $1
   elif [ "$PACKAGE_MANAGER" == 'brew' ]; then
     brew install $1
   else
