@@ -22,11 +22,14 @@ else if [ $det_os = "mac" ]
     # Set go paths
     set -gx GOPATH $HOME/workspace/go_path
 
-    # set PATH $HOME/Library/Python/2.7/bin $PATH
     # Fix Python path on OSX to avoid considering System extras over newer versions
+    set -gx PATH $PATH $HOME/Library/Python/2.7/bin
     set -gx PYTHONPATH /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages:$PYTHONPATH
     set -gx PATH $PATH /opt/local/Library/Frameworks/Python.framework/Versions/Current/bin
 end
+
+# Add rust path
+set -gx PATH $HOME/.cargo/bin $PATH
 
 # Google GO
 if [ -d "$GOPATH" ]
