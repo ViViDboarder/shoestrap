@@ -1,3 +1,7 @@
+# __fzf_complete
+# Usage: Edit an existing completion and update the command to pipe the results or pass them into this function
+# Example example: complete -c cat -a "(ls | __fzf_complete)"
+# Author: ViViDboarder
 function __fzf_complete --description "Prints values passed as args or through stdin for completion through fzf, if available. This can be disabled by using ENABLE_FZF_COMPLETE"
     set -l cmd ""
     if count $argv > /dev/null
