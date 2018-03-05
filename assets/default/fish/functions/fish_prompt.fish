@@ -1,7 +1,4 @@
 # name: ifij (forked from RobbyRussel)
-#
-# You can override some default options in your config.fish:
-#   set -g theme_display_git_untracked no
 
 function _status_color
   # Returns a color for successful or failed previous command
@@ -18,13 +15,7 @@ function _git_branch_name
 end
 
 function _is_git_dirty
-  # Returns whether or not there is anything uncommitted
-  set -l show_untracked (git config --bool bash.showUntrackedFiles)
-  set untracked ''
-  if [ "$theme_display_git_untracked" = 'no' -o "$show_untracked" = 'false' ]
-    set untracked '--untracked-files=no'
-  end
-  echo (command git status -s --ignore-submodules=dirty $untracked ^/dev/null)
+  echo (command git status -s --ignore-submodules=dirty ^/dev/null)
 end
 
 function _git_info
