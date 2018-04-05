@@ -60,6 +60,12 @@ if [ -d "$HOME/.rvm" ]; then
     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 fi
 
+# NPM paths
+# On mac the path should already be taken care of
+if type npm &> /dev/null && [ $DET_OS != "mac" ]; then
+    export PATH=$PATH:$(npm bin -g)
+fi
+
 # Increase memory sizes for java using Ant
 ANT_OPTS="-Xmx2048m -Xms512m"
 

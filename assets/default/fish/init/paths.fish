@@ -48,5 +48,11 @@ if [ -d "$HOME/.rvm" ]
     set -gx PATH $PATH $HOME/.rvm/bin
 end
 
+# NPM paths
+# On mac the path should already be taken care of
+if type -q npm ; and [ $det_os != "mac" ]
+    set -gx PATH $PATH (npm bin -g)
+end
+
 # Home path
 set -gx  PATH $HOME/bin $HOME/.local/bin  $PATH
