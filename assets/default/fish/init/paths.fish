@@ -34,7 +34,7 @@ end
 # Golang paths
 set -gx GOPATH $HOME/workspace/go_path
 if [ -d "$GOPATH" ]
-    set -gx PATH $PATH $GOPATH/bin
+    set -gx PATH $GOPATH/bin $PATH
 end
 
 # Android paths
