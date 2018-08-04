@@ -19,9 +19,6 @@ if [ $det_os = "linux" ]
 else if [ $det_os = "mac" ]
     set android_sdk $HOME/workspace/android-sdk-macosx
 
-    # Set go paths
-    set -gx GOPATH $HOME/workspace/go_path
-
     # Fix Python path on OSX to avoid considering System extras over newer versions
     set -gx PATH $HOME/Library/Python/2.7/bin $PATH
     set -gx PYTHONPATH $HOME/Library/Python/2.7/lib/python/site-packages:$PYTHONPATH
@@ -30,9 +27,12 @@ else if [ $det_os = "mac" ]
 end
 
 # Add rust path
-set -gx PATH $HOME/.cargo/bin $PATH
+if [ -d "$HOME/.cargo/bin" ]
+    set -gx PATH $HOME/.cargo/bin $PATH
+end
 
-# Google GO
+# Golang paths
+set -gx GOPATH $HOME/workspace/go_path
 if [ -d "$GOPATH" ]
     set -gx PATH $PATH $GOPATH/bin
 end
@@ -55,5 +55,10 @@ if type -q npm ; and [ $det_os != "mac" ]
     set -gx PATH $PATH (npm bin -g)
 end
 
-# Home path
-set -gx  PATH $HOME/bin $HOME/.local/bin  $PATH
+# Home paths
+if [ -d "$HOME/.local/bin" ]
+    set -gx PATH $HOME/.local/bin $PATH
+end
+if [ -d "$HOME/bin" ]
+    set -gx PATH $HOME/bin $PATH
+end
