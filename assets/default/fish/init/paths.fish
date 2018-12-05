@@ -52,7 +52,7 @@ end
 # NPM paths
 # On mac the path should already be taken care of
 if type -q npm ; and [ $det_os != "mac" ]
-    set -gx PATH $PATH (npm bin -g)
+    set -gx PATH $PATH (npm bin -g 2> /dev/null)
 end
 
 # Home paths

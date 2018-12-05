@@ -63,7 +63,8 @@ fi
 # NPM paths
 # On mac the path should already be taken care of
 if type npm &> /dev/null && [ $DET_OS != "mac" ]; then
-    export PATH=$PATH:$(npm bin -g)
+    # This seems to fail in some cases
+    export PATH=$PATH:$(npm bin -g 2> /dev/null)
 fi
 
 # Increase memory sizes for java using Ant
