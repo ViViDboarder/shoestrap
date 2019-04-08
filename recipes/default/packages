@@ -10,13 +10,13 @@ case "$PACKAGE_MANAGER" in
         sudo_package 'the_silver_searcher md5sha1sum gradle go bash apache-ant'
         # Python packages
         sudo_package 'python27 py27-ipython py27-pip py27-six py27-tox py27-flake8 py27-virtualenv'
-        sudo_package 'python36 py36-ipython py36-pip py36-six py36-tox py36-flake8 py36-virtualenv'
+        sudo_package 'python37 py37-ipython py37-pip py37-six py37-tox py37-flake8 py37-virtualenv'
         sudo port select --set python python27
         sudo port select --set python2 python27
-        sudo port select --set python3 python36
+        sudo port select --set python3 python37
         sudo port select --set ipython py27-ipython
         sudo port select --set ipython2 py27-ipython
-        sudo port select --set ipython3 py36-ipython
+        sudo port select --set ipython3 py37-ipython
         sudo port select --set pip pip27
         sudo port select --set tox tox27
         sudo port select --set flake8 flake8-27
@@ -28,7 +28,7 @@ case "$PACKAGE_MANAGER" in
         # Newer version of git with completion
         sudo_package 'git +bash_completion'
         # Neovim with python plugins
-        sudo_package 'neovim py-neovim py27-neovim py36-neovim'
+        sudo_package 'neovim py-neovim py27-neovim py37-neovim'
         ;;
     "apt-get")
         if [ -n "$(apt-cache policy silversearcher-ag)" ] ; then
