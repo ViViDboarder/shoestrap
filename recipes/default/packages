@@ -3,11 +3,17 @@
 sudo_package_update
 sudo_package 'tmux htop curl wget mercurial ctags tig pv jq fish mosh bash-completion doxygen'
 
+# This now installs a lot of language specific stuff from python, gradle, and go, to rust.
+# Should consider pulling these into different recipes that are dependent on the environment
+# that I wish to bootstrap. If not a dev environment, I can trim out some of this.
+
 # Manager specific packages
 case "$PACKAGE_MANAGER" in
     "port")
         # Non-standard packages
         sudo_package 'the_silver_searcher md5sha1sum gradle go bash apache-ant'
+        # Rust
+        sudo_package'rust cargo'
         # Python packages
         sudo_package 'python27 py27-ipython py27-pip py27-six py27-tox py27-flake8 py27-virtualenv'
         sudo_package 'python37 py37-ipython py37-pip py37-six py37-tox py37-flake8 py37-virtualenv'
@@ -35,5 +41,7 @@ case "$PACKAGE_MANAGER" in
             sudo_package 'silversearcher-ag'
         fi
         sudo_package 'build-essential vim golang-go'
+        # Rust
+        sudo_package 'rustc cargo'
         ;;
 esac
