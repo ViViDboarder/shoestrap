@@ -49,6 +49,9 @@ fi
 
 recipe 'dotfiles'
 recipe 'bin'
+if [ "$(uname)" == 'Darwin' ]; then
+	recipe 'mac-bin'
+fi
 recipe 'git'
 recipe 'vim-settings'
 recipe 'fish'

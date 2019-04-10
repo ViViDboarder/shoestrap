@@ -1,7 +1,7 @@
 #! /bin/bash
 
 sudo_package_update
-sudo_package 'tmux htop curl wget mercurial ctags tig pv jq fish mosh bash-completion doxygen'
+packages="tmux htop curl wget mercurial ctags tig pv jq fish mosh bash-completion doxygen"
 
 # This now installs a lot of language specific stuff from python, gradle, and go, to rust.
 # Should consider pulling these into different recipes that are dependent on the environment
@@ -11,12 +11,25 @@ sudo_package 'tmux htop curl wget mercurial ctags tig pv jq fish mosh bash-compl
 case "$PACKAGE_MANAGER" in
     "port")
         # Non-standard packages
-        sudo_package 'the_silver_searcher md5sha1sum gradle go bash apache-ant'
+        packages="$packages the_silver_searcher md5sha1sum gradle go bash apache-ant"
         # Rust
-        sudo_package'rust cargo'
+        packages="$packages rust cargo"
         # Python packages
-        sudo_package 'python27 py27-ipython py27-pip py27-six py27-tox py27-flake8 py27-virtualenv'
-        sudo_package 'python37 py37-ipython py37-pip py37-six py37-tox py37-flake8 py37-virtualenv'
+        packages="$packages python27 py27-ipython py27-pip py27-six py27-tox py27-flake8 py27-virtualenv"
+        packages="$packages python37 py37-ipython py37-pip py37-six py37-tox py37-flake8 py37-virtualenv"
+        # Macvim with ruby and python support
+        # sudo_package 'macvim +ruby +python27'
+        # Vim with ruby and python support
+        packages="$packages vim +ruby +python27 +python37"
+        # Newer version of git with completion
+        packages="$packages git +bash_completion"
+        # Neovim with python plugins
+        packages="$packages neovim py-neovim py27-neovim py37-neovim"
+		
+		# Install packages
+		sudo_package $packages
+		
+		# Select defaults
         sudo port select --set python python27
         sudo port select --set python2 python27
         sudo port select --set python3 python37
@@ -27,21 +40,23 @@ case "$PACKAGE_MANAGER" in
         sudo port select --set tox tox27
         sudo port select --set flake8 flake8-27
         sudo port select --set virtualenv virtualenv27
-        # Macvim with ruby and python support
-        # sudo_package 'macvim +ruby +python27'
-        # Vim with ruby and python support
-        sudo_package 'vim +ruby +python27'
-        # Newer version of git with completion
-        sudo_package 'git +bash_completion'
-        # Neovim with python plugins
-        sudo_package 'neovim py-neovim py27-neovim py37-neovim'
+	    try_link $(which pip-3.7) "$USER_BIN/pip3"
         ;;
     "apt-get")
         if [ -n "$(apt-cache policy silversearcher-ag)" ] ; then
-            sudo_package 'silversearcher-ag'
+            packages="$packages silversearcher-ag"
         fi
-        sudo_package 'build-essential vim golang-go'
+        packages="$packages build-essential vim golang-go"
+        # Neovim with python plugins
+        packages="$packages neovim python-neovim python3-neovim"
+        # Python packages
+        packages="$packages python python-ipython python-pip python-six python-tox python-flake8 python-virtualenv"
+        packages="$packages python3 python3-ipython python3-pip python3-six python3-flake8 python3-virtualenv python3-venv"
+		# No python3-tox for ubuntu
+		sudo pip3 install tox
         # Rust
-        sudo_package 'rustc cargo'
+        packages="$packages rustc cargo"
+		
+		sudo_package $packages
         ;;
 esac

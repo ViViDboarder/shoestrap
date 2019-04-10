@@ -1,0 +1,46 @@
+#! /bin/bash
+
+NOTES_DIR="$HOME/Nextcloud/Notes"
+
+function usage() {
+    echo "nnotes expects 0, 1, or 2 arguments"
+}
+
+function validate() {
+    if [ ! -d "$NOTES_DIR" ]; then
+        echo "No directory $NOTES_DIR. Please sync your notes"
+        exit 1
+    fi
+}
+
+function main() {
+    validate
+
+    # nvim "$NOTES_DIR" -c ":cd $NOTES_DIR"
+    cd $NOTES_DIR
+
+    mkdir -p $CATEGORY
+    nvim $CATEGORY/$FILE.md
+}
+
+case $# in
+    0)
+        CATEGORY=.
+        FILE=.
+        ;;
+    1)
+        CATEGORY=.
+        FILE="$1"
+        ;;
+    2)
+        CATEGORY="$1"
+        FILE="$2"
+        ;;
+    *)
+        echo "Unknown number of arugments"
+        usage
+        exit 1
+        ;;
+esac
+
+main $*

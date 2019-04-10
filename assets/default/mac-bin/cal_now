@@ -1,0 +1,7 @@
+#! /bin/bash
+
+# Prints out whatever calendar event is on right now
+
+cal_name=ifij@yelp.com
+
+icalBuddy -li 1 -nc -ea -ic $cal_name -b '' eventsNow | head -n 1 | sed 's/^/ /' | sed 's/$/ |/'
