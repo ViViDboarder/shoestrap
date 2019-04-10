@@ -1,0 +1,17 @@
+#! /bin/bash
+
+iterm2_scripts="$HOME/Library/Application Support/iTerm2/Scripts"
+if [ -d "$iterm2_scripts" ]; then
+    if [ ! -f "$iterm2_scripts/Auto_Dark_Mode_Colors.py" ]; then
+        curl -o "$iterm2_scripts/Auto_Dark_Mode_Colors.py" \
+            "https://gitlab.com/snippets/1840760/raw?inline=false"
+        chmod +x "$iterm2_scripts/Auto_Dark_Mode_Colors.py"
+    fi
+fi
+
+icloud_prefs="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Synced Preferences"
+if [ -d  "$icloud_prefs" ]; then
+    for f in "$icloud_prefs/Home/Library/Preferences/"*.plist ; do
+        try_link "$f" "$HOME/Library/Preferences/$(basename "$f")"
+    done
+fi

@@ -50,7 +50,8 @@ fi
 recipe 'dotfiles'
 recipe 'bin'
 if [ "$(uname)" == 'Darwin' ]; then
-	recipe 'mac-bin'
+    recipe 'mac-files'
+    recipe 'mac-bin'
 fi
 recipe 'git'
 recipe 'vim-settings'
