@@ -3,7 +3,7 @@
 sudo_package_update
 packages="tmux htop curl wget mercurial ctags tig pv jq fish mosh bash-completion doxygen"
 
-# This now installs a lot of language specific stuff from python, gradle, and go, to rust.
+# This now installs a lot of language specific stuff from python, gradle, to go.
 # Should consider pulling these into different recipes that are dependent on the environment
 # that I wish to bootstrap. If not a dev environment, I can trim out some of this.
 
@@ -12,8 +12,6 @@ case "$PACKAGE_MANAGER" in
     "port")
         # Non-standard packages
         packages="$packages the_silver_searcher md5sha1sum gradle go bash apache-ant"
-        # Rust
-        packages="$packages rust cargo"
         # Python packages
         packages="$packages python27 py27-ipython py27-pip py27-six py27-tox py27-flake8 py27-virtualenv"
         packages="$packages python37 py37-ipython py37-pip py37-six py37-tox py37-flake8 py37-virtualenv"
@@ -54,8 +52,6 @@ case "$PACKAGE_MANAGER" in
         packages="$packages python3 python3-ipython python3-pip python3-six python3-flake8 python3-virtualenv python3-venv"
 		# No python3-tox for ubuntu
 		sudo pip3 install tox
-        # Rust
-        packages="$packages rustc cargo"
 		
 		sudo_package $packages
         ;;

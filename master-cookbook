@@ -35,6 +35,11 @@ if ! command_exist 'nvim' && prompt_yn "Build Neovim?" ; then
     build_neovim=true
 fi
 
+install_rustup=false
+if ! command_exist 'rustup' && prompt_yn "Install rustup?" ; then
+    install_rustup=true
+fi
+
 # Optional
 install_sfdc=false
 if ! is_installed "salesforce" && prompt_yn "Install Salesforce tools?" ; then
@@ -59,6 +64,11 @@ recipe 'fish'
 
 git submodule init
 git submodule update
+
+if $install_rustup ; then
+    recipe 'rust'
+    set_installed 'rustup'
+fi
 
 if $build_vim ; then
     recipe 'build-vim'
