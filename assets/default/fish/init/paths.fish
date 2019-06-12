@@ -44,9 +44,11 @@ if [ -d "$android_sdk" ]
 end
 
 # Ruby paths
-# Add RVM to PATH for scripting
-if [ -d "$HOME/.rvm" ]
+if type -q rbenv ; and status --is-interactive
+    source (rbenv init -|psub)
+else if [ -d "$HOME/.rvm" ]
     set -gx PATH $PATH $HOME/.rvm/bin
+    source "$HOME/.rvm/scripts/extras/rvm.fish"
 end
 
 # NPM paths

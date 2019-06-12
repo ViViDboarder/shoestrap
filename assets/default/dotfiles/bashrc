@@ -55,7 +55,10 @@ fi
 export PATH=$HOME/bin:$HOME/.local/bin:$PATH
 
 # Add RVM to PATH for scripting
-if [ -d "$HOME/.rvm" ]; then
+if type rbenv &> /dev/null; then
+    export PATH="$HOME/.rbenv/bin:$PATH"
+    eval "$(rbenv init -)"
+elif [ -d "$HOME/.rvm" ]; then
     export PATH="$PATH:$HOME/.rvm/bin"
     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 fi
