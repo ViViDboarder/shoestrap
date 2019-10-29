@@ -20,10 +20,13 @@ else if [ $det_os = "mac" ]
     set android_sdk $HOME/workspace/android-sdk-macosx
 
     # Fix Python path on OSX to avoid considering System extras over newer versions
-    set -gx PATH $HOME/Library/Python/2.7/bin $PATH
+    # Local
+    set -gx PATH $HOME/Library/Python/3.7/bin $HOME/Library/Python/2.7/bin $PATH
     set -gx PYTHONPATH $HOME/Library/Python/2.7/lib/python/site-packages:$PYTHONPATH
+    # Macports
     set -gx PATH $PATH /opt/local/Library/Frameworks/Python.framework/Versions/Current/bin
-    set -gx PYTHONPATH /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages:$PYTHONPATH
+    # set -gx PYTHONPATH /opt/local/Library/Frameworks/Python.framework/Versions/Current/lib $PYTHONPATH
+    # set -gx PYTHONPATH /opt/local/Library/Frameworks/Python.framework/Versions/Current/lib/python2.7/site-packages /Library/Python/2.7/site-packages $PYTHONPATH
 end
 
 # Add rust path
