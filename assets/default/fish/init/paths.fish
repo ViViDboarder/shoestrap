@@ -29,6 +29,11 @@ else if [ $det_os = "mac" ]
     # set -gx PYTHONPATH /opt/local/Library/Frameworks/Python.framework/Versions/Current/lib/python2.7/site-packages /Library/Python/2.7/site-packages $PYTHONPATH
 end
 
+# NPM paths
+if type -q npm
+    set -gx PATH (npm bin -g 2> /dev/null) $PATH
+end
+
 # Add rust path
 if [ -d "$HOME/.cargo/bin" ]
     set -gx PATH $HOME/.cargo/bin $PATH
@@ -52,12 +57,6 @@ if type -q rbenv ; and status --is-interactive
 else if [ -d "$HOME/.rvm" ]
     set -gx PATH $PATH $HOME/.rvm/bin
     source "$HOME/.rvm/scripts/extras/rvm.fish"
-end
-
-# NPM paths
-# On mac the path should already be taken care of
-if type -q npm ; and [ $det_os != "mac" ]
-    set -gx PATH $PATH (npm bin -g 2> /dev/null)
 end
 
 # Home paths
