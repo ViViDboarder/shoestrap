@@ -1,0 +1,11 @@
+#! /bin/bash
+
+# Runs hadolint from a Docker image
+
+version=v1.17.2
+
+docker run -i --rm \
+    -v `pwd`:/data \
+    -w /data \
+    hadolint/hadolint:${version}-debian \
+    hadolint $*
