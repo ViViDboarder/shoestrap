@@ -20,7 +20,7 @@ function main() {
     cd $NOTES_DIR
 
     mkdir -p $CATEGORY
-    nvim $CATEGORY/$FILE.md
+    nvim $CATEGORY/$FILE
 }
 
 case $# in
@@ -30,11 +30,11 @@ case $# in
         ;;
     1)
         CATEGORY=.
-        FILE="$1"
+        FILE="$1.md"
         ;;
     2)
         CATEGORY="$1"
-        FILE="$2"
+        FILE="$2.md"
         ;;
     *)
         echo "Unknown number of arugments"
