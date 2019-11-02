@@ -28,7 +28,7 @@ if [ ! -d $neovim_dir ]; then
     log "Cloning neovim"
     git clone https://github.com/neovim/neovim $neovim_dir
 else
-    (cd $neovim_dir && git pull)
+    (cd $neovim_dir && git fetch)
 fi
 
-(cd $neovim_dir && make && sudo make install)
+(cd $neovim_dir && git checkout stable && make && sudo make install)
