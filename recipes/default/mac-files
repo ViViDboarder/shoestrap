@@ -1,5 +1,6 @@
 #! /bin/bash
 
+# Download and/or link iTerm2 automatic dark mode profiles switching
 iterm2_scripts="$HOME/Library/Application Support/iTerm2/Scripts"
 if [ -d "$iterm2_scripts" ]; then
     if [ ! -f "$iterm2_scripts/Auto_Dark_Mode_Colors.py" ]; then
@@ -9,6 +10,7 @@ if [ -d "$iterm2_scripts" ]; then
     fi
 fi
 
+# Link various preferences that should be synced via iCloud
 icloud_prefs="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Synced Preferences"
 if [ -d  "$icloud_prefs" ]; then
     for f in "$icloud_prefs/Home/Library/Preferences/"*.plist ; do
