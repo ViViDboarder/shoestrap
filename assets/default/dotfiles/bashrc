@@ -66,10 +66,12 @@ elif [ -d "$HOME/.rvm" ]; then
 fi
 
 # NPM paths
-# On mac the path should already be taken care of
-if type npm &> /dev/null && [ $DET_OS != "mac" ]; then
+if type npm &> /dev/null ; then
     # This seems to fail in some cases
-    export PATH=$PATH:$(npm bin -g 2> /dev/null)
+    npm_path=$(npm bin -g 2> /dev/null)
+    if [ -d "$npm_path" ] && echo $PATH | grep -qv "$npm_path"; then
+        export PATH=$npm_path:$PATH
+    fi
 fi
 
 # Increase memory sizes for java using Ant

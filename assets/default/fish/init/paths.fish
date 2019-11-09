@@ -31,7 +31,10 @@ end
 
 # NPM paths
 if type -q npm
-    set -gx PATH (npm bin -g 2> /dev/null) $PATH
+    set npm_path (npm bin -g 2> /dev/null)
+    if [ -d "$npm_path" ]
+        set -gx PATH $npm_path $PATH
+    end
 end
 
 # Add rust path
