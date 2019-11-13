@@ -22,13 +22,13 @@ if command_exist pip3 ; then
     sudo pip3 install neovim
 fi
 
-local neovim_dir=$WORKSPACE/neovim
+neovim_dir="$WORKSPACE/neovim"
 
-if [ ! -d $neovim_dir ]; then
+if [ ! -d "$neovim_dir" ]; then
     log "Cloning neovim"
-    git clone https://github.com/neovim/neovim $neovim_dir
+    git clone https://github.com/neovim/neovim "$neovim_dir"
 else
-    (cd $neovim_dir && git fetch)
+    (cd "$neovim_dir" && git fetch)
 fi
 
-(cd $neovim_dir && git checkout stable && make && sudo make install)
+(cd "$neovim_dir" && git checkout stable && make && sudo make install)

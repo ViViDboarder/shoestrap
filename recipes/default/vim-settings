@@ -1,12 +1,12 @@
 #! /bin/bash
-VIM_SETTINGS_DIR=$WORKSPACE/vim-settings
+vim_settings_dir="$WORKSPACE/vim-settings"
 
 # Clone vundle if not done already
-if [ ! -d $VIM_SETTINGS_DIR ]; then
+if [ ! -d "$vim_settings_dir" ]; then
     log "Cloning vim-settings"
-    git clone https://github.com/ViViDboarder/vim-settings $VIM_SETTINGS_DIR
-    (cd $VIM_SETTINGS_DIR && ./vim-sync-append.sh)
+    git clone https://github.com/ViViDboarder/vim-settings "$vim_settings_dir"
+    (cd "$vim_settings_dir" && ./vim-sync-append.sh)
 else
     log "Updating vim-settings"
-    (cd $VIM_SETTINGS_DIR && git pull)
+    (cd "$vim_settings_dir" && git pull)
 fi

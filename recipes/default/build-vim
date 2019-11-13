@@ -1,6 +1,6 @@
 #!/bin/bash
 
-local vim_dir="$WORKSPACE/vim"
+vim_dir="$WORKSPACE/vim"
 
 # Get the build dependencies
 if [ "$PACKAGE_MANAGER" == 'apt-get' ]; then
@@ -9,17 +9,17 @@ fi
 # TODO: Add pacman support
 
 # Build latest vim
-if [ ! -d $vim_dir ]; then
+if [ ! -d "$vim_dir" ]; then
     log "Cloning vim"
-    git clone https://github.com/vim/vim.git $vim_dir
+    git clone https://github.com/vim/vim.git "$vim_dir"
 else
-    (cd $vim_dir && git fetch)
+    (cd "$vim_dir" && git fetch)
 fi
 
 function conf_build_and_install() {
     # Get latest tagged source code
-    latest_tag=`git describe --tags`
-    git checkout $latest_tag
+    latest_tag=$(git describe --tags)
+    git checkout "$latest_tag"
 
     # Configure vim with ruby, python and GTK
     ./configure --with-features=huge \
@@ -32,8 +32,8 @@ function conf_build_and_install() {
     # Install newly compiled vim
     sudo make install
     # Link vi to vim out of convenience
-    vim_path=$(which vim)
-    sudo ln -s $vim_path ${vim_path:0:(-1)}
+    vim_path=$(command -v vim)
+    sudo ln -s "$vim_path" "${vim_path:0:(-1)}"
 }
 
 (cd $vim_dir && conf_build_and_install)

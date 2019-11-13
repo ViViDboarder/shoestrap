@@ -1,11 +1,13 @@
 #! /bin/bash
 
 sudo_package_update
-packages="tmux htop curl wget mercurial ctags tig pv jq fish mosh bash-completion doxygen shellcheck"
 
 # This now installs a lot of language specific stuff from python, gradle, to go.
 # Should consider pulling these into different recipes that are dependent on the environment
 # that I wish to bootstrap. If not a dev environment, I can trim out some of this.
+
+# Packages that are pretty much the same treatment or names in all systems
+packages="tmux htop curl wget mercurial ctags tig pv jq fish mosh bash-completion doxygen shellcheck"
 
 # Manager specific packages
 case "$PACKAGE_MANAGER" in
@@ -23,11 +25,11 @@ case "$PACKAGE_MANAGER" in
         packages="$packages git +bash_completion"
         # Neovim with python plugins
         packages="$packages neovim py-neovim py27-neovim py37-neovim"
-		
-		# Install packages
-		sudo_package $packages
-		
-		# Select defaults
+
+        # Install packages
+        sudo_package "$packages"
+
+        # Select defaults
         sudo port select --set python python27
         sudo port select --set python2 python27
         sudo port select --set python3 python37
@@ -35,10 +37,12 @@ case "$PACKAGE_MANAGER" in
         sudo port select --set ipython2 py27-ipython
         sudo port select --set ipython3 py37-ipython
         sudo port select --set pip pip27
-        sudo port select --set tox tox27
-        sudo port select --set flake8 flake8-27
-        sudo port select --set virtualenv virtualenv27
-	    try_link $(which pip-3.7) "$USER_BIN/pip3"
+        sudo port select --set pip2 pip27
+        sudo port select --set pip3 pip37
+        # Use py3 versions for utilities
+        sudo port select --set tox tox37
+        sudo port select --set flake8 flake8-37
+        sudo port select --set virtualenv virtualenv37
         ;;
     "apt-get")
         if [ -n "$(apt-cache policy silversearcher-ag)" ] ; then
@@ -50,9 +54,9 @@ case "$PACKAGE_MANAGER" in
         # Python packages
         packages="$packages python python-ipython python-pip python-six python-tox python-flake8 python-virtualenv"
         packages="$packages python3 python3-ipython python3-pip python3-six python3-flake8 python3-virtualenv python3-venv"
-		# No python3-tox for ubuntu
-		sudo pip3 install tox
-		
-		sudo_package $packages
+        # No python3-tox for ubuntu
+        sudo pip3 install tox
+
+        sudo_package "$packages"
         ;;
 esac

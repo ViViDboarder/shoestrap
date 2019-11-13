@@ -10,6 +10,6 @@ git config --global diff.tool vimdiff
 # Suppress launching prompt
 git config --global difftool.prompt false
 # Create global ignore file
-mkdir -p $XDG_CONFIG_HOME/git/
+mkdir -p "$XDG_CONFIG_HOME/git/"
 git config --global core.excludesfile "$XDG_CONFIG_HOME/git/exclude_global"
 try_link "exclude_global" "$XDG_CONFIG_HOME/git/exclude_global"

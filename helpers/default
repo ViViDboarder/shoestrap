@@ -4,7 +4,7 @@
 # DO NOT MODIFY THIS FILE. Instead, modify 'helpers/custom'.
 ##############################################################################
 
-COOKBOOK_NAME="$(basename $0)"
+COOKBOOK_NAME="$(basename "$0")"
 if [ -z "$SHOESTRAP_BASE" ]; then
     DIR="$( cd "$( dirname "$0" )" && pwd )"
 else
@@ -24,19 +24,19 @@ recipe () {
   local default_recipe="$DIR/recipes/default/$CURRENT_RECIPE_NAME"
   local cookbook_recipe="$DIR/recipes/$COOKBOOK_NAME/$CURRENT_RECIPE_NAME"
 
-  if [ -f $cookbook_recipe ]; then
+  if [ -f "$cookbook_recipe" ]; then
     log "Running recipe '$cookbook_recipe'..." 1
     separator
-    . $cookbook_recipe
-  elif [ -f $default_recipe ]; then
+    . "$cookbook_recipe"
+  elif [ -f "$default_recipe" ]; then
     log "Running recipe '$default_recipe'..." 1
     separator
-    . $default_recipe
+    . "$default_recipe"
   else
     error "Could not find recipe for '$CURRENT_RECIPE_NAME'. Fail!"
   fi
 
-  cd $DIR
+  cd "$DIR" || error "Failed to find recipe"
 }
 
 #
@@ -61,13 +61,13 @@ finished () {
 #
 log () {
   if [[ $2 -gt 0 ]]; then
-    spacer $2
+    spacer "$2"
   fi
 
   echo " * $1"
 
   if [[ $3 -gt 0 ]]; then
-    spacer $3
+    spacer "$3"
   fi
 }
 
@@ -91,7 +91,7 @@ spacer () {
     local spaces=1
   fi
 
-  for (( i=0; i<$spaces; i++ )) do
+  for (( i=0; i<spaces; i++ )) do
     echo ""
   done
 }
@@ -115,41 +115,18 @@ separator () {
     local char='-'
   fi
 
-  local width=$(tput cols)
+  local width=""
+  width=$(tput cols)
 
-  for (( i=0; i < $width-2; i++ )) do
+  for (( i=0; i < width-2; i++ )) do
     local output="$output$char"
   done
-  echo $output
+  echo "$output"
 }
 
 #
 # Update packages in package manager.
 #
-package_update () {
-  log "Updating package manager..." 0 1
-  detect_package_manager
-
-  if [ "$PACKAGE_MANAGER" == 'apt-get' ]; then
-    apt-get update -y
-  elif [ "$PACKAGE_MANAGER" == 'yum' ]; then
-    yum check-update -y
-  elif [ "$PACKAGE_MANAGER" == 'port' ]; then
-    port selfupdate
-  elif [ "$PACKAGE_MANAGER" == 'brew' ]; then
-    brew update
-  else
-    error "Unknown package manager: $PACKAGE_MANAGER"
-  fi
-
-  if [ $? -ne 0 ]; then
-    error "An error occured while updating packages. Fail!"
-  else
-    spacer 2
-  fi
-}
-
-
 sudo_package_update () {
   log "Updating package manager..." 0 1
   detect_package_manager
@@ -174,66 +151,27 @@ sudo_package_update () {
 }
 
 #
-# Install a package through package manager
+# Install a package or packages through package manager
 #
-package () {
-  log "Installing package '$1'..."
-  detect_package_manager
-
-  test_package_installed $1 > /dev/null 2>&1
-
-  if [ $? -eq 0 ]; then
-    log "Package '$1' is already installed. Skipping."
-    return 0
-  fi
-
-  if [ "$PACKAGE_MANAGER" == 'apt-get' ]; then
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes $1
-  elif [ "$PACKAGE_MANAGER" == 'yum' ]; then
-    yum install -y $1
-  elif [ "$PACKAGE_MANAGER" == 'port' ]; then
-    # Unintuitive, but this skips all promps which should assume Y
-    port -N install $1
-  elif [ "$PACKAGE_MANAGER" == 'brew' ]; then
-    brew install $1
-  else
-    error "Unknown package manager: $PACKAGE_MANAGER"
-  fi
-
-  if [ $? -ne 0 ]; then
-    error "An error occured while installing package '$1'. Fail!"
-  else
-    spacer 2
-  fi
-}
-
-
 sudo_package () {
-  log "Installing package '$1'..."
+  log "Installing packages '$*'..."
   detect_package_manager
 
-  test_package_installed $1 > /dev/null 2>&1
-
-  if [ $? -eq 0 ]; then
-    log "Package '$1' is already installed. Skipping."
-    return 0
-  fi
-
   if [ "$PACKAGE_MANAGER" == 'apt-get' ]; then
-    DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --force-yes $1
+    DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --allow $*
   elif [ "$PACKAGE_MANAGER" == 'yum' ]; then
-    sudo yum install -y $1
+    sudo yum install -y $*
   elif [ "$PACKAGE_MANAGER" == 'port' ]; then
     # Unintuitive, but this skips all promps which should assume Y
-    sudo port -N install $1
+    sudo port -N install $*
   elif [ "$PACKAGE_MANAGER" == 'brew' ]; then
-    brew install $1
+    brew install $*
   else
     error "Unknown package manager: $PACKAGE_MANAGER"
   fi
 
   if [ $? -ne 0 ]; then
-    error "An error occured while installing package '$1'. Fail!"
+    error "An error occured while installing packages. Fail!"
   else
     spacer 2
   fi
@@ -354,17 +292,17 @@ try_link () {
     src="$src"
   elif [ -f "$cookbook_assets_source" ]; then
     src="$cookbook_assets_source"
-  elif [ -f $default_assets_source ]; then
+  elif [ -f "$default_assets_source" ]; then
     src="$default_assets_source"
   elif [ -d "$cookbook_assets_source" ]; then
     src="$cookbook_assets_source"
-  elif [ -d $default_assets_source ]; then
+  elif [ -d "$default_assets_source" ]; then
     src="$default_assets_source"
   else
     error "Could not find '$1' to link Fail!"
   fi
 
-  if [ -L "$2" ] && [ "$(readlink $2)" == "$src" ] ; then
+  if [ -L "$2" ] && [ "$(readlink "$2")" == "$src" ] ; then
     log "Link already exists: $2"
   else
     log "Creating link: $2 -> $src"
@@ -380,18 +318,16 @@ add_user () {
   local pass=$2
   local args=$3
 
-  id $user  > /dev/null 2>&1
-
-  if [ $? -eq 0 ]; then
+  if id "$user" > /dev/null 2>&1 ; then
     log "User $user already exists. Skipped creation."
   else
     log "Adding user $user..."
     [ "$pass" == "" ] && pass=generate_password
 
     if [[ "$args" != *nohome* ]]; then
-      /usr/sbin/useradd --password `openssl passwd -crypt $pass` --create-home $user --shell /bin/bash
+      /usr/sbin/useradd --password "$(openssl passwd -crypt "$pass")" --create-home "$user" --shell /bin/bash
     else
-      /usr/sbin/useradd --password `openssl passwd -crypt $pass` $user --shell /bin/bash
+      /usr/sbin/useradd --password "$(openssl passwd -crypt "$pass")" "$user" --shell /bin/bash
     fi
   fi
 }
@@ -415,7 +351,7 @@ run_as () {
   log "$cmd"
   # sudo -u $user -H -s /bin/bash -c "$cmd"
   # sudo -u $user -s /bin/bash -i "$cmd"
-  su -c "$cmd" -s /bin/bash $user
+  su -c "$cmd" -s /bin/bash "$user"
 }
 
 #
@@ -438,7 +374,7 @@ add_line () {
 # Write a warning if user is not root.
 #
 warn_if_not_root () {
-  uid=`id -u` && [ "$uid" = "0" ] ||
+  uid="$(id -u)" && [ "$uid" = "0" ] ||
   { echo "WARNING: You are NOT running this script as 'root'. You might want to consider that..."; }
 }
 
@@ -446,7 +382,7 @@ warn_if_not_root () {
 # Stops the execution of the script if user is not root.
 #
 fail_if_not_root () {
-  uid=`id -u` && [ "$uid" = "0" ] ||
+  uid="$(id -u)" && [ "$uid" = "0" ] ||
   { echo "You must run this as 'root'. Exiting."; exit 1; }
 }
 
@@ -473,8 +409,8 @@ set_installed () {
   local args=$*
   local name=${args//[ \/:@]/-}
 
-  mkdir -p ~/.shoestrap/installed
-  touch ~/.shoestrap/installed/$name
+  mkdir -p "$HOME/.shoestrap/installed"
+  touch "$HOME/.shoestrap/installed/$name"
 }
 
 #

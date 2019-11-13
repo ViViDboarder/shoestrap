@@ -2,13 +2,13 @@
 
 log "Compiling and installing fish-shell"
 
-local fish_shell_dir=$WORKSPACE/fish-shell
+fish_shell_dir="$WORKSPACE/fish-shell"
 
-if [ ! -d $fish_shell_dir ]; then
+if [ ! -d "$fish_shell_dir" ]; then
     log "Cloning fish-shell"
-    git clone https://github.com/fish-shell/fish-shell $fish_shell_dir
+    git clone https://github.com/fish-shell/fish-shell "$fish_shell_dir"
 else
-    (cd $fish_shell_dir && git pull)
+    (cd "$fish_shell_dir" && git pull)
 fi
 
-(cd $fish_shell_dir && ./configure && make && sudo make install)
+(cd "$fish_shell_dir" && ./configure && make && sudo make install)

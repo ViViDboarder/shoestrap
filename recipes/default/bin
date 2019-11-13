@@ -1,6 +1,7 @@
 #! /bin/bash
 
-for f in $DEFAULT_ASSETS_PATH/* ; do
-    try_link "$f" "$USER_BIN/$(basename $f)"
+# Link all user specific scripts to user bin
+for f in "$DEFAULT_ASSETS_PATH"/* ; do
+    try_link "$f" "$USER_BIN/$(basename "$f")"
 done
 
