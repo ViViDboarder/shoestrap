@@ -1,5 +1,8 @@
 #! /bin/bash
 
+# Link files that can't be sourced
+try_link "tmuxline.conf" "$HOME/.tmuxline.conf"
+
 # Download and/or link iTerm2 automatic dark mode profiles switching
 iterm2_scripts="$HOME/Library/Application Support/iTerm2/Scripts"
 if [ -d "$iterm2_scripts" ]; then
