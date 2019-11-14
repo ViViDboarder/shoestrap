@@ -1,7 +1,24 @@
 #! /bin/bash
+set -o pipefail
 
-# Prints out whatever calendar event is on right now
+# Prints out whatever calendar event is on right now with spacers around it for
+# my tmux status line
 
-cal_name=ifij@yelp.com
+# Make sure we have a calendar to use
+if [ -z "$TMUX_ICAL" ]; then
+    exit 0
+fi
 
-icalBuddy -li 1 -nc -ea -ic $cal_name -b '' eventsNow | head -n 1 | sed 's/^/ /' | sed 's/$/ |/'
+if command -v icalBuddy &>/dev/null ;then
+    # -li 1: limit 1
+    # -nc: no calendar name
+    # -ic <cal>: include only this calendar
+    # -b '': use empty string instead of bullet
+    # head: take first line since second includes times
+    event_name=$(icalBuddy -li 1 -nc -ea -ic "$TMUX_ICAL" -b '' eventsNow | head -n 1)
+
+    # If event is found, echo it back with spacers around it for tmux
+    if [ -n "$event_name" ]; then
+        echo " $event_name |"
+    fi
+fi
