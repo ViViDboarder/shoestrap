@@ -51,4 +51,3 @@ function source_dotfile {
     add_line "#import $RC_NAME from synced" "$HOME/.$RC_NAME"
     add_line "$SOURCE_CMD ~/.${RC_NAME}_sync" "$HOME/.$RC_NAME"
 }
-

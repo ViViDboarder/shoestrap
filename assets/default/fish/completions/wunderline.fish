@@ -64,7 +64,3 @@ complete -f -c wunderline -n '__fish_wunderline_needs_command' -a gc -d 'Delete 
 complete -f -c wunderline -n '__fish_wunderline_needs_command' -a set-platform -d 'Set your preferred application platform'
 complete -f -c wunderline -n '__fish_wunderline_needs_command' -a flush -d 'Flush the application cache'
 complete -x -c wunderline -n '__fish_wunderline_needs_command' -a help -d 'Display help for [cmd]'
-
-
-
-

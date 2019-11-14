@@ -36,4 +36,4 @@ function conf_build_and_install() {
     sudo ln -s "$vim_path" "${vim_path:0:(-1)}"
 }
 
-(cd $vim_dir && conf_build_and_install)
+(cd "$vim_dir" && conf_build_and_install)

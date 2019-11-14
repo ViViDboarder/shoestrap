@@ -8,4 +8,3 @@ It would then be cool to distribute them individually and set them to be install
 recipe 'ViViDboarder/vim-settings'
 
 should clone that repo and run the install script inside
-

@@ -1,3 +1,3 @@
 #! /bin/bash
 
-docker run -it --rm -v `pwd`:/data tagplus5/git-bfg $*
+docker run -it --rm -v "$(pwd):/data" tagplus5/git-bfg "$@"

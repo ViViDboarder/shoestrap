@@ -10,4 +10,3 @@ cd $WORKSPACE/abuse-the-force && git pull && rake install
 for f in $DEFAULT_ASSETS_PATH/* ; do
     try_link "$f" "$USER_BIN/$(basename $f)"
 done
-

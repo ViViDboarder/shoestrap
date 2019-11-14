@@ -93,4 +93,3 @@ end
 AbuseTheForce::Atf_Config.load
 # Print the target name
 puts AbuseTheForce::Atf_Config.active_target.name
-

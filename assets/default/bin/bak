@@ -4,8 +4,7 @@ f="$1"
 ext="${f##*.}"
 
 if [[ "$ext" == "bak" ]]; then
-    cp $f "${f%.*}"
+    cp "$f" "${f%.*}"
 else
     cp "$f" "${f}.bak"
 fi
-

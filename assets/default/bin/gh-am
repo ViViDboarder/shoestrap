@@ -5,12 +5,12 @@ set -e
 
 get_patch() {
     local pr_url=$1
-    curl -L $pr_url.patch 2> /dev/null
+    curl -L "${pr_url}.patch" 2> /dev/null
 }
 
 main() {
     local pr_url=$1
-    get_patch $pr_url | git am
+    get_patch "$pr_url" | git am
 }
 
-main $*
+main "$1"

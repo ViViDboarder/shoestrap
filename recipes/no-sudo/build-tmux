@@ -21,34 +21,34 @@ libevent_name="libevent-$libevent_version-stable"
 ncurses_name="ncurses-$ncurses_version"
 
 # Download source files for tmux, libevent, and ncurses to tmp dir
-cd $TMP_DIR
-curl -OL https://github.com/tmux/tmux/releases/download/$tmux_full_version/${tmux_name}.tar.gz
-curl -O https://cloud.github.com/downloads/libevent/libevent/${libevent_name}.tar.gz
-wget -O ${ncurses_name}.tar.gz ftp://ftp.gnu.org/gnu/ncurses/${ncurses_name}.tar.gz
+cd "$TMP_DIR"
+curl -OL "https://github.com/tmux/tmux/releases/download/$tmux_full_version/${tmux_name}.tar.gz"
+curl -O "https://cloud.github.com/downloads/libevent/libevent/${libevent_name}.tar.gz"
+wget -O "${ncurses_name}.tar.gz" ftp://ftp.gnu.org/gnu/ncurses/${ncurses_name}.tar.gz
 
 # extract files, configure, and compile
 
 # libevent installation
-tar xvzf ${libevent_name}.tar.gz
-(cd $libevent_name && ./configure --prefix=$LOCAL_PREFIX --disable-shared &&  make &&  make install) || exit 1
+tar xvzf "${libevent_name}.tar.gz"
+(cd "$libevent_name" && ./configure --prefix="$LOCAL_PREFIX" --disable-shared &&  make && make install) || exit 1
 
 # ncurses installation
-tar xvzf ${ncurses_name}.tar.gz
-(cd $ncurses_name && ./configure --prefix=$LOCAL_PREFIX && make && make install) || exit 1
+tar xvzf "${ncurses_name}.tar.gz"
+(cd "$ncurses_name" && ./configure --prefix="$LOCAL_PREFIX" && make && make install) || exit 1
 
 # tmux installation
-tar xvzf ${tmux_name}.tar.gz
+tar xvzf "${tmux_name}.tar.gz"
 (\
-    cd ${tmux_name} && \
+    cd "${tmux_name}" && \
     ./configure CFLAGS="-I$LOCAL_PREFIX/include -I$LOCAL_PREFIX/include/ncurses" LDFLAGS="-L$LOCAL_PREFIX/lib -L$LOCAL_PREFIX/include/ncurses -L$LOCAL_PREFIX/include" && \
     CPPFLAGS="-I$LOCAL_PREFIX/include -I$LOCAL_PREFIX/include/ncurses" LDFLAGS="-static -L$LOCAL_PREFIX/include -L$LOCAL_PREFIX/include/ncurses -L$LOCAL_PREFIX/lib" make && \
-    cp tmux $LOCAL_PREFIX/bin \
+    cp tmux "$LOCAL_PREFIX/bin" \
 ) || exit 1
 
-version=`tmux -V | cut -d ' ' -f 2`
+version=$( tmux -V | cut -d ' ' -f 2 )
 if [ -z "$version" ]; then
   echo
   echo "[error] failed to install tmux - check for errors in the above output"
   exit 1
 fi
-cd $ROOT_DIR
+cd "$ROOT_DIR"

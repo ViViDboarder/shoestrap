@@ -67,4 +67,3 @@ function fish_prompt
 
   echo -n -s $arrow (_hostname) $cwd (_git_info) (_prompt_char) ' '
 end
-

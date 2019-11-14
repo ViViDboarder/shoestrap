@@ -11,4 +11,3 @@ elif [[ "$UNAME_STR" == "Linux" ]]; then
     # Do something
     echo "**** Install from $TMP_DIR/go${version}.linux-amd64.tar.gz"
 fi
-

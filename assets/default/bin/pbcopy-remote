@@ -3,4 +3,4 @@
 # Created by ViViDboarder. Please share with attribution
 # Reads hostname from arg1 and gets echos the tmux buffer over to to pbcopy
 
-ssh $1 'tmux show-buffer' | pbcopy
+ssh "$1" 'tmux show-buffer' | pbcopy

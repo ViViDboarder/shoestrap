@@ -27,10 +27,12 @@ recipe () {
   if [ -f "$cookbook_recipe" ]; then
     log "Running recipe '$cookbook_recipe'..." 1
     separator
+    # shellcheck source=/dev/null
     . "$cookbook_recipe"
   elif [ -f "$default_recipe" ]; then
     log "Running recipe '$default_recipe'..." 1
     separator
+    # shellcheck source=/dev/null
     . "$default_recipe"
   else
     error "Could not find recipe for '$CURRENT_RECIPE_NAME'. Fail!"
@@ -85,7 +87,7 @@ error () {
 # Write one or many empty lines to the screen.
 #
 spacer () {
-  if [ $1 ]; then
+  if [ -n "$1" ]; then
     local spaces=$1
   else
     local spaces=1
@@ -109,7 +111,7 @@ noop () {
 # You can optionally specify the separator character. Default is '-'.
 #
 separator () {
-  if [ $1 ]; then
+  if [ -n "$1" ]; then
     local char=$1
   else
     local char='-'
@@ -143,6 +145,7 @@ sudo_package_update () {
     error "Unknown package manager: $PACKAGE_MANAGER"
   fi
 
+  # shellcheck disable=2181
   if [ $? -ne 0 ]; then
     error "An error occured while updating packages. Fail!"
   else
@@ -158,18 +161,23 @@ sudo_package () {
   detect_package_manager
 
   if [ "$PACKAGE_MANAGER" == 'apt-get' ]; then
+    # shellcheck disable=2086,2048
     DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --allow $*
   elif [ "$PACKAGE_MANAGER" == 'yum' ]; then
+    # shellcheck disable=2086,2048
     sudo yum install -y $*
   elif [ "$PACKAGE_MANAGER" == 'port' ]; then
     # Unintuitive, but this skips all promps which should assume Y
+    # shellcheck disable=2086,2048
     sudo port -N install $*
   elif [ "$PACKAGE_MANAGER" == 'brew' ]; then
+    # shellcheck disable=2086,2048
     brew install $*
   else
     error "Unknown package manager: $PACKAGE_MANAGER"
   fi
 
+  # shellcheck disable=2181
   if [ $? -ne 0 ]; then
     error "An error occured while installing packages. Fail!"
   else
@@ -264,11 +272,11 @@ link () {
     src="$src"
   elif [ -f "$cookbook_assets_source" ]; then
     src="$cookbook_assets_source"
-  elif [ -f $default_assets_source ]; then
+  elif [ -f "$default_assets_source" ]; then
     src="$default_assets_source"
   elif [ -d "$cookbook_assets_source" ]; then
     src="$cookbook_assets_source"
-  elif [ -d $default_assets_source ]; then
+  elif [ -d "$default_assets_source" ]; then
     src="$default_assets_source"
   else
     error "Could not find '$1' to link Fail!"
@@ -362,6 +370,7 @@ add_line () {
   local file="$2"
   grep "$line" "$file" > /dev/null 2>&1
 
+  # shellcheck disable=2181
   if [ $? -ne 0 ]; then
     log "Adding '$line' to '$file'..."
     echo "$line" >> "$file"
@@ -374,16 +383,15 @@ add_line () {
 # Write a warning if user is not root.
 #
 warn_if_not_root () {
-  uid="$(id -u)" && [ "$uid" = "0" ] ||
-  { echo "WARNING: You are NOT running this script as 'root'. You might want to consider that..."; }
+  [ "$(id -u)" = "0" ] ||
+      { echo "WARNING: You are NOT running this script as 'root'. You might want to consider that..."; }
 }
 
 #
 # Stops the execution of the script if user is not root.
 #
 fail_if_not_root () {
-  uid="$(id -u)" && [ "$uid" = "0" ] ||
-  { echo "You must run this as 'root'. Exiting."; exit 1; }
+  [ "$(id -u)" = "0" ] || { echo "You must run this as 'root'. Exiting."; exit 1; }
 }
 
 #

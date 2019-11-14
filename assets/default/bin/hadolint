@@ -5,7 +5,7 @@
 version=v1.17.2
 
 docker run -i --rm \
-    -v `pwd`:/data \
+    -v "$(pwd):/data:ro" \
     -w /data \
     hadolint/hadolint:${version}-debian \
-    hadolint $*
+    hadolint "$@"

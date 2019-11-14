@@ -25,7 +25,7 @@ else
 fi
 
 echo "git fetch $REMOTE refs/pull/$PRNUM/head:PR_$PRNUM"
-git fetch $REMOTE refs/pull/$PRNUM/head:PR_$PRNUM
+git fetch "$REMOTE" "refs/pull/$PRNUM/head:PR_$PRNUM"
 
 echo "Just fetched Pull Request #$PRNUM. To switch to this branch execute:"
 echo "git checkout PR_$PRNUM"

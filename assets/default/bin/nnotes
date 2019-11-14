@@ -4,6 +4,12 @@ NOTES_DIR="$HOME/Nextcloud/Notes"
 
 function usage() {
     echo "nnotes expects 0, 1, or 2 arguments"
+    echo "Edit from root notes dir"
+    echo "  nnotes"
+    echo "Create a note in root dir"
+    echo "  nnotes <note name>"
+    echo "Create a note in sub dir"
+    echo "  nnotes <subdir> <note name>"
 }
 
 function validate() {
@@ -17,10 +23,10 @@ function main() {
     validate
 
     # nvim "$NOTES_DIR" -c ":cd $NOTES_DIR"
-    cd $NOTES_DIR
+    cd "$NOTES_DIR" || { echo "Could change to notes dir" ; exit 1; }
 
-    mkdir -p $CATEGORY
-    nvim $CATEGORY/$FILE
+    mkdir -p "$CATEGORY"
+    nvim "$CATEGORY/$FILE"
 }
 
 case $# in
@@ -43,4 +49,4 @@ case $# in
         ;;
 esac
 
-main $*
+main "$@"

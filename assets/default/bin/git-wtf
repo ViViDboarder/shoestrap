@@ -202,7 +202,7 @@ def show b
 end
 
 def show_relations b, all_branches
-  ibs, fbs = all_branches.partition { |name, br| $config["integration-branches"].include?(br[:local_branch]) || 
+  ibs, fbs = all_branches.partition { |name, br| $config["integration-branches"].include?(br[:local_branch]) ||
 $config["integration-branches"].include?(br[:remote_branch]) }
   if $config["integration-branches"].include? b[:local_branch]
     puts "\nFeature branches:" unless fbs.empty?

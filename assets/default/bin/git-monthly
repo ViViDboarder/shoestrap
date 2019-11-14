@@ -5,10 +5,14 @@
 # Returns a git log of any commits in the current or given month
 ##########################
 
-# TODO: Build help text
-
 month=$1
 year=$2
+
+if [ -z "$month" ]; then
+    echo "usage: git-monthly <month> <year>"
+    echo "eg: git-monthly 4 2019"
+    exit 1
+fi
 
 if [[ "$month" == "" ]]; then
     # Get the current month
@@ -32,5 +36,4 @@ else
 fi
 
 # Get the git log between the target month and the next month
-git log --before={${nyear}-${nmonth}-1} --after={${year}-${month}-1}
-
+git log --before="{${nyear}-${nmonth}-1}" --after="{${year}-${month}-1}"
