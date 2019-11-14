@@ -1,5 +1,5 @@
 DET_OS="unknown"
-UNAME_STR=`uname`
+UNAME_STR="$(uname)"
 
 # Some settings are mac specific
 if [[ "$UNAME_STR" == "Darwin" ]]; then
@@ -9,8 +9,9 @@ elif [[ "$UNAME_STR" == "Linux" ]]; then
 fi
 
 # Source bash alaias
-if [ -f ~/.bash_alias ]; then
-    . ~/.bash_alias
+if [ -f "$HOME/.bash_alias" ]; then
+    # shellcheck source=bash_alias
+    source "$HOME/.bash_alias"
 fi
 
 # Common paths for me
@@ -32,9 +33,10 @@ elif [[ "$DET_OS" == "mac" ]]; then
     # Fix Python path on OSX to avoid considering System extras over newer versions
     # Local
     export PATH=$HOME/Library/Python/3.7/bin:$HOME/Library/Python/2.7/bin:$PATH
-    export PYTHONPATH=$HOME/Library/Python/2.7/lib/python/site-packages:$PYTHONPATH
+    # Python path is causing other issues
+    # export PYTHONPATH=$HOME/Library/Python/2.7/lib/python/site-packages:$PYTHONPATH
     # MacPorts and system
-    export PYTHONPATH=/opt/local/Library/Frameworks/Python.framework/Versions/Current/lib/python2.7/site-packages:/Library/Python/2.7/site-packages:$PYTHONPATH
+    # export PYTHONPATH=/opt/local/Library/Frameworks/Python.framework/Versions/Current/lib/python2.7/site-packages:/Library/Python/2.7/site-packages:$PYTHONPATH
 fi
 
 # Android paths
@@ -62,6 +64,7 @@ if type rbenv &> /dev/null; then
     eval "$(rbenv init -)"
 elif [ -d "$HOME/.rvm" ]; then
     export PATH="$PATH:$HOME/.rvm/bin"
+    # shellcheck source=/dev/null
     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 fi
 
@@ -69,17 +72,18 @@ fi
 if type npm &> /dev/null ; then
     # This seems to fail in some cases
     npm_path=$(npm bin -g 2> /dev/null)
-    if [ -d "$npm_path" ] && echo $PATH | grep -qv "$npm_path"; then
-        export PATH=$npm_path:$PATH
+    if [ -d "$npm_path" ] && echo "$PATH" | grep -qv "$npm_path"; then
+        export PATH=$PATH:$npm_path
     fi
 fi
 
 # Increase memory sizes for java using Ant
-ANT_OPTS="-Xmx2048m -Xms512m"
+export ANT_OPTS="-Xmx2048m -Xms512m"
 
 # Set file as having been loaded to avoid looping
 IS_BASHRC_LOADED=true
 # If an interactive shell and .bash_profile hasn't been loaded, load it
 if [ -n "$PS1" ] && [ -z "$IS_BASH_PROFILE_LOADED" ] ; then
-    source $HOME/.bash_profile
+    # shellcheck source=bash_profile
+    source "$HOME/.bash_profile"
 fi

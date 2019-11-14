@@ -2,12 +2,13 @@
 IS_BASH_PROFILE_LOADED=true
 # If bashrc hasn't been loaded, load it
 if [ -z "$IS_BASHRC_LOADED" ] ; then
-    source $HOME/.bashrc
+    # shellcheck source=bashrc
+    source "$HOME/.bashrc"
 fi
 
 # Some stuff is OS Dependent
 DET_OS="unknown"
-UNAME_STR=`uname`
+UNAME_STR=$(uname)
 
 if [[ "$UNAME_STR" == "Darwin" ]]; then
     DET_OS="mac"
@@ -19,17 +20,17 @@ fi
 if [[ "$DET_OS" == "mac" ]]; then
     # Bash Completion
     if [ -f /opt/local/etc/profile.d/bash_completion.sh ]; then
-        . /opt/local/etc/profile.d/bash_completion.sh
+        source /opt/local/etc/profile.d/bash_completion.sh
     fi
     if [ -f /opt/local/share/bash-completion/completions/git-flow ]; then
-        . /opt/local/share/bash-completion/completions/git-flow
+        source /opt/local/share/bash-completion/completions/git-flow
     fi
 fi
 
 # Set prompt to include some useful information
 function ps_git_branch {
     ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-    echo " ("${ref#refs/heads/}")"
+    echo " (${ref#refs/heads/})"
 }
 
 function ps_atf_target {
@@ -38,13 +39,13 @@ function ps_atf_target {
 }
 
 function ps_force_target {
-    `git config force.use 2> /dev/null` || return
+    test "true" = "$( git config force.use 2> /dev/null )" || return
     org=$(force-target 2> /dev/null) || return
     echo " [$org]"
 }
 
 function ps_host_name {
-    [ -z $TMUX ] || return && echo '\h '
+    [ -z "$TMUX" ] || return && echo '\h '
 }
 
 function ps_virtual_env {
@@ -54,7 +55,7 @@ function ps_virtual_env {
 }
 
 # Alias for colors
-RED="\[\033[0;31m\]"
+# RED="\[\033[0;31m\]"
 YELLOW="\[\033[0;33m\]"
 GREEN="\[\033[0;32m\]"
 ENDCOLOR="\[\e[0m\]"
@@ -70,7 +71,7 @@ export CLICOLOR=1
 export LSCOLORS=ExFxCxDxBxegedabagacad
 
 # Vim colors
-[ -n "$VIM_COLOR" ] || export VIM_COLOR=$(eval $HOME/bin/get_vim_colorscheme.sh) || export VIM_COLOR='wombat256mod'
+[ -n "$VIM_COLOR" ] || export VIM_COLOR="$(eval "$HOME/bin/get_vim_colorscheme.sh")" || export VIM_COLOR='wombat256mod'
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND \$dir"

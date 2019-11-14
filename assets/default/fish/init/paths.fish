@@ -22,7 +22,7 @@ else if [ $det_os = "mac" ]
     # Fix Python path on OSX to avoid considering System extras over newer versions
     # Local
     set -gx PATH $HOME/Library/Python/3.7/bin $HOME/Library/Python/2.7/bin $PATH
-    set -gx PYTHONPATH $HOME/Library/Python/2.7/lib/python/site-packages:$PYTHONPATH
+    # set -gx PYTHONPATH $HOME/Library/Python/2.7/lib/python/site-packages:$PYTHONPATH
     # Macports
     set -gx PATH $PATH /opt/local/Library/Frameworks/Python.framework/Versions/Current/bin
     # set -gx PYTHONPATH /opt/local/Library/Frameworks/Python.framework/Versions/Current/lib $PYTHONPATH
