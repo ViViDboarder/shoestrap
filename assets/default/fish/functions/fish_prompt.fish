@@ -2,32 +2,10 @@
 
 function _status_color
   # Returns a color for successful or failed previous command
-  if test $last_status -eq 0
+  if test $__prompt_last_status -eq 0
       echo (set_color -o green)
   else
       echo (set_color -o red)
-  end
-end
-
-function _git_branch_name
-  # Returns the name of the current git branch
-  echo (command git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
-end
-
-function _is_git_dirty
-  echo (command git status -s --ignore-submodules=dirty ^/dev/null)
-end
-
-function _git_info
-  # Returns what is to be displayed for the git info
-  if [ (_git_branch_name) ]
-    if [ (_is_git_dirty) ]
-        set branch_color (set_color -o red)
-    else
-        set branch_color (set_color -o yellow)
-    end
-    set -l git_branch (_git_branch_name)
-    echo " $branch_color($git_branch)"(set_color normal)
   end
 end
 
@@ -52,18 +30,13 @@ end
 function fish_prompt
   # Build full left side prompt
 
-  # NOTE: this becomes a global variable
-  set -g last_status $status
+  # Collect last status for coloring prompt
+  set -g __prompt_last_status $status
 
-  set -l cyan (set_color -o cyan)
-  set -l yellow (set_color -o yellow)
-  set -l red (set_color -o red)
-  set -l blue (set_color -o blue)
-  set -l green (set_color -o green)
-  set -l normal (set_color normal)
-
-  # set -l arrow (_status_color) "➜ $normal"
-  set -l cwd (basename (prompt_pwd))
-
-  echo -n -s $arrow (_hostname) $cwd (_git_info) (_prompt_char) ' '
+  # Configure git prompt
+  set -g __fish_git_prompt_showcolorhints 1
+  set -g __fish_git_prompt_showdirtystate 1
+  set -g __fish_git_prompt_showstashstate 1
+  set -g __fish_git_prompt_showuntrackedfiles 1
+  echo -n -s $arrow (_hostname) (prompt_pwd) (__fish_git_prompt) (_prompt_char) ' '
 end
