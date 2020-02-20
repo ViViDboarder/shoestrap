@@ -87,3 +87,5 @@ if [ -n "$PS1" ] && [ -z "$IS_BASH_PROFILE_LOADED" ] ; then
     # shellcheck source=bash_profile
     source "$HOME/.bash_profile"
 fi
+
+# vim: set filetype=sh:

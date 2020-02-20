@@ -76,5 +76,14 @@ export LSCOLORS=ExFxCxDxBxegedabagacad
 # Vim colors
 [ -n "$VIM_COLOR" ] || export VIM_COLOR="$(eval "$HOME/bin/get_vim_colorscheme.sh")" || export VIM_COLOR='wombat256mod'
 
-export FZF_DEFAULT_COMMAND='ag -g ""'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND \$dir"
+if type rg &> /dev/null; then
+    export FZF_DEFAULT_COMMAND='rg --files'
+    # export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
+elif type ag &> /dev/null; then
+    export FZF_DEFAULT_COMMAND='ag -g ""'
+fi
+if [ -n "$FZF_DEFAULT_COMMAND" ]; then
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND \$dir"
+fi
+
+# vim: set filetype=sh:
