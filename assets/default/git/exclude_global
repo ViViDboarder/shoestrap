@@ -45,3 +45,7 @@ config.codekit
 # ctags #
 #########
 tags
+
+# Python stuff #
+################
+.mypy_cache/
