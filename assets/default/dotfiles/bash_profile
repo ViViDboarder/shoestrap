@@ -54,6 +54,9 @@ function ps_virtual_env {
     echo " [$venv]"
 }
 
+# Disable standard virtualenv prompt
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
 # Alias for colors
 # RED="\[\033[0;31m\]"
 YELLOW="\[\033[0;33m\]"
