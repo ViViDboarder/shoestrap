@@ -1,0 +1,143 @@
+# PATHS
+DET_OS="unknown"
+UNAME_STR="$(uname)"
+
+# Some settings are mac specific
+if [[ "$UNAME_STR" == "Darwin" ]]; then
+    DET_OS="mac"
+elif [[ "$UNAME_STR" == "Linux" ]]; then
+    DET_OS="linux"
+fi
+
+# Source bash alaias
+if [ -f "$HOME/.bash_alias" ]; then
+    # shellcheck source=bash_alias
+    source "$HOME/.bash_alias"
+fi
+
+# Common paths for me
+export PATH=$PATH:$ANT_HOME/bin
+# Opt directory
+if [ -d /opt/local ]; then
+    export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+fi
+
+if [[ "$DET_OS" == "linux" ]]; then
+    ANDROID_SDK=$HOME/workspace/adt-bundle-linux/sdk
+elif [[ "$DET_OS" == "mac" ]]; then
+    ANDROID_SDK=$HOME/workspace/android-sdk-macosx
+
+    # Set GOPATH
+    GOROOT=/opt/local/lib/go
+    GOPATH=$HOME/workspace/go_path
+
+    # Fix Python path on OSX to avoid considering System extras over newer versions
+    # Local
+    export PATH=$HOME/Library/Python/3.7/bin:$HOME/Library/Python/2.7/bin:$PATH
+    # Python path is causing other issues
+    # export PYTHONPATH=$HOME/Library/Python/2.7/lib/python/site-packages:$PYTHONPATH
+    # MacPorts and system
+    # export PYTHONPATH=/opt/local/Library/Frameworks/Python.framework/Versions/Current/lib/python2.7/site-packages:/Library/Python/2.7/site-packages:$PYTHONPATH
+fi
+
+# Android paths
+if [ -d "$ANDROID_SDK" ]; then
+    export ANDROID_HOME=$ANDROID_SDK
+    export PATH=$PATH:$ANDROID_SDK/platform-tools:$ANDROID_SDK/tools
+fi
+
+# Go paths
+if [ -d "$GOPATH" ]; then
+    export GOPATH
+    export PATH=$PATH:$GOPATH/bin
+fi
+if [ -d "$GOROOT" ]; then
+    export GOROOT
+    export PATH=$PATH:$GOROOT/bin
+fi
+
+# Home path
+export PATH=$HOME/bin:$HOME/.local/bin:$PATH
+
+# Add RVM to PATH for scripting
+if type rbenv &> /dev/null; then
+    export PATH="$HOME/.rbenv/bin:$PATH"
+    eval "$(rbenv init -)"
+elif [ -d "$HOME/.rvm" ]; then
+    export PATH="$PATH:$HOME/.rvm/bin"
+    # shellcheck source=/dev/null
+    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+fi
+
+# NPM paths
+if type npm &> /dev/null ; then
+    # This seems to fail in some cases
+    npm_path=$(npm bin -g 2> /dev/null)
+    if [ -d "$npm_path" ] && echo "$PATH" | grep -qv "$npm_path"; then
+        export PATH=$PATH:$npm_path
+    fi
+fi
+
+# Other stuff
+
+# Set prompt to include some useful information
+
+function ps_host_name {
+    [ -z "$TMUX" ] || return && echo "$(hostname) "
+}
+
+function ps_git_branch {
+    ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+    echo " (${ref#refs/heads/})"
+}
+
+function ps_atf_target {
+    org=$(atf-target 2> /dev/null) || return
+    echo " [$org]"
+}
+
+function ps_force_target {
+    test "true" = "$( git config force.use 2> /dev/null )" || return
+    org=$(force-target 2> /dev/null) || return
+    echo " [$org]"
+}
+
+function ps_virtual_env {
+    [ -z "$VIRTUAL_ENV" ] && return
+    venv=$(basename "$VIRTUAL_ENV") || return
+    echo " [$venv]"
+}
+
+# Disable standard virtualenv prompt
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+# Alias for colors
+
+# Set prompt format
+setopt PROMPT_SUBST
+PROMPT='$(ps_host_name)%1~%F{yellow}$(ps_git_branch)%f%# '
+RPROMPT='%F{green}$(ps_atf_target)$(ps_force_target)$(ps_virtual_env)%f'
+
+# Prompt Title
+export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/~}\007"'
+
+# Set cursor colors
+export CLICOLOR=1
+export LSCOLORS=ExFxCxDxBxegedabagacad
+
+# Vim colors
+[ -n "$VIM_COLOR" ] || export VIM_COLOR="$(eval "$HOME/bin/get_vim_colorscheme.sh")" || export VIM_COLOR='wombat256mod'
+
+# FZF
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+if type rg &> /dev/null; then
+    export FZF_DEFAULT_COMMAND='rg --files'
+    # export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
+elif type ag &> /dev/null; then
+    export FZF_DEFAULT_COMMAND='ag -g ""'
+fi
+if [ -n "$FZF_DEFAULT_COMMAND" ]; then
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND \$dir"
+fi
+
+# vim: set filetype=zsh:
