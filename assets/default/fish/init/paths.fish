@@ -31,9 +31,13 @@ end
 
 # NPM paths
 if type -q npm
-    set npm_path (npm bin -g 2> /dev/null)
+    set npm_path "$HOME/.npm/bin"
+    if [ ! -d "$npm_path" ]
+        # It's more robust to use the subshell, but far slower
+        set npm_path (npm bin -g 2> /dev/null)
+    end
     if [ -d "$npm_path" ]
-        set -gx PATH $npm_path $PATH
+        set -gx PATH $PATH $npm_path
     end
 end
 
@@ -66,6 +70,7 @@ end
 if [ -d "$HOME/.local/bin" ]
     set -gx PATH $HOME/.local/bin $PATH
 end
+
 if [ -d "$HOME/bin" ]
     set -gx PATH $HOME/bin $PATH
 end
