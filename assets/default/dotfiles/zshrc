@@ -83,7 +83,14 @@ fi
 # Set prompt to include some useful information
 
 function ps_host_name {
-    [ -z "$TMUX" ] || return && echo "$(hostname) "
+    # Returns hostname if on remote host and not using tmux
+    # Check if we're on a non-local host via ssh
+    if [ -n "$SSH_CLIENT" ] && [ -n "$SSH_TTY" ]; then
+        # Check if we're using tmux, since tmux status line displays the host
+        if [ -z "$TMUX" ]; then
+            echo "$(hostname) "
+        fi
+    fi
 }
 
 function ps_git_branch {

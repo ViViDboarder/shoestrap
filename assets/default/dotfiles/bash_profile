@@ -45,7 +45,14 @@ function ps_force_target {
 }
 
 function ps_host_name {
-    [ -z "$TMUX" ] || return && echo '\h '
+    # Returns hostname if on remote host and not using tmux
+    # Check if we're on a non-local host via ssh
+    if [ -n "$SSH_CLIENT" ] && [ -n "$SSH_TTY" ]; then
+        # Check if we're using tmux, since tmux status line displays the host
+        if [ -z "$TMUX" ]; then
+            echo '\h '
+        fi
+    fi
 }
 
 function ps_virtual_env {
