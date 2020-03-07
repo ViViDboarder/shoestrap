@@ -162,7 +162,7 @@ sudo_package () {
 
   if [ "$PACKAGE_MANAGER" == 'apt-get' ]; then
     # shellcheck disable=2086,2048
-    DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --allow $*
+    DEBIAN_FRONTEND=noninteractive sudo apt-get install -y $*
   elif [ "$PACKAGE_MANAGER" == 'yum' ]; then
     # shellcheck disable=2086,2048
     sudo yum install -y $*
