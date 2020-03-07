@@ -1,0 +1,32 @@
+#! /bin/bash
+
+sudo_package_update
+
+# This now installs a lot of language specific stuff from python, gradle, to go.
+# Should consider pulling these into different recipes that are dependent on the environment
+# that I wish to bootstrap. If not a dev environment, I can trim out some of this.
+
+# Packages that are pretty much the same treatment or names in all systems
+packages="tmux htop curl wget ctags git tig pv jq fish mosh bash-completion neovim ripgrep"
+
+# Manager specific packages
+case "$PACKAGE_MANAGER" in
+    "port")
+        # Non-standard packages
+        packages="$packages the_silver_searcher bash"
+        # Newer version of git with completion
+        packages="$packages git +bash_completion"
+
+        # Install packages
+        sudo_package "$packages"
+        ;;
+    "apt-get")
+        if [ -n "$(apt-cache policy silversearcher-ag)" ] ; then
+            packages="$packages silversearcher-ag"
+        fi
+        packages="$packages build-essential vim"
+
+        # Install packages
+        sudo_package "$packages"
+        ;;
+esac
