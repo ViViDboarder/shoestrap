@@ -1,37 +1,37 @@
 # vim
-alias nv='nvim'
-alias tv='tmux-vim'
-alias :q='exit'
+abbr --global --add nv nvim
+abbr --global --add tv tmux-vim
+abbr --global --add :q exit
 
 # git
-alias ga='git add'
-alias gc='git commit'
-alias gco='git checkout'
-alias gd='git diff'
-alias gl='git log'
-alias gr='git rebase'
-alias gs='git status'
-alias tiga='tig --all'
+abbr --global --add ga git add
+abbr --global --add gc git commit
+abbr --global --add gco git checkout
+abbr --global --add gd git diff
+abbr --global --add gl git log
+abbr --global --add gr git rebase
+abbr --global --add gs git status
+abbr --global --add tiga tig --all
 
 # cd
-alias cd..='cd ..'
+abbr --global --add cd.. cd ..
 
 # vim
-alias mviml='env VIM_COLOR=github mvim'
+abbr --global --add mviml env VIM_COLOR=github mvim
 
 # terminal-notifier
-alias notify-done='terminal-notifier -message "Done"'
-alias notify-success='terminal-notifier -message "Success"'
-alias notify-fail='terminal-notifier -message "Failure"'
+abbr --global --add notify-done terminal-notifier -message "Done"
+abbr --global --add notify-success terminal-notifier -message "Success"
+abbr --global --add notify-fail terminal-notifier -message "Failure"
 
 function sh-notify
   [ $status = 0 ] ;and notify-success ;or notify-fail
 end
 
 # gopush
-alias pb-done='pb "Done"'
-alias pb-success='pb "Success"'
-alias pb-failure='pb "Failure"'
+abbr --global --add pb-done pb "Done"
+abbr --global --add pb-success pb "Success"
+abbr --global --add pb-failure pb "Failure"
 function pb-notify
   [ $status = 0 ] ;and pb-success ;or pb-failure
 end
