@@ -16,6 +16,11 @@ end
 if [ -n "$FZF_DEFAULT_COMMAND" ]
     set -gx FZF_CTRL_T_COMMAND "$FZF_DEFAULT_COMMAND \$dir"
 end
+set -gx FZF_DEFAULT_OPTS "
+--preview-window=:hidden
+--preview='__fzf_preview {}'
+--bind '?:toggle-preview'
+"
 
 # Vim Colors so that they can be set by env
 set -q VIM_COLOR; set -gx VIM_COLOR (eval $HOME/bin/get_vim_colorscheme.sh); or set -gx VIM_COLOR wombat256mod
