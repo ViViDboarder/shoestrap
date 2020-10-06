@@ -59,7 +59,7 @@ def get_terminal_profile(force=False):
     raise ValueError(f"Unknown terminal {term_program}")
 
 
-def get_vim_colorscheme(terminal_profile: str, is_dark=False, force=False):
+def get_vim_colorscheme(terminal_profile: str, force_dark=False, force=False):
     """Returns the best colorscheme for a given terminal profile"""
     if not force and VIM_VAR in os.environ:
         return os.environ[VIM_VAR]
@@ -77,9 +77,12 @@ def get_vim_colorscheme(terminal_profile: str, is_dark=False, force=False):
     return "wombat256mod"
 
 
-def get_bat_theme(terminal_profile: str, is_dark=False, force=False):
+def get_bat_theme(terminal_profile: str, force_dark=False, force=False):
     if not force and BAT_VAR in os.environ:
         return os.environ[BAT_VAR]
+
+    # Determine if this is a dark theme
+    is_dark = force_dark or "dark" in terminal_profile.lower()
 
     if "Wombat" in terminal_profile:
         return "DarkNeon"
@@ -165,18 +168,18 @@ def parse_args(**args) -> argparse.Namespace:
     return parser.parse_args(**args)
 
 
-def print_all_env(force=False, is_dark=False, export=False, fish=False):
+def print_all_env(force=False, force_dark=False, export=False, fish=False):
     term_profile = get_terminal_profile(force=force)
     print_env(TERM_VAR, term_profile, export=export, fish=fish)
 
     vim_colors = get_vim_colorscheme(
         term_profile,
-        is_dark=is_dark,
+        force_dark=force_dark,
         force=force,
     )
     print_env(VIM_VAR, vim_colors, export=export, fish=fish)
 
-    bat_theme = get_bat_theme(term_profile, is_dark=is_dark, force=force)
+    bat_theme = get_bat_theme(term_profile, force_dark=force_dark, force=force)
     print_env(BAT_VAR, bat_theme, export=export, fish=fish)
 
 
@@ -202,7 +205,7 @@ if __name__ == "__main__":
         term_profile = get_terminal_profile(force=args.force)
         vim_colors = get_vim_colorscheme(
             term_profile,
-            is_dark=args.dark,
+            force_dark=args.dark,
             force=args.force,
         )
         print(vim_colors)
@@ -210,14 +213,14 @@ if __name__ == "__main__":
         term_profile = get_terminal_profile(force=args.force)
         bat_theme = get_bat_theme(
             term_profile,
-            is_dark=args.dark,
+            force_dark=args.dark,
             force=args.force,
         )
         print(bat_theme)
     else:
         print_all_env(
             force=args.force,
-            is_dark=args.dark,
+            force_dark=args.dark,
             fish=args.fish,
             export=args.export,
         )

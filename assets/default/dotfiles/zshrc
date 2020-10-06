@@ -132,8 +132,8 @@ export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/~}\007"'
 export CLICOLOR=1
 export LSCOLORS=ExFxCxDxBxegedabagacad
 
-# Vim colors
-[ -n "$VIM_COLOR" ] || export VIM_COLOR="$(eval "$HOME/bin/get_vim_colorscheme.sh")" || export VIM_COLOR='wombat256mod'
+# Export colors
+eval $($HOME/bin/derive_colors.py --export)
 
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
