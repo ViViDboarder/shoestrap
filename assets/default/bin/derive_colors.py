@@ -54,6 +54,8 @@ def get_terminal_profile(force=False):
         return stdout
     elif term_program == "iTerm.app":
         return os.environ["ITERM_PROFILE"]
+    elif term_program == "Alacritty":
+        return "Alacritty"
 
     # If we got this far, we don't know what to do
     raise ValueError(f"Unknown terminal {term_program}")
@@ -65,6 +67,8 @@ def get_vim_colorscheme(terminal_profile: str, force_dark=False, force=False):
         return os.environ[VIM_VAR]
 
     if "Wombat" in terminal_profile:
+        return "wombat256mod"
+    elif "Alacritty" == terminal_profile:
         return "wombat256mod"
     elif "Solarized" in terminal_profile:
         return "solarized"
@@ -86,6 +90,8 @@ def get_bat_theme(terminal_profile: str, force_dark=False, force=False):
 
     if "Wombat" in terminal_profile:
         return "DarkNeon"
+    elif "Alacritty" == terminal_profile:
+        return "DarkNeon"
     elif "Solarized" in terminal_profile:
         if is_dark:
             return "Solarized (dark)"
@@ -96,7 +102,7 @@ def get_bat_theme(terminal_profile: str, force_dark=False, force=False):
     if is_dark:
         return "DarkNeon"
     else:
-        return "github"
+        return "ansi-light"
 
 
 def parse_args(**args) -> argparse.Namespace:
