@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 import argparse
 import os
+import sys
 import textwrap
 from subprocess import Popen, PIPE, check_output
 from typing import Tuple
@@ -42,6 +43,17 @@ def get_terminal_profile(force=False):
     if not force and TERM_VAR in os.environ:
         return os.environ[TERM_VAR]
 
+    # If over SSH, quit. Colorschemes should instead be forwarded
+    if is_ssh():
+        print(
+            ("Warning: Cannot derive colors. "
+                "SSH sessions won't allow detecting the terminal profile."
+                f" Instead forward {TERM_VAR} from your source machine."),
+            file=sys.stderr,
+        )
+        exit(0)
+
+
     term_program = os.environ.get("TERM_PROGRAM")
     if term_program == "Apple_Terminal":
         tty = check_output(["tty"]).strip()
@@ -53,7 +65,10 @@ def get_terminal_profile(force=False):
             raise SystemError("Could not get results from applescript")
         return stdout
     elif term_program == "iTerm.app":
-        return os.environ["ITERM_PROFILE"]
+        if "ITERM_PROFILE" in os.environ:
+            return os.environ["ITERM_PROFILE"]
+        else:
+            raise ValueError("Using iTerm but no profile found")
     elif term_program == "Alacritty":
         return "Alacritty"
 
@@ -200,6 +215,12 @@ def print_env(var: str, val: str, export=False, fish=False):
             print(f'set -gx {var} "{val}";')
         else:
             print(f'set -g {var} "{val}";')
+
+
+def is_ssh() -> bool:
+    if os.environ.get("SSH_TTY"):
+        return True
+    return False
 
 
 if __name__ == "__main__":
