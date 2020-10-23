@@ -60,7 +60,7 @@ end
 
 # Ruby paths
 if type -q rbenv ; and status --is-interactive
-    source (rbenv init -|psub)
+    set -gx PATH $PATH $HOME/.rbenv/shims
 else if [ -d "$HOME/.rvm" ]
     set -gx PATH $PATH $HOME/.rvm/bin
     source "$HOME/.rvm/scripts/extras/rvm.fish"
