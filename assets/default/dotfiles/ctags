@@ -2,3 +2,7 @@
 --langmap=c#:+.cls
 --langmap=html:+.page
 --langmap=html:+.component
+--regex-make=/^([a-zA-Z0-9_$()*?-][a-zA-Z0-9_$()*?.-]+)[ ]*:/\1/d,definition/
+--langdef=markdown
+--langmap=markdown:+.md
+--regex-markdown=/^[#]+[ \t]*(.*)[ \t]*$/\1/d,definition/
