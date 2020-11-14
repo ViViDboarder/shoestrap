@@ -26,4 +26,7 @@ if status --is-interactive
 
     # Export colors
     eval ($HOME/bin/derive_colors.py --export --fish)
+    if [ "$VIM_COLOR" = "solarized" ]
+        _set_colorscheme "solarized light"
+    end
 end
