@@ -1,7 +1,11 @@
-set -gx fish_function_path "$fish_synced_dir/functions" $fish_function_path
-set -gx fish_complete_path "$fish_synced_dir/completions" $fish_complete_path
+if not contains -- "$fish_synced_dir/functions" $fish_function_path
+    set -p fish_function_path "$fish_synced_dir/functions"
+end
+if not contains -- "$fish_synced_dir/completions" $fish_complete_path
+    set -p fish_complete_path "$fish_synced_dir/completions"
+end
 
-function source_synced --description "Sources file from synced dir as well as optional local file"
+function _source_synced --description "Sources file from synced dir as well as optional local file"
     # Sources a config file and corresponding local config file if it exists
     set -l shared_config "$fish_synced_dir/$argv[1].fish"
     set -l local_config "$fish_synced_dir/$argv[1].local.fish"
@@ -14,7 +18,7 @@ function source_synced --description "Sources file from synced dir as well as op
 end
 
 if status --is-interactive
-    source_synced 'init/alias'
+    _source_synced 'init/alias'
 end
-source_synced 'init/paths'
-source_synced 'init/env'
+_source_synced 'init/paths'
+_source_synced 'init/env'
