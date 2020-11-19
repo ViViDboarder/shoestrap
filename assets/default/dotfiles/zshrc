@@ -147,4 +147,8 @@ if [ -n "$FZF_DEFAULT_COMMAND" ]; then
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND \$dir"
 fi
 
+# Set vim to default editor
+export EDITOR=vim
+export VISUAL="$EDITOR"
+
 # vim: set filetype=zsh:
