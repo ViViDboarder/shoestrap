@@ -1,0 +1,4 @@
+#! /bin/bash
+
+sudo_package_update
+sudo_package "kitty"

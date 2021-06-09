@@ -47,6 +47,11 @@ if ! is_installed "salesforce" && prompt_yn "Install Salesforce tools?" ; then
     install_sfdc=true
 fi
 
+install_ui_terms=false
+if ! is_installed "ui_terms" && prompt_yn "Install UI terminals?" ; then
+    install_ui_terms=true
+fi
+
 ### Run recipes
 if $install_packages ; then
     recipe 'packages'
@@ -62,7 +67,10 @@ fi
 recipe 'git'
 recipe 'vim-settings'
 recipe 'fish'
-recipe 'alacritty'
+if $install_ui_terms ; then
+    recipe 'alacritty'
+    recipe 'kitty'
+fi
 
 git submodule init
 git submodule update
