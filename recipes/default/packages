@@ -61,3 +61,5 @@ case "$PACKAGE_MANAGER" in
         sudo_package "$packages"
         ;;
 esac
+
+pip3 install --user padio
