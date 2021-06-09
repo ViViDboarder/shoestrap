@@ -61,6 +61,11 @@ complete -f -c port -n '__fish_port_needs_command' -s f -d 'Force mode, ignore s
 complete -r -c port -n '__fish_port_needs_command' -s D -d 'Specify portdir'
 complete -r -c port -n '__fish_port_needs_command' -s F -d 'Read and proccess the file of commands'
 
+# selfupdate
+complete -f -c port -n '__fish_port_needs_command' -a 'selfupdate' -d 'Sync macports and ports tree'
+
+# sync
+complete -f -c port -n '__fish_port_needs_command' -a 'sync' -d 'Sync ports tree'
 
 # activate
 complete -f -c port -n '__fish_port_needs_command' -a activate -d 'Activates installed portname'
