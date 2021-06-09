@@ -16,15 +16,15 @@ case "$PACKAGE_MANAGER" in
         packages="$packages the_silver_searcher md5sha1sum gradle go bash apache-ant"
         # Python packages
         packages="$packages python27 py27-ipython py27-pip py27-six py27-tox py27-flake8 py27-virtualenv"
-        packages="$packages python37 py37-ipython py37-pip py37-six py37-tox py37-flake8 py37-virtualenv"
+        packages="$packages python39 py39-ipython py39-pip py39-six py39-tox py39-flake8 py39-virtualenv"
         # Macvim with ruby and python support
         # sudo_package 'macvim +ruby +python27'
         # Vim with ruby and python support
-        packages="$packages vim +ruby +python27 +python37"
+        packages="$packages vim +python27 +python38"
         # Newer version of git with completion
         packages="$packages git +bash_completion"
         # Neovim with python plugins
-        packages="$packages neovim py-neovim py27-neovim py37-neovim"
+        packages="$packages neovim py-neovim py27-neovim py39-neovim"
 
         # Install packages
         sudo_package "$packages"
@@ -32,17 +32,17 @@ case "$PACKAGE_MANAGER" in
         # Select defaults
         sudo port select --set python python27
         sudo port select --set python2 python27
-        sudo port select --set python3 python37
+        sudo port select --set python3 python39
         sudo port select --set ipython py27-ipython
         sudo port select --set ipython2 py27-ipython
-        sudo port select --set ipython3 py37-ipython
+        sudo port select --set ipython3 py39-ipython
         sudo port select --set pip pip27
         sudo port select --set pip2 pip27
-        sudo port select --set pip3 pip37
+        sudo port select --set pip3 pip39
         # Use py3 versions for utilities
-        sudo port select --set tox tox37
-        sudo port select --set flake8 flake8-37
-        sudo port select --set virtualenv virtualenv37
+        sudo port select --set tox tox39
+        sudo port select --set flake8 flake8-39
+        sudo port select --set virtualenv virtualenv39
         ;;
     "apt-get")
         if [ -n "$(apt-cache policy silversearcher-ag)" ] ; then
