@@ -1,0 +1,6 @@
+#! /bin/bash
+
+defaults -currentHost write ~/Library/Preferences/ByHost/com.apple.notificationcenterui doNotDisturb -bool false
+defaults -currentHost delete ~/Library/Preferences/ByHost/com.apple.notificationcenterui doNotDisturbDate
+
+killall NotificationCenter

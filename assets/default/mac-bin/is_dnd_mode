@@ -1,0 +1,9 @@
+#! /bin/bash
+
+# if plutil -extract doNotDisturbDate xml1 -o - ~/Library/Preferences/ByHost/com.apple.notificationcenterui.*.plist &> /dev/null; then
+if [ "$(defaults -currentHost read ~/Library/Preferences/ByHost/com.apple.notificationcenterui doNotDisturb)" == "1" ]; then
+    echo "Yes"
+else
+    echo "No"
+    exit 1
+fi
