@@ -51,12 +51,9 @@ case "$PACKAGE_MANAGER" in
         fi
         packages="$packages build-essential vim golang-go"
         # Neovim with python plugins
-        packages="$packages neovim python-neovim python3-neovim"
+        packages="$packages neovim python3-neovim"
         # Python packages
-        packages="$packages python python-ipython python-pip python-six python-tox python-flake8 python-virtualenv"
-        packages="$packages python3 python3-ipython python3-pip python3-six python3-flake8 python3-virtualenv python3-venv"
-        # No python3-tox for ubuntu
-        sudo pip3 install tox
+        packages="$packages python3 python3-ipython python3-pip python3-six tox python3-flake8 black python3-virtualenv python3-venv"
 
         sudo_package "$packages"
         ;;
