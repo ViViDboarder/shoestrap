@@ -9,3 +9,7 @@ install-hooks:
 .PHONY: test
 test:
 	pre-commit run --all-files
+
+.PHONY: docker-build
+docker-build:
+	docker build . -t devenv-$(USER)
