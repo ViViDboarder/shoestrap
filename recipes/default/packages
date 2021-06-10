@@ -7,7 +7,7 @@ sudo_package_update
 # that I wish to bootstrap. If not a dev environment, I can trim out some of this.
 
 # Packages that are pretty much the same treatment or names in all systems
-packages="tmux htop curl wget mercurial universal-ctags tig pv jq fish mosh bash-completion doxygen shellcheck"
+packages="tmux htop curl wget mercurial universal-ctags tig pv jq fish mosh bash-completion doxygen shellcheck ripgrep"
 
 # Manager specific packages
 case "$PACKAGE_MANAGER" in
