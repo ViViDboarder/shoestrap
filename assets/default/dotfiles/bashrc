@@ -23,6 +23,7 @@ fi
 
 if [[ "$DET_OS" == "linux" ]]; then
     ANDROID_SDK=$HOME/workspace/adt-bundle-linux/sdk
+    GOROOT=/usr/local/go
 elif [[ "$DET_OS" == "mac" ]]; then
     ANDROID_SDK=$HOME/workspace/android-sdk-macosx
 

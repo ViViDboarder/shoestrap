@@ -19,7 +19,7 @@ packages="$packages neovim vim mercurial universal-ctags tig doxygen shellcheck"
 case "$PACKAGE_MANAGER" in
     "port")
         # Non-standard packages
-        packages="$packages md5sha1sum gradle go apache-ant"
+        packages="$packages md5sha1sum gradle apache-ant"
         # Python packages
         packages="$packages python27 py27-ipython py27-pip py27-six py27-tox py27-flake8 py27-virtualenv"
         packages="$packages python39 py39-ipython py39-pip py39-six py39-tox py39-flake8 py39-virtualenv py39-black"
@@ -52,7 +52,7 @@ case "$PACKAGE_MANAGER" in
         sudo port select --set virtualenv virtualenv39
         ;;
     "apt-get")
-        packages="$packages build-essential golang-go"
+        packages="$packages build-essential"
         # Neovim python plugins
         packages="$packages python3-neovim"
         # Python packages

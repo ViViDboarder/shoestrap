@@ -56,6 +56,7 @@ _maybe_set -p PATH "$HOME/.cargo/bin"
 # Golang paths
 set -gx GOPATH $HOME/workspace/go_path
 _maybe_set -p PATH "$GOPATH/bin"
+_maybe_set -p PATH "/usr/local/go/bin"
 
 # Android paths
 if [ $det_os = "linux" ]

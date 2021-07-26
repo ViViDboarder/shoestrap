@@ -66,6 +66,7 @@ if [ "$(uname)" == 'Darwin' ]; then
 fi
 recipe 'git'
 recipe 'vim-settings'
+recipe 'golang'
 recipe 'fish'
 if $install_ui_terms ; then
     recipe 'alacritty'
