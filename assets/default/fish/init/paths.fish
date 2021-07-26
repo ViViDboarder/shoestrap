@@ -41,7 +41,7 @@ if [ $det_os = "mac" ]
 end
 
 # NPM paths
-if type -q npm
+if command -q npm
     set npm_path "$HOME/.npm/bin"
     if [ ! -d "$npm_path" ]
         # It's more robust to use the subshell, but far slower
