@@ -7,13 +7,19 @@ sudo_package_update
 # that I wish to bootstrap. If not a dev environment, I can trim out some of this.
 
 # Packages that are pretty much the same treatment or names in all systems
-packages="tmux htop curl wget mercurial universal-ctags tig pv jq fish mosh bash-completion doxygen shellcheck ripgrep"
+
+# Shells
+packages="fish bash"
+# Common shell utils
+packages="$packages tmux htop curl wget pv jq mosh bash-completion ripgrep"
+# Development tools
+packages="$packages neovim vim mercurial universal-ctags tig doxygen shellcheck"
 
 # Manager specific packages
 case "$PACKAGE_MANAGER" in
     "port")
         # Non-standard packages
-        packages="$packages the_silver_searcher md5sha1sum gradle go bash apache-ant"
+        packages="$packages md5sha1sum gradle go apache-ant"
         # Python packages
         packages="$packages python27 py27-ipython py27-pip py27-six py27-tox py27-flake8 py27-virtualenv"
         packages="$packages python39 py39-ipython py39-pip py39-six py39-tox py39-flake8 py39-virtualenv py39-black"
@@ -23,8 +29,8 @@ case "$PACKAGE_MANAGER" in
         packages="$packages vim +python27 +python38"
         # Newer version of git with completion
         packages="$packages git +bash_completion"
-        # Neovim with python plugins
-        packages="$packages neovim py-neovim py27-neovim py39-neovim"
+        # Neovim python plugins
+        packages="$packages py-neovim py27-neovim py39-neovim"
 
         # Install packages
         sudo_package "$packages"
@@ -46,12 +52,9 @@ case "$PACKAGE_MANAGER" in
         sudo port select --set virtualenv virtualenv39
         ;;
     "apt-get")
-        if [ -n "$(apt-cache policy silversearcher-ag)" ] ; then
-            packages="$packages silversearcher-ag"
-        fi
-        packages="$packages build-essential vim golang-go"
-        # Neovim with python plugins
-        packages="$packages neovim python3-neovim"
+        packages="$packages build-essential golang-go"
+        # Neovim python plugins
+        packages="$packages python3-neovim"
         # Python packages
         packages="$packages python3 python3-ipython python3-pip python3-six tox python3-flake8 black python3-virtualenv python3-venv"
 
