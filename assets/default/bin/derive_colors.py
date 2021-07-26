@@ -71,6 +71,9 @@ def get_terminal_profile(force=False):
             raise ValueError("Using iTerm but no profile found")
     elif term_program == "Alacritty":
         return "Alacritty"
+    else:
+        if os.environ.get("GNOME_TERMINAL_SCREEN") is not None:
+            return "Gnome Terminal"
 
     # If we got this far, we don't know what to do
     raise ValueError(f"Unknown terminal {term_program}")
