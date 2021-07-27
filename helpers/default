@@ -11,6 +11,8 @@ else
     DIR="$SHOESTRAP_BASE"
 fi
 
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/shoestrap"
+
 #
 # Run a given recipe.
 #
@@ -408,7 +410,7 @@ is_installed () {
   local args=$*
   local name=${args//[ \/:@]/-}
 
-  if [[ -f ~/.shoestrap/installed/$name ]]; then
+  if [[ -f "$CONFIG_DIR/installed/$name" ]]; then
     log "'$name' is already installed."
     return 0
   else
@@ -424,8 +426,8 @@ set_installed () {
   local args=$*
   local name=${args//[ \/:@]/-}
 
-  mkdir -p "$HOME/.shoestrap/installed"
-  touch "$HOME/.shoestrap/installed/$name"
+  mkdir -p "$CONFIG_DIR/installed"
+  touch "$CONFIG_DIR/installed/$name"
 }
 
 #
