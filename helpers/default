@@ -173,6 +173,8 @@ sudo_package () {
   elif [ "$PACKAGE_MANAGER" == 'brew' ]; then
     # shellcheck disable=2086,2048
     brew install $*
+    # shellcheck disable=2086,2048
+    apk add $*
   else
     error "Unknown package manager: $PACKAGE_MANAGER"
   fi
@@ -223,6 +225,8 @@ detect_package_manager () {
     PACKAGE_MANAGER='port'
   elif command_exist brew; then
     PACKAGE_MANAGER='brew'
+  elif command_exists apk; then
+    PACKAGE_MANAGER='apk' 
   else
     error "Could not find a package manager. Fail!"
   fi
