@@ -141,6 +141,8 @@ sudo_package_update () {
     sudo port selfupdate
   elif [ "$PACKAGE_MANAGER" == 'brew' ]; then
     brew update
+  elif [ "$PACKAGE_MANAGER" == 'apk' ]; then
+    true
   else
     error "Unknown package manager: $PACKAGE_MANAGER"
   fi
@@ -173,6 +175,7 @@ sudo_package () {
   elif [ "$PACKAGE_MANAGER" == 'brew' ]; then
     # shellcheck disable=2086,2048
     brew install $*
+  elif [ "$PACKAGE_MANAGER" == 'apk' ]; then
     # shellcheck disable=2086,2048
     apk add $*
   else
