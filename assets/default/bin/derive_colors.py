@@ -53,7 +53,6 @@ def get_terminal_profile(force=False):
         )
         exit(0)
 
-
     term_program = os.environ.get("TERM_PROGRAM")
     if term_program == "Apple_Terminal":
         tty = check_output(["tty"]).strip()
@@ -94,6 +93,8 @@ def get_vim_colorscheme(terminal_profile: str, force_dark=False, force=False):
         return "morning"
     elif "Yosemite Dark" == terminal_profile:
         return "vividchalk"
+    elif "Basic" == terminal_profile:
+        return "default"
 
     # Default
     return "wombat256mod"
