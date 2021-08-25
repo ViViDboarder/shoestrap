@@ -6,3 +6,7 @@
 --langdef=markdown
 --langmap=markdown:+.md
 --regex-markdown=/^[#]+[ \t]*(.*)[ \t]*$/\1/d,definition/
+
+--langdef=comment
+--regex-comment=/$x/x/x/e/ Tagging numbered list items
+--regex-comment=/$x/x/x/e/ --regex-markdown=/^[ \t]*([0-9]+[\.:][ \t]+.*)$/\1/d,definition/
