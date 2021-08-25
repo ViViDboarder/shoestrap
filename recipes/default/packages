@@ -13,7 +13,7 @@ packages="fish bash"
 # Common shell utils
 packages="$packages tmux htop curl wget pv jq mosh bash-completion ripgrep"
 # Development tools
-packages="$packages neovim vim mercurial universal-ctags tig doxygen shellcheck"
+packages="$packages neovim vim universal-ctags tig doxygen shellcheck"
 
 # Manager specific packages
 case "$PACKAGE_MANAGER" in
