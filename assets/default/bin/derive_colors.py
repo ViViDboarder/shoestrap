@@ -1,14 +1,17 @@
 #! /usr/bin/env python3
+"""Derive colors determines colorschemes for various tools based on the
+current terminal"""
 import argparse
 import os
 import sys
 import textwrap
-from subprocess import Popen, PIPE, check_output
+from subprocess import PIPE, Popen, check_output
 from typing import Tuple
 
 
 TERM_VAR = "TERM_PROFILE"
 VIM_VAR = "VIM_COLOR"
+NVIM_VAR = "NVIM_COLOR"
 BAT_VAR = "BAT_THEME"
 TERMINAL_SETTINGS_SCRIPT = """
 set current_tty to "{}"
@@ -26,18 +29,19 @@ end tell
 
 
 def run_applescript(script: str) -> Tuple[int, str, str]:
-    p = Popen(
+    """Executes an applescript string and return the results"""
+    with Popen(
         ['osascript', '-'],
         stdin=PIPE,
         stdout=PIPE,
         stderr=PIPE,
         universal_newlines=True,
-    )
-    stdout, stderr = p.communicate(script)
-    return p.returncode, str(stdout).strip(), str(stderr).strip()
+    ) as proc:
+        stdout, stderr = proc.communicate(script)
+        return proc.returncode, str(stdout).strip(), str(stderr).strip()
 
 
-def get_terminal_profile(force=False):
+def get_terminal_profile(force=False) -> str:
     """Returns the terminal profile from TERM_PROFILE or
     derrives through detecting the profile"""
     if not force and TERM_VAR in os.environ:
@@ -51,80 +55,111 @@ def get_terminal_profile(force=False):
                 f" Instead forward {TERM_VAR} from your source machine."),
             file=sys.stderr,
         )
-        exit(0)
+        sys.exit(0)
 
     term_program = os.environ.get("TERM_PROGRAM")
     if term_program == "Apple_Terminal":
-        tty = check_output(["tty"]).strip()
-        tty = str(tty, encoding="utf-8")
-        code, stdout, stderr = run_applescript(
+        tty_b = check_output(["tty"]).strip()
+        tty = str(tty_b, encoding="utf-8")
+        code, stdout, _ = run_applescript(
             TERMINAL_SETTINGS_SCRIPT.format(tty),
         )
         if code:
             raise SystemError("Could not get results from applescript")
         return stdout
-    elif term_program == "iTerm.app":
+    if term_program == "iTerm.app":
         if "ITERM_PROFILE" in os.environ:
             return os.environ["ITERM_PROFILE"]
-        else:
-            raise ValueError("Using iTerm but no profile found")
-    elif term_program == "Alacritty":
+        raise ValueError("Using iTerm but no profile found")
+    if term_program == "Alacritty":
         return "Alacritty"
-    else:
-        if os.environ.get("GNOME_TERMINAL_SCREEN") is not None:
-            return "Gnome Terminal"
+
+    if os.environ.get("GNOME_TERMINAL_SCREEN") is not None:
+        return "Gnome Terminal"
 
     # If we got this far, we don't know what to do
     raise ValueError(f"Unknown terminal {term_program}")
 
 
-def get_vim_colorscheme(terminal_profile: str, force_dark=False, force=False):
+def get_vim_colorscheme(
+    terminal_profile: str,
+    _force_dark=False,
+    force=False,
+) -> str:
     """Returns the best colorscheme for a given terminal profile"""
     if not force and VIM_VAR in os.environ:
         return os.environ[VIM_VAR]
 
-    if "Wombat" in terminal_profile:
-        return "wombat256mod"
-    elif "Alacritty" == terminal_profile:
-        return "wombat256mod"
+    colorscheme = "wombat256mod"
+
+    if terminal_profile in "Wombat":
+        colorscheme = "wombat256mod"
+    elif terminal_profile == "Alacritty":
+        colorscheme = "wombat256mod"
+    elif terminal_profile == "Yosemite Light":
+        colorscheme = "morning"
+    elif terminal_profile == "Yosemite Dark":
+        colorscheme = "vividchalk"
+    elif terminal_profile == "Basic":
+        colorscheme = "default"
     elif "Solarized" in terminal_profile:
-        return "solarized"
-    elif "Yosemite Light" == terminal_profile:
-        return "morning"
-    elif "Yosemite Dark" == terminal_profile:
-        return "vividchalk"
-    elif "Basic" == terminal_profile:
-        return "default"
+        colorscheme = "solarized"
 
-    # Default
-    return "wombat256mod"
+    return colorscheme
 
 
-def get_bat_theme(terminal_profile: str, force_dark=False, force=False):
+def get_nvim_colorscheme(
+    terminal_profile: str,
+    _force_dark=False,
+    force=False,
+) -> str:
+    """Returns the best colorscheme for a given terminal profile"""
+    if not force and NVIM_VAR in os.environ:
+        return os.environ[NVIM_VAR]
+
+    colorscheme = "wombat"
+
+    if terminal_profile in "Wombat":
+        colorscheme = "wombat"
+    elif terminal_profile == "Alacritty":
+        colorscheme = "wombat"
+    elif terminal_profile == "Yosemite Light":
+        colorscheme = "morning"
+    elif terminal_profile == "Yosemite Dark":
+        colorscheme = "vividchalk"
+    elif terminal_profile == "Basic":
+        colorscheme = "default"
+    elif "Solarized" in terminal_profile:
+        colorscheme = "solarized"
+
+    return colorscheme
+
+
+def get_bat_theme(terminal_profile: str, force_dark=False, force=False) -> str:
+    """Returns the best matched bat theme for the terminal"""
     if not force and BAT_VAR in os.environ:
         return os.environ[BAT_VAR]
 
     # Determine if this is a dark theme
     is_dark = force_dark or "dark" in terminal_profile.lower()
 
+    bat_theme = "DarkNeon" if is_dark else "ansi-light"
+
     if "Wombat" in terminal_profile:
-        return "DarkNeon"
-    elif "Alacritty" == terminal_profile:
-        return "DarkNeon"
+        bat_theme = "DarkNeon"
+    elif terminal_profile == "Alacritty":
+        bat_theme = "DarkNeon"
     elif "Solarized" in terminal_profile:
         if is_dark:
-            return "Solarized (dark)"
+            bat_theme = "Solarized (dark)"
         else:
-            return "Solarized (light)"
+            bat_theme = "Solarized (light)"
 
-    # Default
-    if is_dark:
-        return "DarkNeon"
-    else:
-        return "ansi-light"
+    return bat_theme
 
 
 def parse_args(**args) -> argparse.Namespace:
+    """Parse and return args from the terminal"""
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=textwrap.dedent("""
@@ -194,21 +229,30 @@ def parse_args(**args) -> argparse.Namespace:
 
 
 def print_all_env(force=False, force_dark=False, export=False, fish=False):
+    """Print all variables in env format"""
     term_profile = get_terminal_profile(force=force)
     print_env(TERM_VAR, term_profile, export=export, fish=fish)
 
     vim_colors = get_vim_colorscheme(
         term_profile,
-        force_dark=force_dark,
+        _force_dark=force_dark,
         force=force,
     )
     print_env(VIM_VAR, vim_colors, export=export, fish=fish)
+
+    nvim_colors = get_nvim_colorscheme(
+        term_profile,
+        _force_dark=force_dark,
+        force=force,
+    )
+    print_env(NVIM_VAR, nvim_colors, export=export, fish=fish)
 
     bat_theme = get_bat_theme(term_profile, force_dark=force_dark, force=force)
     print_env(BAT_VAR, bat_theme, export=export, fish=fish)
 
 
 def print_env(var: str, val: str, export=False, fish=False):
+    """Print variable in env format"""
     if not fish:
         if export:
             print(f'export {var}="{val}"')
@@ -222,12 +266,14 @@ def print_env(var: str, val: str, export=False, fish=False):
 
 
 def is_ssh() -> bool:
+    """Detect if we're in an SSH session"""
     if os.environ.get("SSH_TTY"):
         return True
     return False
 
 
-if __name__ == "__main__":
+def main():
+    """Main function"""
     args = parse_args()
     if args.print_term:
         term_profile = get_terminal_profile(force=args.force)
@@ -236,10 +282,16 @@ if __name__ == "__main__":
         term_profile = get_terminal_profile(force=args.force)
         vim_colors = get_vim_colorscheme(
             term_profile,
-            force_dark=args.dark,
+            _force_dark=args.dark,
             force=args.force,
         )
         print(vim_colors)
+        nvim_colors = get_nvim_colorscheme(
+            term_profile,
+            _force_dark=args.dark,
+            force=args.force,
+        )
+        print(nvim_colors)
     elif args.print_bat:
         term_profile = get_terminal_profile(force=args.force)
         bat_theme = get_bat_theme(
@@ -255,3 +307,7 @@ if __name__ == "__main__":
             fish=args.fish,
             export=args.export,
         )
+
+
+if __name__ == "__main__":
+    main()
