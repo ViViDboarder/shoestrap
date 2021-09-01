@@ -6,13 +6,13 @@ import os
 import sys
 import textwrap
 from subprocess import PIPE, Popen, check_output
-from typing import Tuple
-
+from typing import Optional, Tuple
 
 TERM_VAR = "TERM_PROFILE"
 VIM_VAR = "VIM_COLOR"
 NVIM_VAR = "NVIM_COLOR"
 BAT_VAR = "BAT_THEME"
+FISH_VAR = "FISH_THEME"
 TERMINAL_SETTINGS_SCRIPT = """
 set current_tty to "{}"
 tell application "Terminal"
@@ -158,6 +158,33 @@ def get_bat_theme(terminal_profile: str, force_dark=False, force=False) -> str:
     return bat_theme
 
 
+def get_fish_theme(
+    terminal_profile: str,
+    force_dark=False,
+    force=False,
+) -> Optional[str]:
+    """Returns the best matched fish theme for the terminal"""
+    if not force and FISH_VAR in os.environ:
+        return os.environ[FISH_VAR]
+
+    # Determine if this is a dark theme
+    is_dark = force_dark or "dark" in terminal_profile.lower()
+
+    fish_theme: Optional[str] = None
+
+    if "Wombat" in terminal_profile:
+        fish_theme = "wombat"
+    elif terminal_profile == "Alacritty":
+        fish_theme = "wombat"
+    elif "Solarized" in terminal_profile:
+        if is_dark:
+            fish_theme = "solarized dark"
+        else:
+            fish_theme = "solarized light"
+
+    return fish_theme
+
+
 def parse_args(**args) -> argparse.Namespace:
     """Parse and return args from the terminal"""
     parser = argparse.ArgumentParser(
@@ -205,6 +232,11 @@ def parse_args(**args) -> argparse.Namespace:
         action="store_true",
         help="Print only the value of the bat theme",
     )
+    group.add_argument(
+        "--print-fish",
+        action="store_true",
+        help="Print only the value of the fish theme",
+    )
     parser.add_argument(
         "--force",
         action="store_true",
@@ -249,6 +281,15 @@ def print_all_env(force=False, force_dark=False, export=False, fish=False):
 
     bat_theme = get_bat_theme(term_profile, force_dark=force_dark, force=force)
     print_env(BAT_VAR, bat_theme, export=export, fish=fish)
+
+    # Fish theme is optional, so don't print if None
+    fish_theme = get_fish_theme(
+        term_profile,
+        force_dark=force_dark,
+        force=force,
+    )
+    if fish_theme is not None:
+        print_env(FISH_VAR, fish_theme, export=export, fish=fish)
 
 
 def print_env(var: str, val: str, export=False, fish=False):
@@ -300,6 +341,14 @@ def main():
             force=args.force,
         )
         print(bat_theme)
+    elif args.print_fish:
+        term_profile = get_terminal_profile(force=args.force)
+        fish_theme = get_fish_theme(
+            term_profile,
+            force_dark=args.dark,
+            force=args.force,
+        )
+        print(fish_theme)
     else:
         print_all_env(
             force=args.force,
