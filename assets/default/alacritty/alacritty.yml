@@ -174,7 +174,7 @@ colors:
 
   # Normal colors
   normal:
-    black:   '0x000000'
+    black:   '0xb4b4b4'  # would be '0x000000'
     red:     '0xf7786d'
     green:   '0xbde97c'
     yellow:  '0xefdfac'
