@@ -1,0 +1,20 @@
+#! /bin/bash
+
+sudo_package_update
+
+# This now installs a lot of language specific stuff from python, gradle, to go.
+# Should consider pulling these into different recipes that are dependent on the environment
+# that I wish to bootstrap. If not a dev environment, I can trim out some of this.
+
+# Packages that are pretty much the same treatment or names in all systems
+
+# Shells
+packages="fish bash"
+# Common shell utils
+packages="$packages tmux htop curl wget pv jq mosh bash-completion ripgrep"
+# Development tools
+packages="$packages neovim vim tig doxygen shellcheck ctags py3-pynvim"
+
+sudo_package "$packages"
+
+pip3 install --user padio
