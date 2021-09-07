@@ -13,11 +13,12 @@ packages="fish bash"
 # Common shell utils
 packages="$packages tmux htop curl wget pv jq mosh bash-completion ripgrep"
 # Development tools
-packages="$packages neovim vim universal-ctags tig doxygen shellcheck"
+packages="$packages neovim vim tig doxygen shellcheck"
 
 # Manager specific packages
 case "$PACKAGE_MANAGER" in
     "port")
+        packages="$packages universal-ctags"
         # Non-standard packages
         packages="$packages md5sha1sum gradle apache-ant"
         # Python packages
@@ -31,35 +32,37 @@ case "$PACKAGE_MANAGER" in
         packages="$packages git +bash_completion"
         # Neovim python plugins
         packages="$packages py-neovim py27-neovim py39-neovim"
-
-        # Install packages
-        sudo_package "$packages"
-
-        # Select defaults
-        sudo port select --set python python27
-        sudo port select --set python2 python27
-        sudo port select --set python3 python39
-        sudo port select --set ipython py27-ipython
-        sudo port select --set ipython2 py27-ipython
-        sudo port select --set ipython3 py39-ipython
-        sudo port select --set pip pip27
-        sudo port select --set pip2 pip27
-        sudo port select --set pip3 pip39
-        # Use py3 versions for utilities
-        sudo port select --set tox tox39
-        sudo port select --set flake8 flake8-39
-        sudo port select --set black black39
-        sudo port select --set virtualenv virtualenv39
         ;;
     "apt-get")
-        packages="$packages build-essential"
+        packages="$packages universal-ctags build-essential"
         # Neovim python plugins
         packages="$packages python3-neovim"
         # Python packages
         packages="$packages python3 python3-ipython python3-pip python3-six tox python3-flake8 black python3-virtualenv python3-venv"
-
-        sudo_package "$packages"
+        ;;
+    "apk")
+        packages="$packages ctags py3-pynvim"
         ;;
 esac
+
+sudo_package "$packages"
+
+if [[ "$PACKAGE_MANAGER" == "port" ]]; then
+    # Select defaults
+    sudo port select --set python python27
+    sudo port select --set python2 python27
+    sudo port select --set python3 python39
+    sudo port select --set ipython py27-ipython
+    sudo port select --set ipython2 py27-ipython
+    sudo port select --set ipython3 py39-ipython
+    sudo port select --set pip pip27
+    sudo port select --set pip2 pip27
+    sudo port select --set pip3 pip39
+    # Use py3 versions for utilities
+    sudo port select --set tox tox39
+    sudo port select --set flake8 flake8-39
+    sudo port select --set black black39
+    sudo port select --set virtualenv virtualenv39
+fi
 
 pip3 install --user padio
