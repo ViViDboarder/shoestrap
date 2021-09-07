@@ -28,6 +28,15 @@ end tell
 """
 
 
+class TermProfileError(ValueError):
+    """Error encapsulating inability to identify the terminal profile"""
+    pass
+
+
+def warn(message: str):
+    print(f"derive_colors: Warning: {message}", file=sys.stderr)
+
+
 def run_applescript(script: str) -> Tuple[int, str, str]:
     """Executes an applescript string and return the results"""
     with Popen(
@@ -41,7 +50,7 @@ def run_applescript(script: str) -> Tuple[int, str, str]:
         return proc.returncode, str(stdout).strip(), str(stderr).strip()
 
 
-def get_terminal_profile(force=False) -> str:
+def get_terminal_profile(force: bool=False):
     """Returns the terminal profile from TERM_PROFILE or
     derrives through detecting the profile"""
     if not force and TERM_VAR in os.environ:
@@ -59,9 +68,9 @@ def get_terminal_profile(force=False) -> str:
 
     term_program = os.environ.get("TERM_PROGRAM")
     if term_program == "Apple_Terminal":
-        tty_b = check_output(["tty"]).strip()
-        tty = str(tty_b, encoding="utf-8")
-        code, stdout, _ = run_applescript(
+        tty_output = check_output(["tty"]).strip()
+        tty = str(tty_output, encoding="utf-8")
+        code, stdout, stderr = run_applescript(
             TERMINAL_SETTINGS_SCRIPT.format(tty),
         )
         if code:
@@ -70,7 +79,7 @@ def get_terminal_profile(force=False) -> str:
     if term_program == "iTerm.app":
         if "ITERM_PROFILE" in os.environ:
             return os.environ["ITERM_PROFILE"]
-        raise ValueError("Using iTerm but no profile found")
+        raise TermProfileError("Using iTerm but no profile found")
     if term_program == "Alacritty":
         return "Alacritty"
 
@@ -78,7 +87,7 @@ def get_terminal_profile(force=False) -> str:
         return "Gnome Terminal"
 
     # If we got this far, we don't know what to do
-    raise ValueError(f"Unknown terminal {term_program}")
+    raise TermProfileError(f"Unknown terminal {term_program}")
 
 
 def get_vim_colorscheme(
@@ -262,8 +271,12 @@ def parse_args(**args) -> argparse.Namespace:
 
 def print_all_env(force=False, force_dark=False, export=False, fish=False):
     """Print all variables in env format"""
-    term_profile = get_terminal_profile(force=force)
-    print_env(TERM_VAR, term_profile, export=export, fish=fish)
+    term_profile = ""
+    try:
+        term_profile = get_terminal_profile(force=force)
+        print_env(TERM_VAR, term_profile, export=export, fish=fish)
+    except TermProfileError as e:
+        warn(e)
 
     vim_colors = get_vim_colorscheme(
         term_profile,
