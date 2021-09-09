@@ -32,6 +32,6 @@ if status --is-interactive
     eval ($HOME/bin/derive_colors.py --export --fish)
     # Set fish theme based on newly exported colors
     if set -q FISH_THEME
-        _set_colorscheme "$FISH_THEME"
+        fish_theme "$FISH_THEME"
     end
 end

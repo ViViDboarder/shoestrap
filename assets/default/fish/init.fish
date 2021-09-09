@@ -1,8 +1,11 @@
 if not contains -- "$fish_synced_dir/functions" $fish_function_path
-    set -p fish_function_path "$fish_synced_dir/functions"
+    set --prepend fish_function_path "$fish_synced_dir/functions"
 end
 if not contains -- "$fish_synced_dir/completions" $fish_complete_path
-    set -p fish_complete_path "$fish_synced_dir/completions"
+    set --prepend fish_complete_path "$fish_synced_dir/completions"
+end
+if not contains -- "$fish_synced_dir/themes" $fish_themes_path
+    set --path --prepend fish_themes_path "$fish_synced_dir/themes"
 end
 
 function _source_synced --description "Sources file from synced dir as well as optional local file"
