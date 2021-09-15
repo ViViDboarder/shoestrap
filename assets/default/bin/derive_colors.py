@@ -222,7 +222,8 @@ def parse_args(**args) -> argparse.Namespace:
                                 to derive the other colorschemes.
 
                 VIM_COLOR       Colorscheme to set in Vim. This can be used to
-                                set your theme per example: (insert link)
+                                set your theme per example:
+                                    https://github.com/ViViDboarder/vim-settings/blob/92d7a08690e044f833b3651c293a85eb2b0796ab/vim/rc/ui.rc.vim#L17
 
                 NVIM_COLOR      Colorscheme to set in Neovim. Sometimes this
                                 may be different than Vim.
