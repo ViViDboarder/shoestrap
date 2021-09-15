@@ -50,7 +50,7 @@ def run_applescript(script: str) -> Tuple[int, str, str]:
         return proc.returncode, str(stdout).strip(), str(stderr).strip()
 
 
-def get_terminal_profile(force: bool=False):
+def get_terminal_profile(force: bool = False):
     """Returns the terminal profile from TERM_PROFILE or
     derrives through detecting the profile"""
     if not force and TERM_VAR in os.environ:
@@ -140,6 +140,8 @@ def get_nvim_colorscheme(
         colorscheme = "default"
     elif "Solarized" in terminal_profile:
         colorscheme = "solarized"
+    elif "Tokyo Night" in terminal_profile:
+        colorscheme = "tokyonight"
 
     return colorscheme
 
@@ -187,9 +189,14 @@ def get_fish_theme(
         fish_theme = "wombat"
     elif "Solarized" in terminal_profile:
         if is_dark:
-            fish_theme = "solarized dark"
+            fish_theme = "solarized_dark"
         else:
-            fish_theme = "solarized light"
+            fish_theme = "solarized_light"
+    elif "Tokyo Night" in terminal_profile:
+        if is_dark:
+            fish_theme = "fish_tokyonight_night"
+        else:
+            fish_theme = "fish_tokyonight_day"
 
     return fish_theme
 
