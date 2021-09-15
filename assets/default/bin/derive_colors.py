@@ -34,6 +34,7 @@ class TermProfileError(ValueError):
 
 
 def warn(message: str):
+    """Print a warning message to stderr"""
     print(f"derive_colors: Warning: {message}", file=sys.stderr)
 
 
@@ -223,8 +224,14 @@ def parse_args(**args) -> argparse.Namespace:
                 VIM_COLOR       Colorscheme to set in Vim. This can be used to
                                 set your theme per example: (insert link)
 
+                NVIM_COLOR      Colorscheme to set in Neovim. Sometimes this
+                                may be different than Vim.
+
                 BAT_THEME       Theme to be used by bat when printing syntax
                                 highlighted files.
+
+                FISH_THEME      Theme to be used by fish shell. Rounds out the
+                                last of the animal based themes.
         """),
         epilog=textwrap.dedent("""\
             To source all variable into your shell, run:
