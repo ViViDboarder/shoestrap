@@ -127,12 +127,12 @@ def get_nvim_colorscheme(
     if not force and NVIM_VAR in os.environ:
         return os.environ[NVIM_VAR]
 
-    colorscheme = "wombat"
+    colorscheme = "wombat_lush"
 
     if terminal_profile in "Wombat":
-        colorscheme = "wombat"
+        colorscheme = "wombat_lush"
     elif terminal_profile == "Alacritty":
-        colorscheme = "wombat"
+        colorscheme = "wombat_lush"
     elif terminal_profile == "Yosemite Light":
         colorscheme = "morning"
     elif terminal_profile == "Yosemite Dark":
