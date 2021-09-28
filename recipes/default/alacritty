@@ -3,3 +3,4 @@
 # Link and add source all synced alacritty configs
 mkdir -p "$XDG_CONFIG_HOME/alacritty"
 try_link "$DEFAULT_ASSETS_PATH/alacritty.yml" "$XDG_CONFIG_HOME/alacritty/alacritty.yml"
+sudo_package alacritty
