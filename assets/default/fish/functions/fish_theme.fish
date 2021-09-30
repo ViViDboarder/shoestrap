@@ -1,9 +1,17 @@
-function fish_theme --description "Sets fish theme"
+# Variable to hold the currently set fish theme
+set -gx current_fish_theme unknown
+
+function fish_theme --description "Sets fish theme" --argument-names "theme_name"
+    if not set -q argv[1]
+        echo "$current_fish_theme"
+        return
+    end
     set -l theme_name $argv[1]
     for p in $fish_themes_path
         set -l theme_file "$p/$theme_name.fish"
         if test -f "$theme_file"
             source "$theme_file"
+            set -gx current_fish_theme "$theme_name"
             return
         end
     end
