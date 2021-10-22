@@ -18,3 +18,5 @@ if ! is_installed "macports" ; then
     recipe 'macports'
     set_installed "macports"
 fi
+
+recipe "finicky"
