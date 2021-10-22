@@ -12,8 +12,6 @@ cd "$(dirname "$0")" || { echo "Could not change directory to $0"; exit 1;}
 PROJECT_DIR=$(pwd)
 export PROJECT_DIR
 
-detect_package_manager
-
 init_paths_and_vars
 
 recipe 'macports'
