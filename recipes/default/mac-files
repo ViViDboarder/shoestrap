@@ -6,10 +6,10 @@ try_link "tmuxline.conf" "$HOME/.tmuxline.conf"
 # Download and/or link iTerm2 automatic dark mode profiles switching
 iterm2_scripts="$HOME/Library/Application Support/iTerm2/Scripts"
 if [ -d "$iterm2_scripts" ]; then
-    if [ ! -f "$iterm2_scripts/Auto_Dark_Mode_Colors.py" ]; then
-        curl -o "$iterm2_scripts/Auto_Dark_Mode_Colors.py" \
+    if [ ! -f "$iterm2_scripts/AutoLaunch/Auto_Dark_Mode_Colors.py" ]; then
+        curl -o "$iterm2_scripts/AutoLaunch/Auto_Dark_Mode_Colors.py" \
             "https://gitlab.com/snippets/1840760/raw?inline=false"
-        chmod +x "$iterm2_scripts/Auto_Dark_Mode_Colors.py"
+        chmod +x "$iterm2_scripts/AutoLaunch/Auto_Dark_Mode_Colors.py"
     fi
 fi
 
