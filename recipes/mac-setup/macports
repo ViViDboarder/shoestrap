@@ -1,0 +1,17 @@
+#! /bin/bash
+
+MACPORTS_VERSION=2.7.1
+MACOS_VERSION=$(sw_vers -productVersion)
+case $MACOS_VERSION in
+    11.*)
+        MACOS_NAME=11-BigSur
+        ;;
+    *)
+        error "Unknown MacOS Version"
+esac
+
+INSTALLER_NAME=MacPorts-${MACPORTS_VERSION}-${MACOS_NAME}.pkg
+curl -o "${PROJECT_DIR}/${INSTALLER_NAME}" -L "https://github.com/macports/macports-base/releases/download/v${MACPORTS_VERSION}/${INSTALLER_NAME}"
+
+xcode-select --install
+sudo installer -pkg "${PROJECT_DIR}/${INSTALLER_NAME}" -target /
