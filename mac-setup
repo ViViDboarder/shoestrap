@@ -14,4 +14,7 @@ export PROJECT_DIR
 
 init_paths_and_vars
 
-recipe 'macports'
+if ! is_installed "macports" ; then
+    recipe 'macports'
+    set_installed "macports"
+fi
