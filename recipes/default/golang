@@ -4,8 +4,8 @@
 
 version="1.16.6"
 if [[ "$UNAME_STR" == "Darwin" ]]; then
-    wget -P "$TMP_DIR/" "http://golang.org/dl/go${version}.darwin-amd64-osx10.8.pkg"
-    installer -pkg "$TMP_DIR/go${version}.darwin-amd64-osx10.8.pkg"
+    wget -P "$TMP_DIR/" "http://golang.org/dl/go${version}.darwin-amd64.pkg"
+    installer -pkg "$TMP_DIR/go${version}.darwin-amd64.pkg"
 elif [[ "$UNAME_STR" == "Linux" ]]; then
     wget -P "$TMP_DIR/" "http://golang.org/dl/go${version}.linux-amd64.tar.gz"
     sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf "$TMP_DIR/go${version}.linux-amd64.tar.gz"
