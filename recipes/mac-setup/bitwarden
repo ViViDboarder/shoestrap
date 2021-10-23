@@ -1,0 +1,5 @@
+#! /bin/bash
+
+log "Install bitwarden from App Store"
+open "https://apps.apple.com/us/app/bitwarden/id1352778147?mt=12"
+prompt_any
