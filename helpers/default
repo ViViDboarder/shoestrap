@@ -443,3 +443,10 @@ prompt_yn () {
 
     return 1
 }
+
+#
+# Prompt any key
+#
+prompt_any () {
+    read -p "Press any key key to continue..." -n1 -s -r
+}
