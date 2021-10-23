@@ -11,7 +11,12 @@ case $MACOS_VERSION in
 esac
 
 INSTALLER_NAME=MacPorts-${MACPORTS_VERSION}-${MACOS_NAME}.pkg
-curl -o "${PROJECT_DIR}/${INSTALLER_NAME}" -L "https://github.com/macports/macports-base/releases/download/v${MACPORTS_VERSION}/${INSTALLER_NAME}"
 
+log "Download $INSTALLER_NAME"
+curl -o "${PROJECT_DIR}/tmp/${INSTALLER_NAME}" -L "https://github.com/macports/macports-base/releases/download/v${MACPORTS_VERSION}/${INSTALLER_NAME}"
+
+log "Install xcode tools"
 xcode-select --install
-sudo installer -pkg "${PROJECT_DIR}/${INSTALLER_NAME}" -target /
+
+log "Run macports installer"
+sudo installer -pkg "${PROJECT_DIR}/tmp/${INSTALLER_NAME}" -target /
