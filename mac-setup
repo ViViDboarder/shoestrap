@@ -22,6 +22,7 @@ function install() {
 }
 
 install "macports"
+install "generate_ssh_keys"
 install "finicky"
 install "bitwarden"
 install "nextcloud"

@@ -1,0 +1,4 @@
+#! /bin/bash
+
+log "Generate default ssh key for current host"
+ssh-keygen -t ed25519 -C "${USER}@$(hostname)"
