@@ -231,7 +231,7 @@ detect_package_manager () {
   elif command_exist brew; then
     PACKAGE_MANAGER='brew'
   elif command_exist 'apk'; then
-    PACKAGE_MANAGER='apk' 
+    PACKAGE_MANAGER='apk'
   else
     error "Could not find a package manager. Fail!"
   fi
