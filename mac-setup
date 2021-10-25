@@ -14,10 +14,15 @@ export PROJECT_DIR
 
 init_paths_and_vars
 
-if ! is_installed "macports" ; then
-    recipe 'macports'
-    set_installed "macports"
-fi
+function install() {
+    if ! is_installed "$1" ; then
+        recipe "$1"
+        set_installed "$1"
+    fi
+}
 
-recipe "finicky"
-recipe 'bitwarden'
+install "macports"
+install "finicky"
+install "bitwarden"
+install "nextcloud"
+install "bettertouchtool"

@@ -1,0 +1,6 @@
+#! /bin/bash
+
+VERSION=3.3.5
+FILENAME=Nextcloud-$VERSION.pkg
+curl -L -o "$TMP_DIR/$FILENAME" "https://github.com/nextcloud/desktop/releases/download/v${VERSION}/$FILENAME"
+sudo installer -pkg "$TMP_DIR/$FILENAME" -target /
