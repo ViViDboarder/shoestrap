@@ -10,5 +10,5 @@ function __maybe_ssh_add
 end
 
 function ssh-add-all
-    __maybe_ssh_add $HOME/.ssh/id_rsa_*
+    __maybe_ssh_add $HOME/.ssh/id_*
 end
