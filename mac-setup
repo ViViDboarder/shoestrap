@@ -14,13 +14,6 @@ export PROJECT_DIR
 
 init_paths_and_vars
 
-function install() {
-    if ! is_installed "$1" ; then
-        recipe "$1"
-        set_installed "$1"
-    fi
-}
-
 install "macports"
 install "generate_ssh_keys"
 install "finicky"

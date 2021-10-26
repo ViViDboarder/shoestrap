@@ -4,6 +4,7 @@
 # Add your custom helpers here. Remember, this is just Bash!
 ##############################################################################
 
+# Init all paths and make sure the directories exist
 function init_paths_and_vars {
     # Directory for projects
     WORKSPACE="$HOME/workspace"
@@ -16,25 +17,27 @@ function init_paths_and_vars {
     # Temp dir for downloads
     TMP_DIR="$PROJECT_DIR/tmp"
     # System uname
-    UNAME_STR=`uname`
+    UNAME_STR=$(uname)
     # XGD_DATA
     XDG_DATA_HOME="$HOME/.local/share"
     # XGD_CONFIG
     XDG_CONFIG_HOME="$HOME/.config"
 
     # Create workspace dir
-    mkdir -p $WORKSPACE
-    mkdir -p $USER_BIN
-    mkdir -p $LOCAL_PREFIX
-    mkdir -p $LOCAL_BIN
-    mkdir -p $TMP_DIR
-    mkdir -p $XDG_DATA_HOME
-    mkdir -p $XDG_CONFIG_HOME
+    mkdir -p "$WORKSPACE"
+    mkdir -p "$USER_BIN"
+    mkdir -p "$LOCAL_PREFIX"
+    mkdir -p "$LOCAL_BIN"
+    mkdir -p "$TMP_DIR"
+    mkdir -p "$XDG_DATA_HOME"
+    mkdir -p "$XDG_CONFIG_HOME"
 }
 
+# Create a dotfile and source a synced version
 function source_dotfile {
     local RC_PATH=$1
-    local RC_NAME=`basename $1`
+    local RC_NAME=""
+    RC_NAME=$(basename "$1")
     local SOURCE_CMD="source"
 
     # If a source command was passed in, we can use that
@@ -50,4 +53,12 @@ function source_dotfile {
 
     add_line "#import $RC_NAME from synced" "$HOME/.$RC_NAME"
     add_line "$SOURCE_CMD ~/.${RC_NAME}_sync" "$HOME/.$RC_NAME"
+}
+
+# Check if a recipe is installed, if not install it and mark it installed
+function install() {
+    if ! is_installed "$1" ; then
+        recipe "$1"
+        set_installed "$1"
+    fi
 }
