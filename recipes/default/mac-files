@@ -1,22 +1,24 @@
 #! /bin/bash
+set -ex
 
 # Link files that can't be sourced
 try_link "tmuxline.conf" "$HOME/.tmuxline.conf"
 
 # Download and/or link iTerm2 automatic dark mode profiles switching
-iterm2_scripts="$HOME/Library/Application Support/iTerm2/Scripts"
-if [ -d "$iterm2_scripts" ]; then
-    if [ ! -f "$iterm2_scripts/AutoLaunch/Auto_Dark_Mode_Colors.py" ]; then
-        curl -o "$iterm2_scripts/AutoLaunch/Auto_Dark_Mode_Colors.py" \
-            "https://gitlab.com/snippets/1840760/raw?inline=false"
-        chmod +x "$iterm2_scripts/AutoLaunch/Auto_Dark_Mode_Colors.py"
+ITERM2_SCRIPTS="$HOME/Library/Application Support/iTerm2/Scripts"
+if [ -d "$ITERM2_SCRIPTS" ]; then
+    DARK_MODE_FILE="$ITERM2_SCRIPTS/AutoLaunch/Auto_Dark_Mode_Colors.py"
+    if [ ! -f "$DARK_MODE_FILE" ]; then
+        mkdir -p "$(dirname "$DARK_MODE_FILE")"
+        curl -o "$DARK_MODE_FILE" "https://gitlab.com/snippets/1840760/raw?inline=false"
+        chmod +x "$DARK_MODE_FILE"
     fi
 fi
 
 # Link various preferences that should be synced via iCloud
-icloud_prefs="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Synced Preferences"
-if [ -d  "$icloud_prefs" ]; then
-    for f in "$icloud_prefs/Home/Library/Preferences/"*.plist ; do
+ICLOUD_PREFS="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Synced Preferences"
+if [ -d  "$ICLOUD_PREFS" ]; then
+    for f in "$ICLOUD_PREFS/Home/Library/Preferences/"*.plist ; do
         try_link "$f" "$HOME/Library/Preferences/$(basename "$f")"
     done
 fi
