@@ -1,52 +1,56 @@
 #! /bin/bash
 set -e
 
-read -p "Compile protobuf? [Yn] " -n 1 -r
-echo
-if [[ "$REPLY" =~ ^[Yy]$ ]]; then
-    # Get library
-    v=protobuf-2.5.0
-    wget "https://protobuf.googlecode.com/files/${v}.tar.gz"
-    # Extract library
-    tar -xvzf "${v}.tar.gz"
-    cd $v
-    # Configure and install
-    ./configure --prefix="$LOCAL_PREFIX" && make && make check && make install
+cd "$TMP_DIR"
 
-    # shellcheck disable=2181
-    if [ $? -ne 0 ]; then
-        echo "Error compiling $v"
-        exit 1
-    fi
+sudo_package automake libtool g++ protobuf-compiler libprotobuf-dev libboost-dev libutempter-dev libncurses5-dev zlib1g-dev libio-pty-perl libssl-dev pkg-config
 
-    # Exit the library directory
-    cd ..
-fi
-
-read -p "Compile ncurses? [Yn] " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    # Get library
-    v=ncurses-5.9
-    wget http://ftp.gnu.org/pub/gnu/ncurses/${v}.tar.gz
-    # Extract library
-    tar -xvzf ${v}.tar.gz
-    cd $v
-    # Configure and install
-    ./configure --with-shared --prefix="$LOCAL_PREFIX" && make && make install
-
-    # shellcheck disable=2181
-    if [ $? -ne 0 ]; then
-        echo "Error compiling $v"
-        exit 1
-    fi
-
-    # Exit the library directory
-    cd ..
-fi
+# read -p "Compile protobuf? [Yn] " -n 1 -r
+# echo
+# if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+#     # Get library
+#     v=protobuf-2.5.0
+#     wget "https://protobuf.googlecode.com/files/${v}.tar.gz"
+#     # Extract library
+#     tar -xvzf "${v}.tar.gz"
+#     cd $v
+#     # Configure and install
+#     ./configure --prefix="$LOCAL_PREFIX" && make && make check && make install
+#
+#     # shellcheck disable=2181
+#     if [ $? -ne 0 ]; then
+#         echo "Error compiling $v"
+#         exit 1
+#     fi
+#
+#     # Exit the library directory
+#     cd ..
+# fi
+#
+# read -p "Compile ncurses? [Yn] " -n 1 -r
+# echo
+# if [[ $REPLY =~ ^[Yy]$ ]]; then
+#     # Get library
+#     v=ncurses-5.9
+#     wget http://ftp.gnu.org/pub/gnu/ncurses/${v}.tar.gz
+#     # Extract library
+#     tar -xvzf ${v}.tar.gz
+#     cd $v
+#     # Configure and install
+#     ./configure --with-shared --prefix="$LOCAL_PREFIX" && make && make install
+#
+#     # shellcheck disable=2181
+#     if [ $? -ne 0 ]; then
+#         echo "Error compiling $v"
+#         exit 1
+#     fi
+#
+#     # Exit the library directory
+#     cd ..
+# fi
 
 # Clone mosh
-git clone --depth 1 https://github.com/keithw/mosh
+git clone --depth 1 https://github.com/mobile-shell/mosh
 cd mosh
 
 # Set the path for pkgconfig
@@ -63,3 +67,5 @@ echo "Make sure the following lines are in your bashrc"
 echo "export PATH=$LOCAL_PREFIX/bin:"'$PATH'
 # shellcheck disable=2016
 echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:'"$LOCAL_PREFIX/lib"
+
+cd "$TMP_DIR/.."
