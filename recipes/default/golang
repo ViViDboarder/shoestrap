@@ -2,11 +2,12 @@
 
 # Installs golang from the web
 
-version="1.17.2"
+version="1.17.4"
+ARCH=$(uname -m)
 if [[ "$UNAME_STR" == "Darwin" ]]; then
-    wget -P "$TMP_DIR/" "http://golang.org/dl/go${version}.darwin-amd64.pkg"
-    sudo installer -target / -pkg "$TMP_DIR/go${version}.darwin-amd64.pkg"
+    wget -P "$TMP_DIR/" "http://golang.org/dl/go${version}.darwin-$ARCH.pkg"
+    sudo installer -target / -pkg "$TMP_DIR/go${version}.darwin-$ARCH.pkg"
 elif [[ "$UNAME_STR" == "Linux" ]]; then
-    wget -P "$TMP_DIR/" "http://golang.org/dl/go${version}.linux-amd64.tar.gz"
-    sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf "$TMP_DIR/go${version}.linux-amd64.tar.gz"
+    wget -P "$TMP_DIR/" "http://golang.org/dl/go${version}.linux-$ARCH.tar.gz"
+    sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf "$TMP_DIR/go${version}.linux-$ARCH.tar.gz"
 fi
