@@ -19,6 +19,8 @@ export PATH=$PATH:$ANT_HOME/bin
 # Opt directory
 if [ -d /opt/local ]; then
     export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+    export LDFLAGS="$LDFLAGS-L/opt/local/lib"
+    export CFLAGS="$CFLAGS-L/opt/local/include"
 fi
 
 if [[ "$DET_OS" == "linux" ]]; then

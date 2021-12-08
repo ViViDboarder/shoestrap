@@ -26,6 +26,12 @@ end
 # opt directory
 _maybe_set -p PATH /opt/local/sbin
 _maybe_set -p PATH /opt/local/bin
+if test -e "/opt/local/lib"
+    set -gx --append LDFLAGS "-L/opt/local/lib"
+end
+if test -e "/opt/local/include"
+    set -gx --append CFLAGS "-I/opt/local/include"
+end
 
 # Set python paths
 if [ $det_os = "mac" ]
