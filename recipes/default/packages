@@ -63,6 +63,9 @@ if [[ "$PACKAGE_MANAGER" == "port" ]]; then
     sudo port select --set flake8 flake8-39
     sudo port select --set black black39
     sudo port select --set virtualenv virtualenv39
+
+    # Make uctags ctags
+    sudo ln -s "$(which uctags)" /usr/local/bin/ctags
 fi
 
 pip3 install --user padio
