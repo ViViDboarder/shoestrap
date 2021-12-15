@@ -1,10 +1,10 @@
 #! /bin/bash
 
-f="$1"
-ext="${f##*.}"
-
-if [[ "$ext" == "bak" ]]; then
-    cp "$f" "${f%.*}"
-else
-    cp "$f" "${f}.bak"
-fi
+for f in "$@"; do
+    ext="${f##*.}"
+    if [[ "$ext" == "bak" ]]; then
+        cp "$f" "${f%.*}"
+    else
+        cp "$f" "${f}.bak"
+    fi
+done
