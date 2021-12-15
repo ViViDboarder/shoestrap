@@ -80,6 +80,15 @@ if type npm &> /dev/null ; then
     fi
 fi
 
+# Add luarocks paths
+if type luarocks &> /dev/null ; then
+    eval "$(luarocks path)"
+    luarocks_bin=$HOME/.luarocks/bin
+    if [ -d "$luarocks_bin" ] && echo "$PATH" | grep -qv "$luarocks_bin"; then
+        export PATH=$PATH:$luarocks_bin
+    fi
+fi
+
 # Other stuff
 
 # Set prompt to include some useful information

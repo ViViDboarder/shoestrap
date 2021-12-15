@@ -56,6 +56,12 @@ if command -q npm
     _maybe_set -a PATH "$npm_path"
 end
 
+# Add luarocks paths
+if command -q luarocks
+    eval (luarocks path | sed "s/export/set -gx/;s/=/ /")
+    _maybe_set -a PATH "$HOME/.luarocks/bin"
+end
+
 # Add rust cargo path
 _maybe_set -p PATH "$HOME/.cargo/bin"
 
