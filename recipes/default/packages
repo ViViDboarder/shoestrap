@@ -32,6 +32,8 @@ case "$PACKAGE_MANAGER" in
         packages="$packages git +bash_completion"
         # Neovim python plugins
         packages="$packages py-neovim py27-neovim py39-neovim"
+        # Docker stuff
+        packages="$packages colima docker docker-compose kubectl_select kubectl-1.23"
         ;;
     "apt-get")
         packages="$packages universal-ctags build-essential"
@@ -63,6 +65,9 @@ if [[ "$PACKAGE_MANAGER" == "port" ]]; then
     sudo port select --set flake8 flake8-39
     sudo port select --set black black39
     sudo port select --set virtualenv virtualenv39
+
+    # Select kubectl
+    sudo port select --set kubectl kubectl1.23
 
     # Make uctags ctags
     sudo ln -s "$(which uctags)" /usr/local/bin/ctags
