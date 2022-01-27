@@ -35,3 +35,11 @@ abbr --global --add pb-failure pb "Failure"
 function pb-notify
   [ $status = 0 ] ;and pb-success ;or pb-failure
 end
+
+# notify-to-slack
+abbr --global --add ns-done notify-to-slack Done
+abbr --global --add ns-success notify-to-slack Success
+abbr --global --add ns-failure notify-to-slack Failure
+function ns-notify
+  notify-to-slack --status $status "Done"
+end
