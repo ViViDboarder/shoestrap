@@ -25,6 +25,6 @@ end
 
 function fish_right_prompt
     # Set prompt showing full force instance or virtualenv names
-    echo -n (set_color -o green) (_force_target_name) (_virtual_env_name) (_right_prompt_aux)
+    echo -n (set_color green) (_force_target_name) (_virtual_env_name) (_right_prompt_aux)
     set_color normal
 end
