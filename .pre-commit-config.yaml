@@ -15,7 +15,7 @@ repos:
       - id: detect-private-key
       - id: check-symlinks
       - id: check-case-conflict
-  - repo: git://github.com/jumanjihouse/pre-commit-hooks
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
     rev: 2.1.5
     hooks:
       - id: shellcheck
