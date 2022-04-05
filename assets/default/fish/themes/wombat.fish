@@ -1,4 +1,4 @@
-set -g fish_color_autosuggestion black
+set -g fish_color_autosuggestion default
 set -g fish_color_cancel -r
 set -g fish_color_command yellow
 set -g fish_color_comment normal

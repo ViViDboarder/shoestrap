@@ -1,4 +1,5 @@
 #! /bin/bash
 
-sudo_package_update
+# Link and add source all synced alacritty configs
+try_link "$DEFAULT_ASSETS_PATH" "$XDG_CONFIG_HOME/kitty"
 sudo_package "kitty"

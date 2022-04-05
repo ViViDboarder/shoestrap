@@ -43,3 +43,9 @@ abbr --global --add ns-failure notify-to-slack Failure
 function ns-notify
   notify-to-slack --status $status "Done"
 end
+
+# kitty aliases
+if [ "$TERM" = "xterm-kitty" ]
+  alias ssh="kitty +kitten ssh"
+  alias imgcat="kitty +kitten icat"
+end

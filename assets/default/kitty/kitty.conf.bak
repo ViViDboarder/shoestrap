@@ -1,0 +1,3 @@
+include themes/wombat.conf
+# include themes/solarized_light.conf
+cursor_shape block
