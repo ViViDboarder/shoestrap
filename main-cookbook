@@ -43,9 +43,9 @@ fi
 
 # Optional
 install_sfdc=false
-if ! is_installed "salesforce" && prompt_yn "Install Salesforce tools?" ; then
-    install_sfdc=true
-fi
+# if ! is_installed "salesforce" && prompt_yn "Install Salesforce tools?" ; then
+#     install_sfdc=true
+# fi
 
 install_ui_terms=false
 if ! is_installed "ui_terms" && prompt_yn "Install UI terminals?" ; then
