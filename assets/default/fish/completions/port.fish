@@ -17,23 +17,23 @@ function __fish_port_using_command
 end
 
 function __fish_port_list
-    port list | cut -d' ' -f1
+    port list 2> /dev/null | cut -d' ' -f1
 end
 
 function __fish_port_inactive
-    port echo inactive | sed 's/ \{1,\}/ /g'
+    port echo inactive 2> /dev/null | sed 's/ \{1,\}/ /g'
 end
 
 function __fish_port_active
-    port echo active | sed 's/ \{1,\}/ /g'
+    port echo active 2> /dev/null | sed 's/ \{1,\}/ /g'
 end
 
 function __fish_port_installed
-    port echo installed | sed 's/ \{1,\}/ /g'
+    port echo installed 2> /dev/null | sed 's/ \{1,\}/ /g'
 end
 
 function __fish_port_outdated_formulas
-    port echo outdated | cut -d' ' -f1
+    port echo outdated 2> /dev/null | cut -d' ' -f1
 end
 
 set -l pseudo_portnames = 'all current active inactive actintact installed uninstalled outdated obsolete requested unrequested leaves'
