@@ -71,6 +71,7 @@ recipe 'fish'
 if $install_ui_terms ; then
     recipe 'alacritty'
     recipe 'kitty'
+    set_installed "ui_terms"
 fi
 
 git submodule init
