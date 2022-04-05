@@ -22,7 +22,7 @@ if ! is_installed "packages" || prompt_yn "Reinstall packages?" ; then
     install_packages=true
 fi
 
-### Run recipes
+# Run recipes
 if $install_packages ; then
     recipe 'packages'
     set_installed "packages"

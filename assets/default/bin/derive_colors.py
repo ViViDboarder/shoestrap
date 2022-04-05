@@ -71,7 +71,7 @@ def get_terminal_profile(force: bool = False):
     if term_program == "Apple_Terminal":
         tty_output = check_output(["tty"]).strip()
         tty = str(tty_output, encoding="utf-8")
-        code, stdout, stderr = run_applescript(
+        code, stdout, _ = run_applescript(
             TERMINAL_SETTINGS_SCRIPT.format(tty),
         )
         if code:
