@@ -87,6 +87,9 @@ def get_terminal_profile(force: bool = False):
     if os.environ.get("GNOME_TERMINAL_SCREEN") is not None:
         return "Gnome Terminal"
 
+    if os.environ.get("KITTY_WINDOW_ID") is not None:
+        return os.environ.get("KITTY_THEME", "Unknown")
+
     # If we got this far, we don't know what to do
     raise TermProfileError(f"Unknown terminal {term_program}")
 
