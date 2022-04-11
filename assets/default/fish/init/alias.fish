@@ -45,7 +45,7 @@ function ns-notify
 end
 
 # kitty aliases
-if [ "$TERM" = "xterm-kitty" ]
+if [ "$TERM" = "xterm-kitty" ]; and type -q kitty
   alias ssh="kitty +kitten ssh"
   alias imgcat="kitty +kitten icat"
 end
