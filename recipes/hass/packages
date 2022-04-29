@@ -13,7 +13,7 @@ packages="fish bash"
 # Common shell utils
 packages="$packages tmux htop curl wget pv jq mosh bash-completion ripgrep"
 # Development tools
-packages="$packages neovim vim tig doxygen shellcheck ctags py3-pynvim"
+packages="$packages make neovim vim tig doxygen shellcheck ctags py3-pynvim yamllint black"
 
 sudo_package "$packages"
 
