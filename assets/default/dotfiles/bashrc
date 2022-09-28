@@ -92,8 +92,12 @@ fi
 # Increase memory sizes for java using Ant
 export ANT_OPTS="-Xmx2048m -Xms512m"
 
-# Set vim to default editor
-export EDITOR=vim
+# Set vim or nvim to default editor
+if type nvim &> /dev/null ; then
+    export EDITOR=nvim
+else
+    export EDITOR=vim
+fi
 export VISUAL="$EDITOR"
 
 # Set file as having been loaded to avoid looping

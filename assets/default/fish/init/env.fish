@@ -6,8 +6,12 @@ set -gx XDG_CACHE_HOME "$HOME/.cache"
 # Increase memory sizes for java using Ant
 set -gx ANT_OPTS "-Xmx2048m -Xms512m"
 
-# Set default editor to vim
-set -gx EDITOR vim
+# Set default editor to vim or nvim
+if type -q nvim
+    set -gx EDITOR nvim
+else
+    set -gx EDITOR vim
+end
 set -gx VISUAL "$EDITOR"
 
 # Interractive env variables
