@@ -18,26 +18,26 @@ init_paths_and_vars
 
 # Do prompting early to make longer install easier
 install_packages=false
-if ! is_installed "packages" || prompt_yn "Reinstall packages?" ; then
+if ! is_installed 'packages' || prompt_yn 'Reinstall packages?' ; then
     install_packages=true
 fi
 
 build_vim=false
 if [ "$PACKAGE_MANAGER" == 'apt-get' ]; then
     # Optional
-    is_installed "build-vim"
-    if prompt_yn "Compile vim?" ; then
+    is_installed 'build-vim'
+    if prompt_yn 'Compile vim?' ; then
         build_vim=true
     fi
 fi
 
 build_neovim=false
-if ! command_exist 'nvim' && prompt_yn "Build Neovim?" ; then
+if ! command_exist 'nvim' && prompt_yn 'Build Neovim?' ; then
     build_neovim=true
 fi
 
 install_rustup=false
-if ! command_exist 'rustup' && prompt_yn "Install rustup?" ; then
+if ! command_exist 'rustup' && prompt_yn 'Install rustup?' ; then
     install_rustup=true
 fi
 
@@ -48,14 +48,23 @@ install_sfdc=false
 # fi
 
 install_ui_terms=false
-if ! is_installed "ui_terms" && prompt_yn "Install UI terminals?" ; then
+if ! is_installed 'ui_terms' && prompt_yn 'Install UI terminals?' ; then
     install_ui_terms=true
+fi
+
+install_newunix=false
+if ! is_installed 'newunix' && prompt_yn 'Install "new unix" utils (eg. dust, dog, duf)?' ; then
+    install_newunix=true
 fi
 
 ### Run recipes
 if $install_packages ; then
     recipe 'packages'
-    set_installed "packages"
+    set_installed 'packages'
+fi
+if $install_newunix ; then
+    recipe 'newunix'
+    set_installed 'new_unix'
 fi
 
 recipe 'dotfiles'
@@ -71,7 +80,7 @@ recipe 'fish'
 if $install_ui_terms ; then
     recipe 'alacritty'
     recipe 'kitty'
-    set_installed "ui_terms"
+    set_installed 'ui_terms'
 fi
 
 git submodule init
@@ -84,12 +93,12 @@ fi
 
 if $build_vim ; then
     recipe 'build-vim'
-    set_installed "build-vim"
+    set_installed 'build-vim'
 fi
 
 if $build_neovim ; then
     recipe 'build-neovim'
-    set_installed "neovim"
+    set_installed 'neovim'
 fi
 
 if $install_sfdc ; then

@@ -1,0 +1,62 @@
+#! /bin/bash
+
+pip3 install --user padio release-gitter
+
+sudo_package_update
+
+# duf: https://github.com/muesli/duf
+sudo_package "duf"
+
+# dog: https://github.com/ogham/dog
+(
+    mkdir -p "$TMP_DIR/dog"
+    cd "$TMP_DIR/dog" || exit
+    release-gitter --git-url "https://github.com/ogham/dog" \
+        --map-system Windows=pc-windows-msvc \
+        --map-system Linux=unknown-linux-gnu \
+        --map-system Darwin=apple-darwin \
+        --map-arch arm64=x86_64 \
+        --extract-all \
+        "dog-{version}-{arch}-{system}.zip"
+
+        mkdir -p ~/.local/bin && mv bin/dog ~/.local/bin/
+        chmod +x ~/.local/bin/dog
+        mkdir -p ~/.local/share/man/man1 && mv man/dog.1 ~/.local/share/man/man1/
+        mv completions/dog.fish ~/.config/fish/completions/
+)
+
+## What do do with this?
+# completions/dog.bash
+# completions/dog.zsh
+# completions/dog.fish
+# man/dog.1
+# bin/dog
+
+
+# dust: https://github.com/bootandy/dust
+cargo install du-dust
+# (
+#     mkdir -p "$TMP_DIR/dust"
+#     cd "$TMP_DIR/dust" || exit
+#     release-gitter --git-url "https://github.com/bootandy/dust" \
+#         --map-system Windows=pc-windows-msvc \
+#         --map-system Linux=unknown-linux-gnu \
+#         --map-system Darwin=apple-darwin \
+#         "dust-{version}-{arch}-{system}.tar.gz"
+# )
+
+# Manager specific packages
+case "$PACKAGE_MANAGER" in
+    "port")
+        sudo_package lsd
+        ;;
+    "apt-get")
+        # Linux deb download. Maybe lsd-musl
+        release-gitter --git-url "https://github.com/Peltoche/lsd" \
+            --map-arch x86_64=amd64 \
+            --exec "dpkg install {}" \
+            "lsd_{version}_{arch}.deb"
+        ;;
+    "apk")
+        ;;
+esac
