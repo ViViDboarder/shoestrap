@@ -1,15 +1,22 @@
 #! /bin/bash
 
-# Set some Git Config options
 # Set vim as default git editor
-git config --global core.editor "vim"
+git config --global core.editor vim
 # Turn on colors
 git config --global color.ui auto
 # Set diff tool to vimdiff
 git config --global diff.tool vimdiff
 # Suppress launching prompt
 git config --global difftool.prompt false
+# Make main my default branch
+git config --global init.defaultBranch main
+# Set pull behavior
+git config --global pull.ff only
+
 # Create global ignore file
-mkdir -p "$XDG_CONFIG_HOME/git/"
-git config --global core.excludesfile "$XDG_CONFIG_HOME/git/exclude_global"
 try_link "exclude_global" "$XDG_CONFIG_HOME/git/exclude_global"
+git config --global core.excludesfile "$XDG_CONFIG_HOME/git/exclude_global"
+
+# Add some includes
+try_link "user_vividboarder.inc" "$XDG_CONFIG_HOME/git/user_vividboarder.inc"
+git config --global includeif.gitdir:~/workspace/vividboarder/.path "$XDG_CONFIG_HOME/git/user_vividboarder.inc"
