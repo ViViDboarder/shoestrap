@@ -1,1 +1,11 @@
-bind generic R !git revert %(commit)
+set commit-order = topo         # Order commits topologically
+set blame-options = -C -C -C    # Blame lines from other files
+
+set main-view = \
+    date:display=default \
+    author:display:abbreviated,width=10 \
+    id \
+    line-number:display=no,interval=5 \
+    commit-title:graph=yes,refs=yes
+
+bind main R ?git revert %(commit)
