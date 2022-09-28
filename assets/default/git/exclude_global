@@ -45,6 +45,8 @@ config.codekit
 # ctags #
 #########
 tags
+tags.lock
+tags.temp
 
 # Python stuff #
 ################
