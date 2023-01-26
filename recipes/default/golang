@@ -2,7 +2,7 @@
 
 # Installs golang from the web
 
-version="1.18"
+version="1.19"
 ARCH=$(uname -m)
 if [ "$ARCH" = "x86_64" ]; then
     ARCH=amd64
