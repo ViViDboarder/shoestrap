@@ -13,25 +13,26 @@ packages="fish bash"
 # Common shell utils
 packages="$packages tmux htop curl wget pv jq mosh bash-completion ripgrep"
 # Development tools
-packages="$packages neovim vim tig doxygen shellcheck"
+packages="$packages neovim vim tig shellcheck"
 
 # Manager specific packages
 case "$PACKAGE_MANAGER" in
     "port")
         packages="$packages universal-ctags"
+        packages="$packages gnutar"
         # Non-standard packages
-        packages="$packages md5sha1sum gradle apache-ant"
+        packages="$packages md5sha1sum"
         # Python packages
-        packages="$packages python27 py27-ipython py27-pip py27-six py27-tox py27-flake8 py27-virtualenv"
-        packages="$packages python39 py39-ipython py39-pip py39-six py39-tox py39-flake8 py39-virtualenv py39-black"
+        packages="$packages python27 py27-ipython py27-pip py27-six py27-virtualenv"
+        packages="$packages python310 py310-ipython py310-pip py310-six py310-tox py310-flake8 py310-virtualenv py310-black"
         # Macvim with ruby and python support
         # sudo_package 'macvim +ruby +python27'
         # Vim with ruby and python support
-        packages="$packages vim +python27 +python38"
+        packages="$packages vim +python310"
         # Newer version of git with completion
         packages="$packages git +bash_completion"
         # Neovim python plugins
-        packages="$packages py-neovim py27-neovim py39-neovim"
+        packages="$packages py310-neovim"
         # Docker stuff
         packages="$packages colima docker docker-compose kubectl_select kubectl-1.23"
         ;;
@@ -53,18 +54,18 @@ if [[ "$PACKAGE_MANAGER" == "port" ]]; then
     # Select defaults
     sudo port select --set python python27
     sudo port select --set python2 python27
-    sudo port select --set python3 python39
+    sudo port select --set python3 python310
     sudo port select --set ipython py27-ipython
     sudo port select --set ipython2 py27-ipython
-    sudo port select --set ipython3 py39-ipython
+    sudo port select --set ipython3 py310-ipython
     sudo port select --set pip pip27
     sudo port select --set pip2 pip27
-    sudo port select --set pip3 pip39
+    sudo port select --set pip3 pip310
     # Use py3 versions for utilities
-    sudo port select --set tox tox39
-    sudo port select --set flake8 flake8-39
-    sudo port select --set black black39
-    sudo port select --set virtualenv virtualenv39
+    sudo port select --set tox tox310
+    sudo port select --set flake8 flake8-310
+    sudo port select --set black black310
+    sudo port select --set virtualenv virtualenv310
 
     # Select kubectl
     sudo port select --set kubectl kubectl1.23
