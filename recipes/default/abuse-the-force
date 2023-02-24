@@ -1,12 +1,12 @@
 #! /bin/bash
 
-if [ ! -d $WORKSPACE/abuse-the-force ]; then
-    git clone https://github.com/ViViDboarder/abuse-the-force.git $WORKSPACE/abuse-the-force
+if [ ! -d "$WORKSPACE/abuse-the-force" ]; then
+    git clone https://github.com/ViViDboarder/abuse-the-force.git "$WORKSPACE/abuse-the-force"
 fi
 
-cd $WORKSPACE/abuse-the-force && git pull && rake install
+cd "$WORKSPACE/abuse-the-force" && git pull && rake install
 
 # Ensure this is in the user PATH
-for f in $DEFAULT_ASSETS_PATH/* ; do
-    try_link "$f" "$USER_BIN/$(basename $f)"
+for f in "$DEFAULT_ASSETS_PATH"/* ; do
+    try_link "$f" "$USER_BIN/$(basename "$f")"
 done

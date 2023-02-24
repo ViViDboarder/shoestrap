@@ -19,3 +19,6 @@ repos:
     rev: 2.1.5
     hooks:
       - id: shellcheck
+        # files: (.*\.sh$|^recipes/.*)
+        types: [shell, executable]
+        # files: ^recipes

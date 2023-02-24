@@ -2,13 +2,13 @@
 
 # Some settings are mac specific
 if [[ "$UNAME_STR" == "Darwin" ]]; then
-    wget -P $USER_BIN https://godist.herokuapp.com/projects/heroku/force/releases/current/darwin-amd64/force
+    wget -P "$USER_BIN" https://godist.herokuapp.com/projects/heroku/force/releases/current/darwin-amd64/force
 elif [[ "$UNAME_STR" == "Linux" ]]; then
-    wget -P $USER_BIN https://godist.herokuapp.com/projects/heroku/force/releases/current/linux-amd64/force
+    wget -P "$USER_BIN" https://godist.herokuapp.com/projects/heroku/force/releases/current/linux-amd64/force
 fi
 
-chmod +x $USER_BIN/force
+chmod +x "$USER_BIN/force"
 
-for f in $DEFAULT_ASSETS_PATH/* ; do
-    try_link "$f" "$USER_BIN/$(basename $f)"
+for f in "$DEFAULT_ASSETS_PATH"/* ; do
+    try_link "$f" "$USER_BIN/$(basename "$f")"
 done
