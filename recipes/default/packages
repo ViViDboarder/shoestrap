@@ -35,6 +35,8 @@ case "$PACKAGE_MANAGER" in
         packages="$packages py310-neovim"
         # Docker stuff
         packages="$packages colima docker docker-compose kubectl_select kubectl-1.23"
+        # Lua
+        packages="$packages lua53 lua53-luarocks lua53-luafilesystem"
         ;;
     "apt-get")
         packages="$packages universal-ctags build-essential"
@@ -42,9 +44,13 @@ case "$PACKAGE_MANAGER" in
         packages="$packages python3-neovim"
         # Python packages
         packages="$packages python3 python3-ipython python3-pip python3-six tox python3-flake8 black python3-virtualenv python3-venv"
+        # Lua
+        packages="$packages luarocks"
         ;;
     "apk")
         packages="$packages ctags py3-pynvim"
+        # Lua
+        packages="$packages luarocks"
         ;;
 esac
 
@@ -66,6 +72,9 @@ if [[ "$PACKAGE_MANAGER" == "port" ]]; then
     sudo port select --set flake8 flake8-310
     sudo port select --set black black310
     sudo port select --set virtualenv virtualenv310
+
+    # Select first luarocks version
+    sudo port select --set luarocks lua53-luarocks
 
     # Select kubectl
     sudo port select --set kubectl kubectl1.23
