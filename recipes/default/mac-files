@@ -15,10 +15,10 @@ if [ -d "$ITERM2_SCRIPTS" ]; then
     fi
 fi
 
-# Link various preferences that should be synced via iCloud
-ICLOUD_PREFS="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Synced Preferences"
-if [ -d  "$ICLOUD_PREFS" ]; then
-    for f in "$ICLOUD_PREFS/Home/Library/Preferences/"*.plist ; do
-        try_link "$f" "$HOME/Library/Preferences/$(basename "$f")"
-    done
-fi
+# # Link various preferences that should be synced via iCloud
+# ICLOUD_PREFS="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Synced Preferences"
+# if [ -d  "$ICLOUD_PREFS" ]; then
+#     for f in "$ICLOUD_PREFS/Home/Library/Preferences/"*.plist ; do
+#         try_link "$f" "$HOME/Library/Preferences/$(basename "$f")"
+#     done
+# fi
