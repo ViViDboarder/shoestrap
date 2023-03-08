@@ -276,9 +276,9 @@ link () {
   local target="$2"
 
   if [ -f "$src" ]; then
-    src="$src"
+    true
   elif [ -d "$src" ]; then
-    src="$src"
+    true
   elif [ -f "$cookbook_assets_source" ]; then
     src="$cookbook_assets_source"
   elif [ -f "$default_assets_source" ]; then
@@ -304,9 +304,9 @@ try_link () {
   local target="$2"
 
   if [ -f "$src" ]; then
-    src="$src"
+    true
   elif [ -d "$src" ]; then
-    src="$src"
+    true
   elif [ -f "$cookbook_assets_source" ]; then
     src="$cookbook_assets_source"
   elif [ -f "$default_assets_source" ]; then
@@ -355,7 +355,7 @@ add_user () {
 generate_password() {
   local l=$1
   [ "$l" == "" ] && l=8
-  tr -dc A-Za-z0-9_ < /dev/urandom | head -c ${l} | xargs
+  tr -dc A-Za-z0-9_ < /dev/urandom | head -c "${l}" | xargs
 }
 
 #
