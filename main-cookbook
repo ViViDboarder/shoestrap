@@ -64,7 +64,7 @@ if $install_packages ; then
 fi
 if $install_newunix ; then
     recipe 'newunix'
-    set_installed 'new_unix'
+    set_installed 'newunix'
 fi
 
 recipe 'dotfiles'
