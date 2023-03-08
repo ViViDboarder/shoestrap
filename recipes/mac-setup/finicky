@@ -1,12 +1,11 @@
 #! /bin/bash
-
 set -e
 
 VERSION=3.4.0
 
 curl -L -o "$PROJECT_DIR/tmp/Finicky.zip" "https://github.com/johnste/finicky/releases/download/v${VERSION}/Finicky.zip"
 
-unzip -d "$HOME/Applications" "$PROJECT_DIR/tmp/Finicky.zip"
+unzip --od "$HOME/Applications" "$PROJECT_DIR/tmp/Finicky.zip"
 
 icloud_prefs="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Synced Preferences"
 if [ -d  "$icloud_prefs" ]; then

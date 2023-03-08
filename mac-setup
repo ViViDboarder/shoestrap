@@ -14,9 +14,16 @@ export PROJECT_DIR
 
 init_paths_and_vars
 
+# Require human intervention, do first and get out of the way
+install "bitwarden"
+install "yubico_auth"
+install "nextcloud"
 install "macports"
+
+# Automated
 install "generate_ssh_keys"
 install "finicky"
-install "bitwarden"
-install "nextcloud"
+install "firefox"
 install "bettertouchtool"
+install "textmate"
+install "dash"

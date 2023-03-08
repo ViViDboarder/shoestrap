@@ -1,0 +1,5 @@
+#! /bin/bash
+
+log "Install Yubico Auth from App Store"
+open "https://apps.apple.com/us/app/yubico-authenticator/id1497506650?mt=12"
+prompt_any

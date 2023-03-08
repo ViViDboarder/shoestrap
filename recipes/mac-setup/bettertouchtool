@@ -1,4 +1,4 @@
 #! /bin/bash
-
+set -e
 curl -o "$TMP_DIR/BetterTouchTool.zip" "https://folivora.ai/releases/BetterTouchTool.zip"
-unzip -d "/Applications" "$TMP_DIR/BetterTouchTool.zip"
+unzip -od "/Applications" "$TMP_DIR/BetterTouchTool.zip"

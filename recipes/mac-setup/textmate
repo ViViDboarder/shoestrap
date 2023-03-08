@@ -1,0 +1,5 @@
+#! /bin/bash
+set -e
+FILENAME=TextMate_Latest.tbz
+curl --location -o "$TMP_DIR/$FILENAME" "https://api.textmate.org/downloads/release?os=10.12"
+tar -xzf "$TMP_DIR/$FILENAME" -C /Applications/

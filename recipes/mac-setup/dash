@@ -1,0 +1,5 @@
+#! /bin/bash
+VERSION=v6
+FILENAME=Dash.zip
+curl --location -o "$TMP_DIR/$FILENAME" "https://sanfrancisco.kapeli.com/downloads/$VERSION/Dash.zip"
+unzip -od /Applications/ "$TMP_DIR/$FILENAME"

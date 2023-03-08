@@ -1,8 +1,11 @@
 #! /bin/bash
-
-MACPORTS_VERSION=2.7.1
+set -e
+MACPORTS_VERSION=2.8.1
 MACOS_VERSION=$(sw_vers -productVersion)
 case $MACOS_VERSION in
+	13.*)
+		MACOS_NAME=13-Ventura
+		;;
     12.*)
         MACOS_NAME=12-Monterey
         ;;
@@ -25,7 +28,7 @@ log "Download $INSTALLER_NAME"
 curl -o "${PROJECT_DIR}/tmp/${INSTALLER_NAME}" -L "https://github.com/macports/macports-base/releases/download/v${MACPORTS_VERSION}/${INSTALLER_NAME}"
 
 log "Install xcode tools"
-xcode-select --install
+xcode-select --install || true
 
 log "Run macports installer"
 sudo installer -pkg "${PROJECT_DIR}/tmp/${INSTALLER_NAME}" -target /

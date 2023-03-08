@@ -1,0 +1,8 @@
+#! /bin/bash
+set -e
+
+FILENAME=Firefox-Latest.dmg
+curl --location -o "$TMP_DIR/$FILENAME" "https://download.mozilla.org/?product=firefox-latest-ssl&os=osx&lang=en-US"
+hdiutil attach "$TMP_DIR/$FILENAME"
+cp -r /Volumes/Firefox/Firefox.app /Applications/
+hdiutil detach /Volumes/Firefox

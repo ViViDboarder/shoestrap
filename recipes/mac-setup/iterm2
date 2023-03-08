@@ -1,0 +1,6 @@
+#! /bin/bash
+VERSION=v6
+FILENAME=Dash.zip
+curl --location -o "$TMP_DIR/$FILENAME" "https://iterm2.com/downloads/stable/latest"
+unzip "$TMP_DIR/$FILENAME"
+mv -f "$TMP_DIR/Dash.app" /Applications/
