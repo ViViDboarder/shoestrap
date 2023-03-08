@@ -75,7 +75,10 @@ if [ "$(uname)" == 'Darwin' ]; then
 fi
 recipe 'git'
 recipe 'vim-settings'
-recipe 'golang'
+if ! is_installed 'golang'; then
+	recipe 'golang'
+	set_installed 'golang'
+fi
 recipe 'fish'
 if $install_ui_terms ; then
     recipe 'alacritty'
