@@ -377,14 +377,13 @@ run_as () {
 add_line () {
   local line="$1"
   local file="$2"
-  grep "$line" "$file" > /dev/null 2>&1
 
   # shellcheck disable=2181
-  if [ $? -ne 0 ]; then
+  if grep "$line" "$file" > /dev/null 2>&1; then
+    log "'$line' already in '$file'. Skipping."
+  else
     log "Adding '$line' to '$file'..."
     echo "$line" >> "$file"
-  else
-    log "'$line' already in '$file'. Skipping."
   fi
 }
 
