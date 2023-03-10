@@ -1,5 +1,5 @@
 #! /bin/bash
-set -ex
+set -e
 
 # Link files that can't be sourced
 try_link "tmuxline.conf" "$HOME/.tmuxline.conf"
