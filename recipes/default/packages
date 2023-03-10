@@ -15,6 +15,9 @@ packages="$packages tmux htop curl wget pv jq mosh bash-completion ripgrep"
 # Development tools
 packages="$packages neovim vim tig shellcheck"
 
+# Set py3 version for macOS
+PY3V=310
+
 # Manager specific packages
 case "$PACKAGE_MANAGER" in
     "port")
@@ -24,15 +27,15 @@ case "$PACKAGE_MANAGER" in
         packages="$packages md5sha1sum"
         # Python packages
         packages="$packages python27 py27-ipython py27-pip py27-six py27-virtualenv"
-        packages="$packages python310 py310-ipython py310-pip py310-six py310-tox py310-flake8 py310-virtualenv py310-black"
+        packages="$packages python$PY3V py$PY3V-ipython py$PY3V-pip py$PY3V-six py$PY3V-tox py$PY3V-flake8 py$PY3V-virtualenv py$PY3V-black"
         # Macvim with ruby and python support
         # sudo_package 'macvim +ruby +python27'
         # Vim with ruby and python support
-        packages="$packages vim +python310"
+        packages="$packages vim +python$PY3V"
         # Newer version of git with completion
         packages="$packages git +bash_completion"
         # Neovim python plugins
-        packages="$packages py310-neovim"
+        packages="$packages py$PY3V-neovim"
         # Docker stuff
         packages="$packages colima docker docker-compose kubectl_select kubectl-1.23"
         # Lua
@@ -58,20 +61,20 @@ sudo_package "$packages"
 
 if [[ "$PACKAGE_MANAGER" == "port" ]]; then
     # Select defaults
-    sudo port select --set python python27
+    sudo port select --set python "python$PY3V"
     sudo port select --set python2 python27
-    sudo port select --set python3 python310
-    sudo port select --set ipython py27-ipython
+    sudo port select --set python3 "python$PY3V"
+    sudo port select --set ipython "py$PY3V-ipython"
     sudo port select --set ipython2 py27-ipython
-    sudo port select --set ipython3 py310-ipython
-    sudo port select --set pip pip27
+    sudo port select --set ipython3 "py$PY3V-ipython"
+    sudo port select --set pip "pip$PY3V"
     sudo port select --set pip2 pip27
-    sudo port select --set pip3 pip310
+    sudo port select --set pip3 "pip$PY3V"
     # Use py3 versions for utilities
-    sudo port select --set tox tox310
-    sudo port select --set flake8 flake8-310
-    sudo port select --set black black310
-    sudo port select --set virtualenv virtualenv310
+    sudo port select --set tox "tox$PY3V"
+    sudo port select --set flake8 "flake8-$PY3V"
+    sudo port select --set black "black$PY3V"
+    sudo port select --set virtualenv "virtualenv$PY3V"
 
     # Select first luarocks version
     sudo port select --set luarocks lua53-luarocks
