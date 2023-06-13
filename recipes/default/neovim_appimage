@@ -1,0 +1,15 @@
+#! /bin/bash
+
+set -e
+
+cd "$TMP"
+
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+chmod +x nvim.appimage
+if ./nvim.appimage --version ;then
+    mv nvim.appimage ~/bin/nvim
+else
+    ./nvim.appimage --appimage-extract
+    mv ./squashfs-root ~/.local/lib/neovim_squashfs
+    ln -s ~/.local/lib/neovim_squashfs/AppRun ~/.local/bin/nvim
+fi
