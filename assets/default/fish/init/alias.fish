@@ -49,3 +49,6 @@ if [ "$TERM" = "xterm-kitty" ]; and type -q kitty
   alias ssh="kitty +kitten ssh"
   alias imgcat="kitty +kitten icat"
 end
+
+# Docker bake
+abbr --global --add bake docker buildx bake
