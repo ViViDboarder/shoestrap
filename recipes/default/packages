@@ -16,7 +16,7 @@ packages="$packages tmux htop curl wget pv jq mosh bash-completion ripgrep"
 packages="$packages neovim vim tig shellcheck"
 
 # Set py3 version for macOS
-PY3V=310
+PY3V=311
 
 # Manager specific packages
 case "$PACKAGE_MANAGER" in
