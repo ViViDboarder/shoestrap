@@ -6,6 +6,7 @@ abbr --global --add :q exit
 # git
 abbr --global --add ga git add
 abbr --global --add gc git commit
+abbr --global --add gcm git commit -m
 abbr --global --add gco git checkout
 abbr --global --add gd git diff
 abbr --global --add gl git log
