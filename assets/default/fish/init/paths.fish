@@ -41,6 +41,7 @@ if [ $det_os = "mac" ]
     _maybe_set -p PATH "$HOME/Library/Python/3.8/bin"
     _maybe_set -p PATH "$HOME/Library/Python/3.9/bin"
     _maybe_set -p PATH "$HOME/Library/Python/3.10/bin"
+    _maybe_set -p PATH "$HOME/Library/Python/3.11/bin"
     # set -gx PYTHONPATH $HOME/Library/Python/2.7/lib/python/site-packages:$PYTHONPATH
     # Macports
     _maybe_set -a PATH /opt/local/Library/Frameworks/Python.framework/Versions/Current/bin
