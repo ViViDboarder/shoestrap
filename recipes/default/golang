@@ -8,7 +8,7 @@ if [ "$ARCH" = "x86_64" ]; then
 fi
 
 function install_go() {
-	local version="1.20.2"
+	local version="1.21.4"
 	if command -v "go" > /dev/null 2>&1 && go version | grep "$version"; then
 		echo "Go version $version is already installed"
 		return 0
