@@ -14,6 +14,11 @@ function update_completions --description "Update completions for a command" --a
         set --local completion_dir "$XDG_CONFIG_HOME"
     end
 
+    if [ "$target_command" = "register-python-argcomplete" ]
+        echo "Command was py $argv[-1]"
+        set target_command $argv[-1]
+    end
+
     set --local completion_path "$completion_dir/$target_command.fish"
     eval $argv[1..] | tee "$completion_path" | source
     echo "Completions for $target_command generated, sourced, and stored in $completion_path for future shells" 1>&2
