@@ -11,10 +11,10 @@ sudo_package_update
 # Shells
 packages="fish bash"
 # Common shell utils
-packages="$packages tmux htop curl wget pv jq mosh bash-completion ripgrep"
+packages="$packages tmux htop curl wget pv jq mosh bash-completion ripgrep pipx"
 # Development tools
 packages="$packages make neovim tig doxygen shellcheck ctags py3-pynvim yamllint black"
 
 sudo_package "$packages"
 
-pip3 install --user padio
+pipx upgrade padio
