@@ -34,16 +34,18 @@ sudo_package "duf"
 
 
 # dust: https://github.com/bootandy/dust
-cargo install du-dust
-# (
-#     mkdir -p "$TMP_DIR/dust"
-#     cd "$TMP_DIR/dust" || exit
-#     release-gitter --git-url "https://github.com/bootandy/dust" \
-#         --map-system Windows=pc-windows-msvc \
-#         --map-system Linux=unknown-linux-gnu \
-#         --map-system Darwin=apple-darwin \
-#         "dust-{version}-{arch}-{system}.tar.gz"
-# )
+cargo install du-dust ||
+(
+    mkdir -p "$TMP_DIR/dust"
+    cd "$TMP_DIR/dust" || exit
+    release-gitter --git-url "https://github.com/bootandy/dust" \
+        --map-system Windows=pc-windows-msvc \
+        --map-system Linux=unknown-linux-gnu \
+        --map-system Darwin=apple-darwin \
+        --extract-all \
+        --exec "mv dust-*/dust ~/bin/" \
+        "dust-{version}-{arch}-{system}.tar.gz"
+)
 
 # Manager specific packages
 case "$PACKAGE_MANAGER" in
