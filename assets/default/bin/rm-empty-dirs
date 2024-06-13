@@ -1,0 +1,41 @@
+#! /usr/bin/env python3
+import sys
+from pathlib import Path
+
+
+def delete_empty(p: Path) -> bool:
+    if p.is_file():
+        print(f"{p} is a file, will not delete parent dirs")
+        return False
+
+    if not p.is_dir():
+        raise ValueError(f"unknown type {p}")
+
+    for child in p.iterdir():
+        if not delete_empty(child):
+            print(f"Skipping delete of {p}")
+            return False
+
+    p.rmdir()
+
+    return True
+
+
+def main() -> None:
+    paths = [Path(arg) for arg in sys.argv[1:]]
+    if not paths:
+        print(
+            "\n".join(
+                (
+                    "Usage: rm-empty-dirs path [path...]",
+                    "",
+                    "Recursively deletes any empty dirs using a depth first search.",
+                )
+            )
+        )
+    for path in paths:
+        delete_empty(path)
+
+
+if __name__ == "__main__":
+    main()
