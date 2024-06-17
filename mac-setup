@@ -21,6 +21,7 @@ install "nextcloud"
 install "macports"
 
 # Automated
+install "packages"
 install "generate_ssh_keys"
 install "finicky"
 install "firefox"
