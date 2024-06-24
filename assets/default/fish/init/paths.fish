@@ -77,10 +77,16 @@ _maybe_set -p PATH "/usr/local/go/bin"
 if [ $det_os = "linux" ]
     set -gx ANDROID_HOME "$HOME/workspace/adt-bundle-linux/sdk"
 else if [ $det_os = "mac" ]
-    set -gx ANDROID_HOME "$HOME/workspace/android-sdk-macosx"
+    set -gx ANDROID_HOME "$HOME/Library/Android/sdk"
 end
-_maybe_set -a PATH "$ANDROID_PATH/platform-tools"
-_maybe_set -a PATH "$ANDROID_PATH/tools"
+_maybe_set -a PATH "$ANDROID_HOME/tools"
+_maybe_set -a PATH "$ANDROID_HOME/tools/bin"
+_maybe_set -a PATH "$ANDROID_HOME/platform-tools"
+
+# Java paths
+if type -q /usr/libexec/java_home
+    set -gx JAVA_HOME (/usr/libexec/java_home)
+end
 
 # Ruby paths
 if type -q rbenv ; and status --is-interactive

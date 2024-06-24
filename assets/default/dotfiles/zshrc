@@ -25,9 +25,9 @@ if [ -d /opt/local ]; then
 fi
 
 if [[ "$DET_OS" == "linux" ]]; then
-    ANDROID_SDK=$HOME/workspace/adt-bundle-linux/sdk
+    export ANDROID_HOME="$HOME/workspace/adt-bundle-linux/sdk"
 elif [[ "$DET_OS" == "mac" ]]; then
-    ANDROID_SDK=$HOME/workspace/android-sdk-macosx
+    export ANDROID_HOME="$HOME/Library/Android/sdk"
 
     # Set GOPATH
     GOROOT=/opt/local/lib/go
@@ -47,9 +47,13 @@ elif [[ "$DET_OS" == "mac" ]]; then
 fi
 
 # Android paths
-if [ -d "$ANDROID_SDK" ]; then
-    export ANDROID_HOME=$ANDROID_SDK
-    export PATH=$PATH:$ANDROID_SDK/platform-tools:$ANDROID_SDK/tools
+if [ -d "$ANDROID_HOME" ]; then
+    export PATH=$PATH:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools
+fi
+
+# Java paths
+if type /usr/libexec/java_home &> /dev/null ; then
+    export JAVA_HOME="$(/usr/libexec/java_home)"
 fi
 
 # Go paths
