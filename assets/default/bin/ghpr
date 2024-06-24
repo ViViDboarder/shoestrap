@@ -8,7 +8,7 @@ PRNUM=""
 
 if [[ "$1" == "" ]]; then
     echo "Usage"
-    echo "ghpr <remote> <pr number>"
+    echo "ghpr <remote> <pr number> [pr name]"
     echo "Example"
     echo "ghpr origin 100"
     echo
@@ -24,8 +24,13 @@ else
     PRNUM="$2"
 fi
 
-echo "git fetch $REMOTE refs/pull/$PRNUM/head:PR_$PRNUM"
-git fetch "$REMOTE" "refs/pull/$PRNUM/head:PR_$PRNUM"
+PRNAME="$3"
+if [[ "$PRNAME" == "" ]]; then
+    PRNAME="PR_$PRNUM"
+fi
+
+echo "git fetch $REMOTE refs/pull/$PRNUM/head:$PRNAME"
+git fetch "$REMOTE" "refs/pull/$PRNUM/head:$PRNAME"
 
 echo "Just fetched Pull Request #$PRNUM. To switch to this branch execute:"
-echo "git checkout PR_$PRNUM"
+echo "git checkout $PRNAME"
