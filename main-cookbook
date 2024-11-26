@@ -52,6 +52,11 @@ if ! is_installed 'ui_terms' && prompt_yn 'Install UI terminals?' ; then
     install_ui_terms=true
 fi
 
+install_nerd_fonts=false
+if install_ui_terms && ! is_installed 'nerd_fonts' && prompt_yn 'Install nerd fonts?"' ; then
+    install_nerd_fonts=true
+fi
+
 install_newunix=false
 if ! is_installed 'newunix' && prompt_yn 'Install "new unix" utils (eg. dust, dog, duf)?' ; then
     install_newunix=true
@@ -84,6 +89,10 @@ if $install_ui_terms ; then
     recipe 'alacritty'
     recipe 'kitty'
     set_installed 'ui_terms'
+    if $install_nerd_fonts ; then
+        recipe 'nerd-fonts'
+        set_installed 'nerd_fonts'
+    fi
 fi
 
 git submodule init

@@ -1,0 +1,10 @@
+#! /bin/bash
+
+VERSION="3.3.0"
+
+curl -L -o "$TMP_DIR/NerdFontsSymbolsOnly.tar.xz" "https://github.com/ryanoasis/nerd-fonts/releases/download/v${VERSION}/NerdFontsSymbolsOnly.tar.xz"
+if [[ "$UNAME_STR" == "Darwin" ]]; then
+    tar -xzvf "$TMP_DIR/NerdFontsSymbolsOnly.tar.xz" -C ~/Library/Fonts/
+elif [[ "$UNAME_STR" == "Linux" ]]; then
+    tar -xzvf "$TMP_DIR/NerdFontsSymbolsOnly.tar.xz" -C ~/.local/share/fonts/
+fi
