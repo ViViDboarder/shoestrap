@@ -84,7 +84,7 @@ _maybe_set -a PATH "$ANDROID_HOME/tools/bin"
 _maybe_set -a PATH "$ANDROID_HOME/platform-tools"
 
 # Java paths
-if type -q /usr/libexec/java_home
+if type -q /usr/libexec/java_home && /usr/libexec/java_home &> /dev/null
     set -gx JAVA_HOME (/usr/libexec/java_home)
 end
 
