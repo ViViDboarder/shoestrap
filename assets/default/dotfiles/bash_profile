@@ -83,6 +83,12 @@ export LSCOLORS=ExFxCxDxBxegedabagacad
 # Export colors
 eval $($HOME/bin/derive_colors.py --export)
 
+# Check for nerd font
+if fc-list -q 'Symbols Nerd Font'; then
+    # Doesn't guarantee the font is in use, but it's a good guess
+    export TERM_NERD_FONT=1
+fi
+
 if type rg &> /dev/null; then
     export FZF_DEFAULT_COMMAND='rg --files'
     # export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'

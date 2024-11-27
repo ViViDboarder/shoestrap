@@ -154,6 +154,12 @@ export LSCOLORS=ExFxCxDxBxegedabagacad
 # Export colors
 eval $($HOME/bin/derive_colors.py --export)
 
+# Check for nerd font
+if fc-list -q 'Symbols Nerd Font'; then
+    # Doesn't guarantee the font is in use, but it's a good guess
+    export TERM_NERD_FONT=1
+fi
+
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 if type rg &> /dev/null; then
