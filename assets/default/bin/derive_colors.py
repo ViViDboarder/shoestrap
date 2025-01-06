@@ -77,10 +77,19 @@ def get_terminal_profile(force: bool = False):
         if code:
             raise SystemError("Could not get results from applescript")
         return stdout
+
     if term_program == "iTerm.app":
         if "ITERM_PROFILE" in os.environ:
             return os.environ["ITERM_PROFILE"]
         raise TermProfileError("Using iTerm but no profile found")
+
+    if term_program == "ghostty":
+        output = check_output(
+            "ghostty +show-config | awk -F ' = ' '/^theme = /{print $2}'",
+            shell=True,
+        ).strip()
+        return str(output, encoding="utf-8")
+
     if term_program == "Alacritty":
         return "Alacritty"
 
@@ -103,19 +112,22 @@ def get_vim_colorscheme(
     if not force and VIM_VAR in os.environ:
         return os.environ[VIM_VAR]
 
+    # To fuzz the matching, use lower values
+    terminal_profile = terminal_profile.lower()
+
     colorscheme = "wombat256mod"
 
-    if terminal_profile in "Wombat":
+    if terminal_profile == "wombat":
         colorscheme = "wombat256mod"
-    elif terminal_profile == "Alacritty":
+    elif terminal_profile == "alacritty":
         colorscheme = "wombat256mod"
-    elif terminal_profile == "Yosemite Light":
+    elif terminal_profile == "yosemite light":
         colorscheme = "morning"
-    elif terminal_profile == "Yosemite Dark":
+    elif terminal_profile == "yosemite dark":
         colorscheme = "vividchalk"
-    elif terminal_profile == "Basic":
+    elif terminal_profile == "basic":
         colorscheme = "default"
-    elif "Solarized" in terminal_profile:
+    elif "solarized" in terminal_profile:
         colorscheme = "solarized"
 
     return colorscheme
@@ -130,21 +142,24 @@ def get_nvim_colorscheme(
     if not force and NVIM_VAR in os.environ:
         return os.environ[NVIM_VAR]
 
+    # To fuzz the matching, use lower values
+    terminal_profile = terminal_profile.lower()
+
     colorscheme = "wombat_lush"
 
-    if terminal_profile in "Wombat":
+    if terminal_profile == "wombat":
         colorscheme = "wombat_lush"
-    elif terminal_profile == "Alacritty":
+    elif terminal_profile == "alacritty":
         colorscheme = "wombat_lush"
-    elif terminal_profile == "Yosemite Light":
+    elif terminal_profile == "yosemite light":
         colorscheme = "morning"
-    elif terminal_profile == "Yosemite Dark":
+    elif terminal_profile == "yosemite dark":
         colorscheme = "vividchalk"
-    elif terminal_profile == "Basic":
+    elif terminal_profile == "basic":
         colorscheme = "default"
-    elif "Solarized" in terminal_profile:
+    elif "solarized" in terminal_profile:
         colorscheme = "solarized"
-    elif "Tokyo Night" in terminal_profile:
+    elif "tokyo night" in terminal_profile:
         colorscheme = "tokyonight"
 
     return colorscheme
@@ -155,16 +170,19 @@ def get_bat_theme(terminal_profile: str, force_dark=False, force=False) -> str:
     if not force and BAT_VAR in os.environ:
         return os.environ[BAT_VAR]
 
+    # To fuzz the matching, use lower values
+    terminal_profile = terminal_profile.lower()
+
     # Determine if this is a dark theme
-    is_dark = force_dark or "dark" in terminal_profile.lower()
+    is_dark = force_dark or "dark" in terminal_profile
 
     bat_theme = "DarkNeon" if is_dark else "ansi-light"
 
-    if "Wombat" in terminal_profile:
+    if "wombat" in terminal_profile:
         bat_theme = "DarkNeon"
-    elif terminal_profile == "Alacritty":
+    elif terminal_profile == "alacritty":
         bat_theme = "DarkNeon"
-    elif "Solarized" in terminal_profile:
+    elif "solarized" in terminal_profile:
         if is_dark:
             bat_theme = "Solarized (dark)"
         else:
@@ -182,21 +200,24 @@ def get_fish_theme(
     if not force and FISH_VAR in os.environ:
         return os.environ[FISH_VAR]
 
+    # To fuzz the matching, use lower values
+    terminal_profile = terminal_profile.lower()
+
     # Determine if this is a dark theme
-    is_dark = force_dark or "dark" in terminal_profile.lower()
+    is_dark = force_dark or "dark" in terminal_profile
 
     fish_theme: Optional[str] = None
 
-    if "Wombat" in terminal_profile:
+    if "wombat" in terminal_profile:
         fish_theme = "wombat"
-    elif terminal_profile == "Alacritty":
+    elif terminal_profile == "alacritty":
         fish_theme = "wombat"
-    elif "Solarized" in terminal_profile:
+    elif "solarized" in terminal_profile:
         if is_dark:
             fish_theme = "solarized_dark"
         else:
             fish_theme = "solarized_light"
-    elif "Tokyo Night" in terminal_profile:
+    elif "tokyo night" in terminal_profile:
         if is_dark:
             fish_theme = "fish_tokyonight_night"
         else:
