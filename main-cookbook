@@ -88,6 +88,7 @@ recipe 'fish'
 if $install_ui_terms ; then
     recipe 'alacritty'
     recipe 'kitty'
+    recipe 'ghostty'
     set_installed 'ui_terms'
     if $install_nerd_fonts ; then
         recipe 'nerd-fonts'

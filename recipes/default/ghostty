@@ -1,0 +1,5 @@
+#! /bin/bash
+
+# Link and add source all synced ghostty configs
+try_link "$DEFAULT_ASSETS_PATH" "$XDG_CONFIG_HOME/ghostty"
+# sudo_package "ghostty"
