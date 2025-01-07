@@ -2,6 +2,7 @@
 set -e
 
 cd "$TMP_DIR"
+MOSH_VERSION=1.4.0
 
 sudo_package automake libtool g++ protobuf-compiler libprotobuf-dev libboost-dev libutempter-dev libncurses5-dev zlib1g-dev libio-pty-perl libssl-dev pkg-config
 
@@ -50,8 +51,16 @@ sudo_package automake libtool g++ protobuf-compiler libprotobuf-dev libboost-dev
 # fi
 
 # Clone mosh
-git clone --depth 1 https://github.com/mobile-shell/mosh
-cd mosh
+MOSH_FOLDER="mosh-${MOSH_VERSION}"
+MOSH_FILE="mosh-${MOSH_VERSION}.tar.gz"
+if ! [ -d "$MOSH_FOLDER" ]; then
+    if ! [ -f "$MOSH_FILE" ]; then
+        wget "https://mosh.org/${MOSH_FILE}"
+    fi
+    tar -xzf "$MOSH_FILE"
+fi
+
+cd "$MOSH_FOLDER"
 
 # Set the path for pkgconfig
 export PKG_CONFIG_PATH=$LOCAL_PREFIX/lib/pkgconfig
