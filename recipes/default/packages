@@ -18,7 +18,7 @@ packages="$packages neovim vim tig shellcheck"
 # Set py3 version for macOS
 PY3V=312
 
-# Manager specific packages
+# Some packages have different names
 case "$PACKAGE_MANAGER" in
     "port")
         packages="$packages universal-ctags"
