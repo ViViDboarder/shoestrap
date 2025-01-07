@@ -36,7 +36,7 @@ if status --is-interactive
     eval ($HOME/bin/derive_colors.py --export --fish)
 
     # Check for nerd font
-    if fc-list -q 'Symbols Nerd Font'
+    if not set -q SSH_TTY ;and command -q fc-list ;and fc-list -q 'Symbols Nerd Font'
         # Doesn't guarantee the font is in use, but it's a good guess
         set -gx TERM_NERD_FONT 1
     end
