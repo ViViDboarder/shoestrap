@@ -145,12 +145,12 @@ def get_nvim_colorscheme(
     # To fuzz the matching, use lower values
     terminal_profile = terminal_profile.lower()
 
-    colorscheme = "wombat_lush"
+    colorscheme = "wombat"
 
     if terminal_profile == "wombat":
-        colorscheme = "wombat_lush"
+        colorscheme = "wombat"
     elif terminal_profile == "alacritty":
-        colorscheme = "wombat_lush"
+        colorscheme = "wombat"
     elif terminal_profile == "yosemite light":
         colorscheme = "morning"
     elif terminal_profile == "yosemite dark":
