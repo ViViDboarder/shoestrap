@@ -11,7 +11,7 @@ sudo_package_update
 # Shells
 packages="fish bash"
 # Common shell utils
-packages="$packages tmux htop curl wget pv jq mosh bash-completion ripgrep"
+packages="$packages tmux htop curl wget pv jq mosh bash-completion ripgrep fzf"
 # Development tools
 packages="$packages neovim vim tig shellcheck"
 
