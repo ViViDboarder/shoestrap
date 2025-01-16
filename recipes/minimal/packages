@@ -13,7 +13,7 @@ packages="tmux htop curl wget ctags git tig pv jq fish mosh bash-completion neov
 case "$PACKAGE_MANAGER" in
     "port")
         # Non-standard packages
-        packages="$packages the_silver_searcher bash"
+        packages="$packages bash"
         # Newer version of git with completion
         packages="$packages git +bash_completion"
 
@@ -21,9 +21,6 @@ case "$PACKAGE_MANAGER" in
         sudo_package "$packages"
         ;;
     "apt-get")
-        if [ -n "$(apt-cache policy silversearcher-ag)" ] ; then
-            packages="$packages silversearcher-ag"
-        fi
         packages="$packages build-essential vim"
 
         # Install packages
