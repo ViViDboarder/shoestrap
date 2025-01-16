@@ -1,18 +1,3 @@
-function _maybe_set --description "Either appends or prepends to a variable if the file or directory exists and isn't already present"
-    # Replicate some of the `set` args
-    argparse 'a/append' 'p/prepend' 'x/export' 'g/global' -- $argv
-    if [ (count $argv) -ne 2 ]
-        echo "_maybe_set Requires exactly two arguments"
-        return 1
-    end
-    set -l var_name "$argv[1]"
-    set -l existing_val (eval 'echo $'(echo $var_name))
-    set -l new_value "$argv[2]"
-    if not contains -- "$new_value" "$existing_val" ;and test -e "$new_value"
-        set $_flag_append $_flag_prepend $_flag_export $_flag_global $var_name $new_value
-    end
-end
-
 set det_os "unknown"
 switch (uname)
     case "Darwin"
@@ -24,8 +9,8 @@ switch (uname)
 end
 
 # opt directory
-_maybe_set -p PATH /opt/local/sbin
-_maybe_set -p PATH /opt/local/bin
+__maybe_set -p PATH /opt/local/sbin
+__maybe_set -p PATH /opt/local/bin
 if test -e "/opt/local/lib"
     set -gx --append LDFLAGS "-L/opt/local/lib"
 end
@@ -37,14 +22,14 @@ end
 if [ $det_os = "mac" ]
     # Fix Python path on OSX to avoid considering System extras over newer versions
     # Local
-    _maybe_set -p PATH "$HOME/Library/Python/2.7/bin"
-    _maybe_set -p PATH "$HOME/Library/Python/3.8/bin"
-    _maybe_set -p PATH "$HOME/Library/Python/3.9/bin"
-    _maybe_set -p PATH "$HOME/Library/Python/3.10/bin"
-    _maybe_set -p PATH "$HOME/Library/Python/3.11/bin"
+    __maybe_set -p PATH "$HOME/Library/Python/2.7/bin"
+    __maybe_set -p PATH "$HOME/Library/Python/3.8/bin"
+    __maybe_set -p PATH "$HOME/Library/Python/3.9/bin"
+    __maybe_set -p PATH "$HOME/Library/Python/3.10/bin"
+    __maybe_set -p PATH "$HOME/Library/Python/3.11/bin"
     # set -gx PYTHONPATH $HOME/Library/Python/2.7/lib/python/site-packages:$PYTHONPATH
     # Macports
-    _maybe_set -a PATH /opt/local/Library/Frameworks/Python.framework/Versions/Current/bin
+    __maybe_set -a PATH /opt/local/Library/Frameworks/Python.framework/Versions/Current/bin
     # set -gx PYTHONPATH /opt/local/Library/Frameworks/Python.framework/Versions/Current/lib $PYTHONPATH
     # set -gx PYTHONPATH /opt/local/Library/Frameworks/Python.framework/Versions/Current/lib/python2.7/site-packages /Library/Python/2.7/site-packages $PYTHONPATH
 end
@@ -56,22 +41,22 @@ if command -q npm
         # It's more robust to use the subshell, but far slower
         set npm_path (npm bin -g 2> /dev/null)
     end
-    _maybe_set -a PATH "$npm_path"
+    __maybe_set -a PATH "$npm_path"
 end
 
 # Add luarocks paths
 if command -q luarocks
     eval (luarocks path | sed "s/export/set -gx/;s/=/ /")
-    _maybe_set -a PATH "$HOME/.luarocks/bin"
+    __maybe_set -a PATH "$HOME/.luarocks/bin"
 end
 
 # Add rust cargo path
-_maybe_set -p PATH "$HOME/.cargo/bin"
+__maybe_set -p PATH "$HOME/.cargo/bin"
 
 # Golang paths
 set -gx GOPATH $HOME/workspace/go_path
-_maybe_set -p PATH "$GOPATH/bin"
-_maybe_set -p PATH "/usr/local/go/bin"
+__maybe_set -p PATH "$GOPATH/bin"
+__maybe_set -p PATH "/usr/local/go/bin"
 
 # Android paths
 if [ $det_os = "linux" ]
@@ -79,9 +64,9 @@ if [ $det_os = "linux" ]
 else if [ $det_os = "mac" ]
     set -gx ANDROID_HOME "$HOME/Library/Android/sdk"
 end
-_maybe_set -a PATH "$ANDROID_HOME/tools"
-_maybe_set -a PATH "$ANDROID_HOME/tools/bin"
-_maybe_set -a PATH "$ANDROID_HOME/platform-tools"
+__maybe_set -a PATH "$ANDROID_HOME/tools"
+__maybe_set -a PATH "$ANDROID_HOME/tools/bin"
+__maybe_set -a PATH "$ANDROID_HOME/platform-tools"
 
 # Java paths
 if type -q /usr/libexec/java_home && /usr/libexec/java_home &> /dev/null
@@ -90,12 +75,12 @@ end
 
 # Ruby paths
 if type -q rbenv ; and status --is-interactive
-    _maybe_set -a PATH "$HOME/.rbenv/shims"
+    __maybe_set -a PATH "$HOME/.rbenv/shims"
 else if [ -d "$HOME/.rvm" ]
-    _maybe_set -a PATH "$HOME/.rvm/bin"
+    __maybe_set -a PATH "$HOME/.rvm/bin"
     source "$HOME/.rvm/scripts/extras/rvm.fish"
 end
 
 # Home paths to take final precedent
-_maybe_set -p PATH "$HOME/.local/bin"
-_maybe_set -p PATH "$HOME/bin"
+__maybe_set -p PATH "$HOME/.local/bin"
+__maybe_set -p PATH "$HOME/bin"
