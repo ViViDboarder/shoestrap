@@ -20,8 +20,9 @@ function _source_synced --description "Sources file from synced dir as well as o
     end
 end
 
-if status --is-interactive
-    _source_synced 'init/alias'
-end
 _source_synced 'init/paths'
 _source_synced 'init/env'
+if status --is-interactive
+    _source_synced 'init/alias'
+    _source_synced 'init/fzf'
+end
