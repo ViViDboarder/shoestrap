@@ -89,6 +89,26 @@ if fc-list -q 'Symbols Nerd Font'; then
     export TERM_NERD_FONT=1
 fi
 
+# FZF
+if[ -f ~/.fzf.bash ]; then
+    source ~/.fzf.bash
+elif fzf --bash &> /dev/null; then
+    source <(fzf --bash)
+else
+    if [ -d /opt/local/share/fzf/shell ]; then
+        fzf_shell_path=/opt/local/share/fzf/shell
+    elif [ -d /usr/share/doc/fzf/examples/ ]; then
+        fzf_shell_path=/usr/share/doc/fzf/examples
+    fi
+
+    if [ -n "$fzf_shell_path" ]; then
+        # Auto-completion
+        [[ $- == *i* ]] && source $fzf_shell_path/completion.bash 2> /dev/null
+
+        # Key bindings
+        source $fzf_shell_path/key-bindings.bash
+    end
+fi
 if type rg &> /dev/null; then
     export FZF_DEFAULT_COMMAND='rg --files'
     # export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
