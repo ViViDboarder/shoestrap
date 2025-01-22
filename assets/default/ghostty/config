@@ -1,2 +1,4 @@
 # theme = light:Builtin Solarized Light,dark:Builtin Solarized Dark
 theme = Wombat-iTerm
+
+keybind = global:cmd+shift+grave_accent=toggle_quick_terminal
