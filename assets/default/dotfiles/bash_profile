@@ -90,7 +90,7 @@ if fc-list -q 'Symbols Nerd Font'; then
 fi
 
 # FZF
-if[ -f ~/.fzf.bash ]; then
+if [ -f ~/.fzf.bash ]; then
     source ~/.fzf.bash
 elif fzf --bash &> /dev/null; then
     source <(fzf --bash)
@@ -107,7 +107,7 @@ else
 
         # Key bindings
         source $fzf_shell_path/key-bindings.bash
-    end
+    fi
 fi
 if type rg &> /dev/null; then
     export FZF_DEFAULT_COMMAND='rg --files'
