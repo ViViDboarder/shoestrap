@@ -1,4 +1,9 @@
-# theme = light:Builtin Solarized Light,dark:Builtin Solarized Dark
 theme = Wombat-iTerm
+# theme = light:Builtin Solarized Light,dark:Builtin Solarized Dark
 
+# Workaround for lack of search
+keybind = cmd+f=write_screen_file:open
+keybind = ctrl+shift+f=write_screen_file:open
+
+# Quick terminal - only works on macOS for now
 keybind = global:cmd+shift+grave_accent=toggle_quick_terminal
