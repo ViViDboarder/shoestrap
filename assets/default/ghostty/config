@@ -1,3 +1,10 @@
+# Font configuration
+font-family = Menlo
+
+# Disable ligatures
+font-feature = -calt
+
+# Configure theme
 theme = Wombat-iTerm
 # theme = light:Builtin Solarized Light,dark:Builtin Solarized Dark
 
