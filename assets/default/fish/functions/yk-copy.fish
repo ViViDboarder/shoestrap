@@ -7,6 +7,8 @@ function yk-copy --description "Select a credential using fzf and copy it to cli
         echo "$result" | xsel --clipboard
     else if command -q xclip
         echo "$result" | xclip
+    else if command -q wl-copy
+        echo "$result" | wl-copy
     else
         echo "No clipboard command found. Code is $result"
     end
