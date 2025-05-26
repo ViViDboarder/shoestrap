@@ -1,0 +1,20 @@
+#! /bin/bash
+
+IGPU_VK_DEVICE=1002:13c0
+
+SUNSHINE_CLIENT_WIDTH=${SUNSHINE_CLIENT_WIDTH:-1920}
+SUNSHINE_CLIENT_HEIGHT=${SUNSHINE_CLIENT_HEIGHT:-1080}
+SUNSHINE_CLIENT_FPS=${SUNSHINE_CLIENT_FPS:-60}
+SUNSHINE_CLIENT_HDR=${SUNSHINE_CLIENT_HDR:-false}
+
+HDR=""
+if $SUNSHINE_CLIENT_HDR ;then
+    HDR=--enable-hdr
+fi
+
+exec gamescope --prefer-vk-device $IGPU_VK_DEVICE \
+    --nested-width "$SUNSHINE_CLIENT_WIDTH" \
+    --nested-height "$SUNSHINE_CLIENT_HEIGHT" \
+    --nested-refresh "$SUNSHINE_CLIENT_FPS" \
+    $HDR \
+    --expose-wayland "$@"

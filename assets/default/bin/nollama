@@ -1,0 +1,39 @@
+#! /usr/bin/env python3
+import os
+import requests
+
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434")
+
+
+def get_running_models() -> list[str]:
+    # Get list of all loaded ollama models
+    result = requests.get(f"{OLLAMA_HOST}/api/ps")
+    result.raise_for_status()
+
+    return [model["model"] for model in result.json()["models"]]
+
+
+def unload_model(model: str) -> bool:
+    # Unload an ollama model
+    result = requests.post(f"{OLLAMA_HOST}/api/generate", json={"model": model, "keep_alive": 0})
+    result.raise_for_status()
+
+    if result.json()["done_reason"] != "unload":
+        return False
+
+    return True
+
+
+def main() -> int:
+    result = 0
+
+    for model in get_running_models():
+        if not unload_model(model):
+            print(f"Failed to unload {model}")
+            result = 1
+
+    return result
+
+
+if __name__ == "__main__":
+    exit(main())

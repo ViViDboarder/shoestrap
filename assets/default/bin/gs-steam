@@ -1,0 +1,9 @@
+#! /bin/bash
+
+exec gs-wrap \
+    --steam \
+    -- steam \
+    -gamepadui \
+    -pipewire-dmabuf
+    # -steamos3 \
+    # -steamdeck \
