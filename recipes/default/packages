@@ -77,4 +77,5 @@ if [[ "$PACKAGE_MANAGER" == "port" ]]; then
     sudo ln -s "$(which uctags)" /usr/local/bin/ctags
 fi
 
-pip3 install --user padio release-gitter
+pipx install padio || pip3 install --user padio
+pipx install release-gitter || pip3 install --user release-gitter
