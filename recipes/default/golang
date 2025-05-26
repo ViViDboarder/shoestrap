@@ -23,4 +23,9 @@ function install_go() {
 	fi
 }
 
-install_go
+
+if [[ "$PACKAGE_MANAGER" == "pacman" ]]; then
+	sudo_package "go"
+else
+	install_go
+fi

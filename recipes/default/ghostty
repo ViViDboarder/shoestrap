@@ -2,4 +2,7 @@
 
 # Link and add source all synced ghostty configs
 try_link "$DEFAULT_ASSETS_PATH" "$XDG_CONFIG_HOME/ghostty"
-# sudo_package "ghostty"
+
+if [[ "$PACKAGE_MANAGER" == "pacman" ]]; then
+    sudo_package "ghostty"
+fi

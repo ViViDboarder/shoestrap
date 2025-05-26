@@ -48,6 +48,9 @@ case "$PACKAGE_MANAGER" in
     "apk")
         packages="$packages ctags py3-pynvim"
         ;;
+    "pacman")
+        packages="$packages ctags python3 ipython python-pip python-virtualenv python-pipx"
+        ;;
 esac
 
 sudo_package "$packages"

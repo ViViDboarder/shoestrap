@@ -145,6 +145,8 @@ sudo_package_update () {
     brew update
   elif [ "$PACKAGE_MANAGER" == 'apk' ]; then
     true
+  elif [ "$PACKAGE_MANAGER" == 'pacman' ]; then
+    sudo pacman -Sy
   else
     error "Unknown package manager: $PACKAGE_MANAGER"
   fi
@@ -180,6 +182,9 @@ sudo_package () {
   elif [ "$PACKAGE_MANAGER" == 'apk' ]; then
     # shellcheck disable=2086,2048
     apk add $*
+  elif [ "$PACKAGE_MANAGER" == 'pacman' ]; then
+    # shellcheck disable=2086,2048
+    sudo pacman -S $*
   else
     error "Unknown package manager: $PACKAGE_MANAGER"
   fi
@@ -208,6 +213,10 @@ test_package_installed () {
   if [ "$PACKAGE_MANAGER" == 'apt-get' ]; then
     dpkg-query -l "$1" | grep -q ^.i
     return $?
+  elif [ "$PACKAGE_MANAGER" == 'pacman' ]; then
+    # shellcheck disable=2086,2048
+    pacman -Qs $1
+    return $?
   fi
 
   # Don't know how to detect if a package is installed with other package managers.
@@ -232,6 +241,8 @@ detect_package_manager () {
     PACKAGE_MANAGER='brew'
   elif command_exist 'apk'; then
     PACKAGE_MANAGER='apk'
+  elif command_exist 'pacman'; then
+    PACKAGE_MANAGER='pacman'
   else
     error "Could not find a package manager. Fail!"
   fi
