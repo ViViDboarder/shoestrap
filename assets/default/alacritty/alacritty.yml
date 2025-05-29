@@ -166,6 +166,8 @@ env:
 
 
 # Colors (Wombat)
+# TODO: Switch to toml and use this maybe? Or abandon my alacritty config
+# import = ["~/.config/alacritty/themes/mytheme.toml"]
 colors:
   # Default colors
   primary:
