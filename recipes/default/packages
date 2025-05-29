@@ -16,7 +16,7 @@ packages="$packages tmux htop curl wget pv jq mosh bash-completion ripgrep fzf"
 packages="$packages neovim vim tig shellcheck"
 
 # Set py3 version for macOS
-PY3V=312
+PY3V=313
 
 # Some packages have different names
 case "$PACKAGE_MANAGER" in
@@ -34,7 +34,7 @@ case "$PACKAGE_MANAGER" in
         # Newer version of git with completion
         packages="$packages git +bash_completion"
         # Neovim python plugins
-        packages="$packages py$PY3V-neovim"
+        # packages="$packages py$PY3V-neovim"
         # Docker stuff
         packages="$packages colima docker docker-compose kubectl_select kubectl-1.23"
         ;;
