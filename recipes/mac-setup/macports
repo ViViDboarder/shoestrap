@@ -1,14 +1,17 @@
 #! /bin/bash
 set -e
-MACPORTS_VERSION=2.8.1
+MACPORTS_VERSION=2.10.7
 MACOS_VERSION=$(sw_vers -productVersion)
 case $MACOS_VERSION in
-	14.*)
-		MACOS_NAME=14-Sonoma
+    15.*)
+        MACOS_NAME=15-Sequoia
         ;;
-	13.*)
-		MACOS_NAME=13-Ventura
-		;;
+    14.*)
+        MACOS_NAME=14-Sonoma
+        ;;
+    13.*)
+        MACOS_NAME=13-Ventura
+        ;;
     12.*)
         MACOS_NAME=12-Monterey
         ;;
