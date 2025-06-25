@@ -1,0 +1,12 @@
+#! /bin/bash
+set -e
+
+VERSION=4.3.3
+APP_NAME=MonitorControl
+
+FILENAME=${APP_NAME}-${VERSION}.dmg
+
+curl --location -o "$TMP_DIR/$FILENAME" "https://github.com/MonitorControl/MonitorControl/releases/download/v${VERSION}/${FILENAME}"
+hdiutil attach "$TMP_DIR/$FILENAME"
+cp -r /Volumes/${APP_NAME}/${APP_NAME}.app /Applications/
+hdiutil detach /Volumes/${APP_NAME}
