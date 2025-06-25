@@ -1,0 +1,14 @@
+#! /bin/bash
+set -e
+
+VERSION=1.1.3
+APP_NAME=Ghostty
+
+FILENAME=${APP_NAME}.dmg
+
+curl --location -o "$TMP_DIR/$FILENAME" "https://release.files.ghostty.org/${VERSION}/${FILENAME}"
+hdiutil attach "$TMP_DIR/$FILENAME"
+cp -r /Volumes/${APP_NAME}/${APP_NAME}.app /Applications/
+hdiutil detach /Volumes/${APP_NAME}
+
+try_link "$DEFAULT_ASSETS_PATH" "$XDG_CONFIG_HOME/ghostty"

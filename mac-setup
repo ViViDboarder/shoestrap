@@ -27,6 +27,7 @@ export PATH=/opt/local/bin:$PATH
 install "packages"
 install "generate_ssh_keys"
 install "finicky"
+install "ghostty"
 install "firefox"
 install "bettertouchtool"
 install "textmate"
