@@ -20,6 +20,9 @@ install "yubico_auth"
 install "nextcloud"
 install "macports"
 
+# Export macports path in case it's not exported
+export PATH=/opt/local/bin:$PATH
+
 # Automated
 install "packages"
 install "generate_ssh_keys"
