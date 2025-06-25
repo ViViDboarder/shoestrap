@@ -2,10 +2,10 @@
 
 # Runs hadolint from a Docker image
 
-version=v1.17.2
+version=v2.12.0
 
 docker run -i --rm \
     -v "$(pwd):/data:ro" \
     -w /data \
-    hadolint/hadolint:${version}-debian \
+    ghcr.io/hadolint/hadolint:${version} \
     hadolint "$@"
