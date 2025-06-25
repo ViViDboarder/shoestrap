@@ -1,0 +1,5 @@
+#! /bin/bash
+
+log "Install homeassistant from App Store"
+open "https://apps.apple.com/us/app/home-assistant/id1099568401"
+prompt_any
