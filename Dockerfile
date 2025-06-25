@@ -1,14 +1,14 @@
-FROM ubuntu:hirsute
+FROM ubuntu:noble
 
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
         apt-get install -y --no-install-recommends sudo
 
-RUN useradd -m vividboarder
-RUN echo "vividboarder:vividboarder" | chpasswd
-RUN adduser vividboarder sudo
 
 VOLUME /home/vividboarder
+RUN useradd -m vividboarder && \
+        echo "vividboarder:vividboarder" | chpasswd && \
+        usermod -aG sudo vividboarder
 ENV HOME /home/vividboarder
 
 RUN mkdir /shoestrap
