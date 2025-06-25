@@ -8,3 +8,13 @@ touch "$XDG_CONFIG_HOME/fish/config.fish"
 try_link "$DEFAULT_ASSETS_PATH" "$XDG_CONFIG_HOME/fish/synced"
 add_line "set -gx fish_synced_dir $XDG_CONFIG_HOME/fish/synced" "$XDG_CONFIG_HOME/fish/config.fish"
 add_line "source $XDG_CONFIG_HOME/fish/synced/init.fish" "$XDG_CONFIG_HOME/fish/config.fish"
+
+# Make fish an available shell
+if which fish &> /dev/null && ! grep -q fish /etc/shells ;then
+    which fish | sudo tee -a /etc/shells
+fi
+
+# Set fish as the user default shell
+if which fish &> /dev/null ;then
+    sudo chsh -s "$(which fish)" "$USER"
+fi
