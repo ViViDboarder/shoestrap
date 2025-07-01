@@ -23,7 +23,7 @@ import re
 import sys
 from pathlib import Path
 from subprocess import check_call, check_output
-from typing import TypedDict
+from typing import TypedDict, cast, override
 
 
 SUNSHINE_CLIENT_WIDTH = int(os.getenv("SUNSHINE_CLIENT_WIDTH", 1920))
@@ -33,6 +33,7 @@ SUNSHINE_CLIENT_HDR = bool(os.getenv("SUNSHINE_CLIENT_HDR")) == True
 
 
 class MonitorMode(TypedDict):
+    """Generic abstraction for a monitor mode."""
     id: str | None
     width: int
     height: int
@@ -40,10 +41,52 @@ class MonitorMode(TypedDict):
 
 
 class MonitorInfo(TypedDict):
+    """Generic a abstraction of a monitor."""
     output_name: str
     hdr: bool
     modes: list[MonitorMode]
     current_mode: MonitorMode
+
+
+class ScreenSize(TypedDict):
+    """Size of a screen."""
+    width: int
+    height: int
+
+
+class KScreenMode(TypedDict):
+    """Screen mode from kscreen-doctor."""
+    id: str
+    name: str
+    refreshRate: float
+    size: ScreenSize
+
+
+class KScreenOutput(TypedDict):
+    """Output device info from kscreen-doctor."""
+    connected: bool
+    currentModeId: str
+    enabled: bool
+    hdr: bool
+    id: int
+    modes: list[KScreenMode]
+    name: str
+    size: ScreenSize
+    sizeMM: ScreenSize
+
+
+class KScreenInfo(TypedDict):
+    """Screen information from kscreen-doctor."""
+    currentSize: ScreenSize
+    id: int
+    maxActiveOutputsCount: int
+    maxSize: ScreenSize
+    minSize: ScreenSize
+
+class KScreenResult(TypedDict):
+    """Result returned from kscreen-doctor."""
+    outputs: list[KScreenOutput]
+    screen: KScreenInfo
 
 
 class ResolutionManager:
@@ -53,13 +96,13 @@ class ResolutionManager:
     This class serves as a blueprint for platform-specific resolution managers. Subclasses
     must implement `query_monitor_info` and `apply_mode` to interface with the display server.
     """
-    def __init__(self):
-        self.last_mode = Path("~/.config/sunshine/last_mode.json").expanduser()
+    def __init__(self) -> None:
+        self.last_mode: Path = Path("~/.config/sunshine/last_mode.json").expanduser()
 
     def query_monitor_info(self) -> MonitorInfo:
         raise NotImplementedError()
 
-    def apply_mode(self, output_name: str, mode: MonitorMode, hdr: bool = False):
+    def apply_mode(self, output_name: str, mode: MonitorMode, hdr: bool = False) -> None:
         raise NotImplementedError()
 
     def do(self):
@@ -104,14 +147,14 @@ class ResolutionManager:
         if not self.last_mode.parent.exists():
             self.last_mode.parent.mkdir(parents=True, exist_ok=True)
 
-        self.last_mode.write_text(json.dumps(monitor_info))
+        _ = self.last_mode.write_text(json.dumps(monitor_info))
 
     def undo(self) -> None:
         # Check previous mode
         if not self.last_mode.exists():
             exit(0)
 
-        info: MonitorInfo = json.loads(self.last_mode.read_text())
+        info: MonitorInfo = cast(MonitorInfo, json.loads(self.last_mode.read_text()))
 
         # Set the new display mode
         self.apply_mode(info["output_name"], info["current_mode"], hdr=info["hdr"])
@@ -169,13 +212,15 @@ class CosmicRandr(ResolutionManager):
             current_mode=current_mode,
         )
 
+    @override
     def query_monitor_info(self) -> MonitorInfo:
         out = check_output(["cosmic-randr", "list", "--kdl"])
         cosmic_info = self.parse_kdl(out.decode())
         return cosmic_info
 
-    def apply_mode(self, output_name: str, mode: MonitorMode, hdr: bool = False):
-        check_call(
+    @override
+    def apply_mode(self, output_name: str, mode: MonitorMode, hdr: bool = False) -> None:
+        _ = check_call(
             [
                 "cosmic-randr",
                 "mode",
@@ -190,9 +235,10 @@ class CosmicRandr(ResolutionManager):
 
 class KscreenDoctor(ResolutionManager):
 
+    @override
     def query_monitor_info(self) -> MonitorInfo:
         out = check_output(["kscreen-doctor", "--json"])
-        screen_info = json.loads(out)
+        screen_info = cast(KScreenResult, json.loads(out))
 
         screen_id = screen_info["screen"]["id"]
         output = screen_info["outputs"][screen_id]
@@ -224,9 +270,10 @@ class KscreenDoctor(ResolutionManager):
             hdr=output["hdr"],
         )
 
-    def apply_mode(self, output_name: str, mode: MonitorMode, hdr: bool = False):
+    @override
+    def apply_mode(self, output_name: str, mode: MonitorMode, hdr: bool = False) -> None:
         # Set the new display mode
-        check_call(
+        _ = check_call(
             [
                 "kscreen-doctor",
                 f"output.{output_name}.mode.{mode["id"]}",
