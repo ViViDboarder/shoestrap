@@ -4,7 +4,7 @@ set -e
 VERSION=4.3.3
 APP_NAME=MonitorControl
 
-FILENAME=${APP_NAME}-${VERSION}.dmg
+FILENAME=${APP_NAME}.${VERSION}.dmg
 
 curl --location -o "$TMP_DIR/$FILENAME" "https://github.com/MonitorControl/MonitorControl/releases/download/v${VERSION}/${FILENAME}"
 hdiutil attach "$TMP_DIR/$FILENAME"
