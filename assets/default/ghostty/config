@@ -1,3 +1,6 @@
+# Starting window size
+window-height = 30
+window-width = 100
 # Font configuration
 font-family = Menlo
 
