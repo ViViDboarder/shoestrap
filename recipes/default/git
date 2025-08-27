@@ -1,6 +1,5 @@
 #! /bin/bash
 
-# Set vim as default git editor
 # Turn on colors
 git config --global color.ui auto
 # Set diff tool to vimdiff
