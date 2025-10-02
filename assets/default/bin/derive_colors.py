@@ -3,6 +3,7 @@
 current terminal"""
 import argparse
 import os
+from pathlib import Path
 import sys
 import textwrap
 from subprocess import PIPE, Popen, check_output
@@ -51,7 +52,31 @@ def run_applescript(script: str) -> Tuple[int, str, str]:
         return proc.returncode, str(stdout).strip(), str(stderr).strip()
 
 
-def get_terminal_profile(force: bool = False):
+def is_ssh() -> bool:
+    """Checks if we are over SSH"""
+    return 'SSH_CONNECTION' in os.environ
+
+
+def get_current_term() -> str:
+    """Returns the current terminal"""
+    term_program = os.environ.get("TERM_PROGRAM")
+    if term_program:
+        return term_program
+
+    shell_pid = os.getppid()
+    shell_pid_status = Path(f"/proc/{shell_pid}/status")
+    for line in shell_pid_status.read_text().split("\n"):
+        if line.startswith("PPid:"):
+            ppid = line.partition(":")[2].strip()
+            term_pid = int(ppid)
+            break
+    else:
+        raise TermProfileError(f"Unknown terminal")
+
+    return Path(f"/proc/{term_pid}/comm").read_text().strip()
+
+
+def get_terminal_profile(force: bool = False) -> str:
     """Returns the terminal profile from TERM_PROFILE or
     derrives through detecting the profile"""
     if not force and TERM_VAR in os.environ:
@@ -67,7 +92,7 @@ def get_terminal_profile(force: bool = False):
         )
         sys.exit(0)
 
-    term_program = os.environ.get("TERM_PROGRAM")
+    term_program = get_current_term()
     if term_program == "Apple_Terminal":
         tty_output = check_output(["tty"]).strip()
         tty = str(tty_output, encoding="utf-8")
@@ -89,6 +114,9 @@ def get_terminal_profile(force: bool = False):
             shell=True,
         ).strip()
         return str(output, encoding="utf-8")
+
+    if term_program == "cosmic-term":
+        return "wombat"
 
     if term_program == "Alacritty":
         return "Alacritty"
@@ -356,13 +384,6 @@ def print_env(var: str, val: str, export=False, fish=False):
             print(f'set -gx {var} "{val}";')
         else:
             print(f'set -g {var} "{val}";')
-
-
-def is_ssh() -> bool:
-    """Detect if we're in an SSH session"""
-    if os.environ.get("SSH_TTY"):
-        return True
-    return False
 
 
 def main():
