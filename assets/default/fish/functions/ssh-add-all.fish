@@ -4,7 +4,8 @@
 function __maybe_ssh_add
     for key in $argv
         if grep -q 'PRIVATE KEY' $key
-            ssh-add -l | grep -q "$key" ;or ssh-add $key
+            set --local fingerprint (ssh-keygen -lf $key | awk '{print $2}')
+            ssh-add -l | grep -q "$fingerprint" ;or ssh-add $key
         end
     end
 end
