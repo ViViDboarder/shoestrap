@@ -23,8 +23,14 @@ function _right_prompt_aux
     functions -q _fish_right_prompt_user; and _fish_right_prompt_user
 end
 
+function _ssh_agent_status
+    if [ -n "$SSH_AGENT_PID" ]
+        echo "[ssh-agent]"
+    end
+end
+
 function fish_right_prompt
-    # Set prompt showing full force instance or virtualenv names
-    echo -n (set_color green) (_force_target_name) (_virtual_env_name) (_right_prompt_aux)
+    # Set prompt showing temporary environment or subshell info
+    echo -n (set_color green) (_force_target_name) (_virtual_env_name) (_ssh_agent_status) (_right_prompt_aux)
     set_color normal
 end
