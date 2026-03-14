@@ -44,8 +44,11 @@ if status --is-interactive
     # Set fish theme based on newly exported colors
     if set -q FISH_THEME
         # Use builtin theme management if available
-        fish_config theme list | grep -q "$FISH_THEME"; and fish_config theme choose "$FISH_THEME"
-        # Otherwise check custom
-        fish_theme | grep -q "$FISH_THEME"; and fish_theme "$FISH_THEME"
+        if fish_config theme list | grep -q "$FISH_THEME"
+            fish_config theme choose "$FISH_THEME"
+        else
+            # Otherwise set custom
+            fish_theme "$FISH_THEME"
+        end
     end
 end
