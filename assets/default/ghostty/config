@@ -13,3 +13,4 @@ theme = Wombat-iTerm
 
 # Quick terminal - only works on macOS for now
 keybind = global:cmd+shift+grave_accent=toggle_quick_terminal
+keybind = global:ctrl+shift+grave_accent=toggle_quick_terminal
