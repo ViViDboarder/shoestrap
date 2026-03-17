@@ -3,10 +3,10 @@
 # Link files that can't be sourced
 try_link "ackrc" "$HOME/.ackrc"
 try_link "antrc" "$HOME/.antrc"
-try_link "ctags" "$HOME/.ctags"
-try_link "tigrc" "$HOME/.tigrc"
+try_link "ctags" "$XDG_CONFIG_HOME/ctags"
+try_link "tig" "$XDG_CONFIG_HOME/tig"
 try_link "npmrc" "$HOME/.npmrc"
-try_link "tmux.conf" "$HOME/.tmux.conf"
+try_link "tmux" "$XDG_CONFIG_HOME/tmux"
 
 # Source files that can
 source_dotfile "bashrc"
