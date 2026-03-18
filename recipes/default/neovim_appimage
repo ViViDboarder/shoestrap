@@ -2,14 +2,42 @@
 
 set -e
 
-cd "$TMP"
+# Create temp download and extract dir
+mkdir -p "$TMP_DIR/nvim_appimage"
+cd "$TMP_DIR/nvim_appimage"
 
-curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+CURRENT_URL=$(cat ./nvim-url.txt || echo "")
+NEW_URL=$(release-gitter \
+    --git-url "https://github.com/neovim/neovim" \
+    --url-only \
+    "nvim-{system}-{arch}.appimage" || echo "ERROR"
+)
+if [ "$NEW_URL" == "ERROR" ]; then
+    echo "Error getting new URL, exiting"
+    exit 1
+fi
+if [ "$CURRENT_URL" != "$NEW_URL" ]; then
+    echo "New Neovim URL: $NEW_URL"
+else
+    echo "Neovim URL is up to date: $CURRENT_URL"
+    exit 0
+fi
+
+# Download appimage
+wget -O nvim.appimage "$NEW_URL"
 chmod +x nvim.appimage
+
+# Try to run or extract and link
 if ./nvim.appimage --version ;then
+    # Move to path
     mv nvim.appimage ~/bin/nvim
 else
+    # Extract and move to path
     ./nvim.appimage --appimage-extract
+    # Remove old version, we are only here if there is a new version
+    rm -fr ~/.local/lib/neovim_squashfs
     mv ./squashfs-root ~/.local/lib/neovim_squashfs
-    ln -s ~/.local/lib/neovim_squashfs/AppRun ~/.local/bin/nvim
+    try_link ~/.local/lib/neovim_squashfs/AppRun ~/.local/bin/nvim
 fi
+
+echo "$NEW_URL" > ./nvim-url.txt
