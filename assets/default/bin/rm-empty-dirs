@@ -9,14 +9,18 @@ def delete_empty(p: Path) -> bool:
         return False
 
     if not p.is_dir():
-        raise ValueError(f"unknown type {p}")
+        print(f"{p} is not a directory. Skipping delete.")
+        return False
 
     for child in p.iterdir():
         if not delete_empty(child):
-            print(f"Skipping delete of {p}")
+            print(f"{p} is not empty. Skipping delete.")
             return False
 
-    p.rmdir()
+    if p.is_symlink():
+        p.unlink()
+    else:
+        p.rmdir()
 
     return True
 
