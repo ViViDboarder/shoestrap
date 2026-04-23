@@ -9,3 +9,5 @@ set main-view = \
     commit-title:graph=yes,refs=yes
 
 bind main R ?git revert %(commit)
+
+color cursor black yellow
