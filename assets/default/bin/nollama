@@ -1,8 +1,9 @@
 #! /usr/bin/env python3
+import argparse
 import json
 import os
 from ssl import CERT_NONE, PROTOCOL_TLS_CLIENT, SSLContext
-from typing import Any
+from typing import Any, NamedTuple, cast
 import urllib.request
 from http.client import HTTPResponse
 
@@ -106,11 +107,31 @@ class LlamaCPP:
 
         return failed_models
 
+class NollamaArgs(NamedTuple):
+    no_ollama: bool
+    no_llamacpp: bool
+
+
+def parse_args() -> NollamaArgs:
+    parser = argparse.ArgumentParser("nollama", description="Unloads models from Ollama and LlamaCPP")
+    _ = parser.add_argument("--no-ollama", action="store_true", help="Do not unload Ollama models")
+    _ = parser.add_argument("--no-llamacpp", action="store_true", help="Do not unload LlamaCPP models")
+    args = parser.parse_args()
+
+    return NollamaArgs(
+        no_ollama=cast(bool, args.no_ollama),
+        no_llamacpp=cast(bool, args.no_llamacpp),
+    )
 
 
 def main() -> int:
-    failed_models = Ollama.unload_all()
-    failed_models += LlamaCPP.unload_all()
+    args = parse_args()
+    failed_models: list[str] = []
+
+    if not args.no_ollama:
+        failed_models += Ollama.unload_all()
+    if not args.no_llamacpp:
+        failed_models += LlamaCPP.unload_all()
 
     if failed_models:
         print("Error unloading models:")
